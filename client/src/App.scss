@@ -2,3 +2,49 @@
   width: 100%;
   min-height: 100vh;
 }
+.header-content {
+  padding: 5% 4%;
+}
+.header-content-text {
+  font-size: 3.9rem;
+  font-weight: bold;
+  line-height: 1.2;
+}
+.header-content-img {
+  background-image: url("./assets/illustrations/work.png");
+  height: 50vh;
+  background-position: center;
+  background-size: contain;
+}
+
+.main-quote {
+  background-color: #0891b2;
+  min-height: 30vh;
+  padding: 5% 2%;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
+.main-quote-text {
+  font-size: 2.5rem;
+  color: #cffafe;
+  text-align: center;
+}
+.main-quote-author {
+  font-size: 1.6rem;
+  text-align: center;
+  margin-top: 2%;
+}
+.main-information {
+  min-height: 60vh;
+}
+.main-information-header {
+  font-size: 3.1rem;
+  text-align: center;
+  font-weight: bold;
+  margin-top: 5%;
+}
+.main-footer {
+  min-height: 15vh;
+  background-color: #0891b2;
+}
