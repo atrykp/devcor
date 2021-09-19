@@ -1,3 +1,5 @@
+@import "./sass/variables";
+
 .app-wrapper {
   width: 100%;
   min-height: 100vh;
@@ -6,7 +8,7 @@
   padding: 5% 4%;
 }
 .header-content-text {
-  font-size: 3.9rem;
+  font-size: $xxlarge;
   font-weight: bold;
   line-height: 1.2;
 }
@@ -18,7 +20,7 @@
 }
 
 .main-quote {
-  background-color: #0891b2;
+  background-color: $main;
   min-height: 30vh;
   padding: 5% 2%;
   display: flex;
@@ -26,12 +28,12 @@
   flex-direction: column;
 }
 .main-quote-text {
-  font-size: 2.5rem;
-  color: #cffafe;
+  font-size: $large;
+  color: $main-light;
   text-align: center;
 }
 .main-quote-author {
-  font-size: 1.6rem;
+  font-size: $small;
   text-align: center;
   margin-top: 2%;
 }
@@ -39,12 +41,12 @@
   min-height: 60vh;
 }
 .main-information-header {
-  font-size: 3.1rem;
+  font-size: $xlarge;
   text-align: center;
   font-weight: bold;
   margin-top: 5%;
 }
 .main-footer {
   min-height: 15vh;
-  background-color: #0891b2;
+  background-color: $main;
 }

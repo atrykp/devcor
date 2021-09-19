@@ -1,8 +1,10 @@
+@import "../../sass/variables";
+
 .button {
   padding: 3% 10%;
-  background-color: #0891b2;
-  color: #f3f4f6;
+  background-color: $main;
+  color: $main-xlight;
   border-radius: 5px;
   border-style: none;
-  font-size: 2rem;
+  font-size: $normal;
 }
