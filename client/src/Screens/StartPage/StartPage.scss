@@ -1,8 +1,13 @@
 @import "../../sass/variables";
+@import "../../sass/mixins";
 
 .start-page {
   &__header-wrapper {
     padding: 5% 4%;
+    @include mq(small) {
+      display: flex;
+      justify-content: space-between;
+    }
   }
   &__header-text {
     font-size: $xxlarge;
@@ -12,8 +17,11 @@
   &__header-img {
     background-image: url("../../assets/illustrations/work.png");
     height: 50vh;
-    background-position: center;
-    background-size: contain;
+    @include image-contain;
+    @include mq(small) {
+      height: auto;
+      width: 1000px;
+    }
   }
 
   &__quote-wrapper {
