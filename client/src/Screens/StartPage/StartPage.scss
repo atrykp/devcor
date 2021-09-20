@@ -1,44 +1,46 @@
 @import "../../sass/variables";
 
-.header-content {
-  padding: 5% 4%;
-}
-.header-content-text {
-  font-size: $xxlarge;
-  font-weight: bold;
-  line-height: 1.2;
-}
-.header-content-img {
-  background-image: url("../../assets/illustrations/work.png");
-  height: 50vh;
-  background-position: center;
-  background-size: contain;
-}
+.start-page {
+  &__header-wrapper {
+    padding: 5% 4%;
+  }
+  &__header-text {
+    font-size: $xxlarge;
+    font-weight: bold;
+    line-height: 1.2;
+  }
+  &__header-img {
+    background-image: url("../../assets/illustrations/work.png");
+    height: 50vh;
+    background-position: center;
+    background-size: contain;
+  }
 
-.main-quote {
-  background-color: $main;
-  min-height: 30vh;
-  padding: 5% 2%;
-  display: flex;
-  justify-content: center;
-  flex-direction: column;
-}
-.main-quote-text {
-  font-size: $large;
-  color: $main-light;
-  text-align: center;
-}
-.main-quote-author {
-  font-size: $small;
-  text-align: center;
-  margin-top: 2%;
-}
-.main-information {
-  min-height: 60vh;
-}
-.main-information-header {
-  font-size: $xlarge;
-  text-align: center;
-  font-weight: bold;
-  margin-top: 5%;
+  &__quote-wrapper {
+    background-color: $main;
+    min-height: 30vh;
+    padding: 5% 2%;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+  }
+  &__quote-text {
+    font-size: $large;
+    color: $main-light;
+    text-align: center;
+  }
+  &__quote-author {
+    font-size: $small;
+    text-align: center;
+    margin-top: 2%;
+  }
+  &__information {
+    min-height: 60vh;
+  }
+  &__information-header {
+    font-size: $xlarge;
+    text-align: center;
+    font-weight: bold;
+    margin-top: 5%;
+  }
 }

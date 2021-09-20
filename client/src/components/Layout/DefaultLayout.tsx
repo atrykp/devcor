@@ -15,10 +15,10 @@ const DefaultLayout = ({ children }: IDefaultLayout) => {
   }, []);
 
   return (
-    <div className="app-wrapper">
+    <div className="layout">
       <NavBar />
       {children}
-      <footer className="main-footer">
+      <footer className="layout__footer">
         <p>{!data ? "Loading..." : data}</p>
       </footer>
     </div>

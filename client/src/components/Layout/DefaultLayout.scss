@@ -1,11 +1,10 @@
 @import "../../sass/variables";
 
-.app-wrapper {
+.layout {
   width: 100%;
   min-height: 100vh;
-}
-
-.main-footer {
-  min-height: 15vh;
-  background-color: $main;
+  &__footer {
+    min-height: 15vh;
+    background-color: $main;
+  }
 }
