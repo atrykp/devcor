@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import Input from "../Input/Input";
 import NavBar from "../NavBar/NavBar";
 import "./DefaultLayout.scss";
 
@@ -20,6 +21,7 @@ const DefaultLayout = ({ children }: IDefaultLayout) => {
       {children}
       <footer className="layout__footer">
         <p>{!data ? "Loading..." : data}</p>
+        <Input />
       </footer>
     </div>
   );

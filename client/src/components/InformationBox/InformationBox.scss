@@ -3,11 +3,12 @@
 
 .info-box {
   width: 90%;
-  height: 350px;
+  min-height: 350px;
   margin: 10% auto;
   box-shadow: $shadow;
   border-radius: 5px;
-  padding: 10% 5%;
+  padding: 8% 5% 10%;
+  max-width: 350px;
   &__title {
     color: $main-second;
     font-size: $xlarge;

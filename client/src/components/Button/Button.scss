@@ -1,4 +1,5 @@
 @import "../../sass/variables";
+@import "../../sass/mixins";
 
 .button {
   padding: 3% 10%;
@@ -7,4 +8,11 @@
   border-radius: 5px;
   border-style: none;
   font-size: $normal;
+  max-width: 120px;
+  max-height: 45px;
+  @include mq(xsmall) {
+    width: 120px;
+    height: 45px;
+    padding: 0;
+  }
 }
