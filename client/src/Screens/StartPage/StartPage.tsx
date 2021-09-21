@@ -1,3 +1,4 @@
+import InformationBox from "../../components/InformationBox/InformationBox";
 import "./StartPage.scss";
 
 const StartPage = () => {

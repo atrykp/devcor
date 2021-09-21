@@ -13,6 +13,8 @@
     font-size: $xxlarge;
     font-weight: bold;
     line-height: 1.2;
+    align-self: center;
+    margin-bottom: 10%;
   }
   &__header-img {
     background-image: url("../../assets/illustrations/work.png");
@@ -20,6 +22,7 @@
     @include image-contain;
     @include mq(small) {
       height: auto;
+      min-height: 50vh;
       width: 1000px;
     }
   }
