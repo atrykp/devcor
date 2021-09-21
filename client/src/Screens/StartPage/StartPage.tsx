@@ -1,4 +1,5 @@
 import InformationBox from "../../components/InformationBox/InformationBox";
+import informationData from "../../assets/data/information.json";
 import "./StartPage.scss";
 
 const StartPage = () => {
@@ -18,6 +19,9 @@ const StartPage = () => {
       </div>
       <div className="start-page__information">
         <p className="start-page__information-header">Functions</p>
+        <InformationBox infoData={informationData.informationBox.first} />
+        <InformationBox infoData={informationData.informationBox.second} />
+        <InformationBox infoData={informationData.informationBox.third} />
       </div>
     </div>
   );

@@ -1,6 +1,28 @@
+@import "../../sass/variables";
+@import "../../sass/mixins";
+
 .info-box {
-  border: 2px solid black;
   width: 90%;
-  height: 50vh;
+  height: 350px;
   margin: 10% auto;
+  box-shadow: $shadow;
+  border-radius: 5px;
+  padding: 10% 5%;
+  &__title {
+    color: $main-second;
+    font-size: $xlarge;
+    text-align: center;
+    width: 80%;
+    margin: 0 auto 8%;
+    padding-bottom: 5%;
+    border-bottom: 1px solid $gray;
+  }
+  &__points {
+    padding-left: 9%;
+  }
+  &__point {
+    font-size: $large;
+    line-height: 1.2;
+    margin: 6% auto;
+  }
 }

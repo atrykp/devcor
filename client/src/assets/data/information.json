@@ -1,0 +1,16 @@
+{
+    "informationBox": {
+        "first": {
+            "title":"English",
+            "points": ["Create your own dictionary", "repeat with flashcards", "learn only what you really need"]
+        },
+        "second": {
+            "title":"Notes",
+            "points": ["Create your own notes", "repeat with flashcards", "save only what you really need"]
+        },
+        "third": {
+            "title":"Timer",
+            "points": ["Stay focus when you need", "check your stats", "manage your time effective"]
+        }
+    }
+}
