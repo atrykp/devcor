@@ -8,7 +8,10 @@ interface IButton {
 
 const Button = ({ children, styles, callback }: IButton) => {
   return (
-    <button className={styles ? styles : "button"} onClick={() => callback?.()}>
+    <button
+      className={`button ${styles ? styles : ""}`}
+      onClick={() => callback?.()}
+    >
       {children}
     </button>
   );

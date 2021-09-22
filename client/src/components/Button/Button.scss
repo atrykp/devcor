@@ -15,4 +15,12 @@
     height: 45px;
     padding: 0;
   }
+  &--secondary {
+    background-color: transparent;
+    color: $gray;
+    text-decoration: underline;
+    &:hover {
+      filter: brightness(0.8);
+    }
+  }
 }
