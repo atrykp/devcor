@@ -9,11 +9,11 @@ interface IDefaultLayout {
 
 const DefaultLayout = ({ children }: IDefaultLayout) => {
   const [data, setData] = useState<any>(null);
-  useEffect(() => {
-    fetch("/api")
-      .then((res) => res.json())
-      .then((data) => setData(data.message));
-  }, []);
+  // useEffect(() => {
+  //   fetch("/api")
+  //     .then((res) => res.json())
+  //     .then((data) => setData(data.message));
+  // }, []);
 
   return (
     <div className="layout">

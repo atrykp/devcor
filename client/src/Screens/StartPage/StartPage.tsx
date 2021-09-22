@@ -1,8 +1,19 @@
 import InformationBox from "../../components/InformationBox/InformationBox";
 import informationData from "../../assets/data/information.json";
 import "./StartPage.scss";
+import { useQuery, gql } from "@apollo/client";
+
+export const TRACKS = gql`
+  query ExampleQuery {
+    users {
+      name
+    }
+  }
+`;
 
 const StartPage = () => {
+  const { loading, error, data } = useQuery(TRACKS);
+
   return (
     <div className="start-page">
       <div className="start-page__header-wrapper">
