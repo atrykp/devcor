@@ -9,7 +9,7 @@
   border-style: none;
   font-size: $normal;
   max-width: 120px;
-  max-height: 45px;
+  height: 45px;
   @include mq(xsmall) {
     width: 120px;
     height: 45px;
@@ -19,6 +19,13 @@
     background-color: transparent;
     color: $gray;
     text-decoration: underline;
+    &:hover {
+      filter: brightness(0.8);
+    }
+  }
+  &--accent {
+    background-color: $accent;
+
     &:hover {
       filter: brightness(0.8);
     }

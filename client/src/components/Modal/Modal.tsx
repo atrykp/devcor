@@ -3,6 +3,7 @@ import "./Modal.scss";
 
 interface IModal {
   children: React.ReactNode;
+  title?: string;
   confirmCallback?: () => void;
   cancelCallback?: () => void;
   confirmTxt?: string;
@@ -10,6 +11,7 @@ interface IModal {
 }
 
 const Modal = ({
+  title,
   children,
   confirmCallback,
   cancelCallback,
@@ -18,6 +20,7 @@ const Modal = ({
 }: IModal) => {
   return (
     <div className="modal">
+      <p className="modal__header">{title}</p>
       {children}
       <div className="modal__buttons">
         {confirmCallback ||
