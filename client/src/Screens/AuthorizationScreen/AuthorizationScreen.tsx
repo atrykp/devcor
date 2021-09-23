@@ -1,6 +1,5 @@
 import { useHistory, useParams } from "react-router";
 import Button from "../../components/Button/Button";
-import Input from "../../components/Input/Input";
 import Modal from "../../components/Modal/Modal";
 import { useForm, SubmitHandler } from "react-hook-form";
 import "./AuthorizationScreen.scss";
@@ -9,47 +8,59 @@ const SIGN_UP = "SignUp";
 const LOGIN = "Login";
 
 interface IFormInput {
-  firstName: string;
-  lastName: string;
-  age: number;
+  name: string;
+  email: string;
+  password: string;
 }
 
 const AuthorizationScreen = () => {
   const { type } = useParams<{ type: "signup" | "login" }>();
-  const { register, handleSubmit } = useForm<IFormInput>();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm<IFormInput>();
+
   const onSubmit: SubmitHandler<IFormInput> = (data) => console.log(data);
   const isSignUp = type === "signup";
-  console.log(type);
 
   const history = useHistory();
 
   const changePage = () => {
+    reset();
     history.push(
       `${isSignUp ? "/authorization/login" : "/authorization/signup"}`
     );
   };
 
   return (
-    <div className="auth-screen" onSubmit={handleSubmit(onSubmit)}>
+    <div className="auth-screen">
       <Modal title={isSignUp ? "Sign Up" : "Login"}>
-        <form action="" className="auth-screen__form">
+        <form className="auth-screen__form" onSubmit={handleSubmit(onSubmit)}>
           {isSignUp && (
-            <Input
-              styles={"input__auth-screen input"}
-              placeholderTxt={"name"}
+            <input
+              className={"input__auth-screen"}
+              placeholder={"name"}
+              {...register("name", { required: true })}
             />
           )}
-          <Input styles={"input__auth-screen input"} placeholderTxt={"email"} />
-          <Input
-            styles={"input__auth-screen input"}
-            placeholderTxt={"password"}
+          <input
+            className={"input__auth-screen"}
+            placeholder={"email"}
+            {...register("email", { required: true })}
           />
+          <input
+            className={"input__auth-screen"}
+            placeholder={"password"}
+            {...register("password", { required: true })}
+          />
+          <button className="button button--accent" type="submit">
+            {isSignUp ? SIGN_UP : LOGIN}
+          </button>
         </form>
 
         <div className="auth-screen__buttons">
-          <Button styles={"button button--accent"}>
-            {isSignUp ? SIGN_UP : LOGIN}
-          </Button>
           <Button styles={"button button--secondary"} callback={changePage}>
             {!isSignUp ? SIGN_UP : LOGIN}
           </Button>

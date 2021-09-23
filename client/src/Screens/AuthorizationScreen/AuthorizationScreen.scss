@@ -1,4 +1,5 @@
 @import "../../sass/variables";
+@import "../../sass/mixins";
 
 .auth-screen {
   min-height: calc(100vh - 30vh);
@@ -20,6 +21,7 @@
   }
 }
 .input__auth-screen {
+  @include input;
   min-height: 50px;
   margin: 5%;
   background-color: $gg-light;

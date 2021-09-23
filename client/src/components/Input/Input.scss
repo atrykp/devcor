@@ -2,20 +2,5 @@
 @import "../../sass/mixins";
 
 .input {
-  border-radius: 5px;
-  border-style: none;
-  min-height: 40px;
-  width: 100%;
-  max-width: 340px;
-  font-size: $large;
-  color: $gray;
-  padding: 5px 8px;
-  border: 1.5px solid $g-light;
-  background-color: $g-light;
-  outline: none;
-  margin: 3% auto;
-
-  &:focus {
-    border-color: $accent;
-  }
+  @include input;
 }
