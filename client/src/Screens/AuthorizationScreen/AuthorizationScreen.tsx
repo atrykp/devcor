@@ -3,6 +3,7 @@ import Button from "../../components/Button/Button";
 import Modal from "../../components/Modal/Modal";
 import { useForm, SubmitHandler } from "react-hook-form";
 import "./AuthorizationScreen.scss";
+import { EMAIL_VALIDATION, PASSWORD_VALIDATION } from "../../assets/consts";
 
 const SIGN_UP = "SignUp";
 const LOGIN = "Login";
@@ -33,6 +34,7 @@ const AuthorizationScreen = () => {
       `${isSignUp ? "/authorization/login" : "/authorization/signup"}`
     );
   };
+  console.log(errors);
 
   return (
     <div className="auth-screen">
@@ -40,22 +42,50 @@ const AuthorizationScreen = () => {
         <form className="auth-screen__form" onSubmit={handleSubmit(onSubmit)}>
           {isSignUp && (
             <input
-              className={"input__auth-screen"}
+              className={`input__auth-screen ${
+                errors.name ? "input__auth-screen--error" : ""
+              }`}
               placeholder={"name"}
-              {...register("name", { required: true })}
+              {...register("name", { required: true, minLength: 3 })}
             />
           )}
           <input
-            className={"input__auth-screen"}
+            className={`input__auth-screen ${
+              errors.email ? "input__auth-screen--error" : ""
+            }`}
             placeholder={"email"}
-            {...register("email", { required: true })}
+            {...register("email", {
+              required: true,
+              pattern: EMAIL_VALIDATION,
+            })}
           />
           <input
-            className={"input__auth-screen"}
+            className={`input__auth-screen ${
+              errors.password ? "input__auth-screen--error" : ""
+            }`}
             placeholder={"password"}
-            {...register("password", { required: true })}
+            {...register("password", {
+              required: true,
+              pattern: PASSWORD_VALIDATION,
+            })}
           />
-          <button className="button button--accent" type="submit">
+          {Object.keys(errors).length > 0 && (
+            <div className="auth-screen__validation">
+              <ul className="auth-screen__validation-list">
+                {errors.name && <li>Name is required min 3 length</li>}
+                {errors.email && (
+                  <li>Email is required, provide valid email</li>
+                )}
+                {errors.password && (
+                  <li>
+                    Wrong password min length: 3 one letter, one number, one
+                    capital letter
+                  </li>
+                )}
+              </ul>
+            </div>
+          )}
+          <button className="button button--accent button--auth" type="submit">
             {isSignUp ? SIGN_UP : LOGIN}
           </button>
         </form>

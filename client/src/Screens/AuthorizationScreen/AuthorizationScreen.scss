@@ -19,6 +19,15 @@
     padding-top: 3%;
     gap: 15px;
   }
+  &__validation {
+    padding: 5%;
+    border-radius: 5px;
+    box-shadow: $light-shadow;
+    margin-bottom: 10px;
+  }
+  &__validation-list {
+    margin-left: 5%;
+  }
 }
 .input__auth-screen {
   @include input;
@@ -26,4 +35,10 @@
   margin: 5%;
   background-color: $gg-light;
   padding: 5%;
+  &--error {
+    border-color: #ef4444;
+  }
+}
+.button--auth {
+  margin-top: 4%;
 }
