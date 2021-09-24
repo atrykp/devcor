@@ -4,7 +4,9 @@ const express = require("express");
 const path = require("path");
 const { gql } = require("apollo-server-core");
 const http = require("http");
-var cors = require("cors");
+const cors = require("cors");
+require("dotenv").config();
+const connectDb = require("./mongoose");
 
 const PORT = process.env.PORT || 3001;
 
@@ -25,6 +27,7 @@ async function startApolloServer(typeDefs, resolvers) {
   //   res.sendFile(path.resolve(__dirname, "../client/build", "index.html"));
   // });
   server.applyMiddleware({ app });
+  connectDb();
   await new Promise((resolve) => httpServer.listen({ port: PORT }, resolve));
   console.log(
     `🚀 Server ready at http://localhost:${PORT}${server.graphqlPath}`
