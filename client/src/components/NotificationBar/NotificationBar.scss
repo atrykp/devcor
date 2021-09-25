@@ -1,18 +1,33 @@
+@import "../../sass/variables";
+
 .notification-bar {
-  position: absolute;
+  position: fixed;
+  text-align: center;
+  padding: 2%;
+  font-size: $normal;
   top: 0;
   left: 0;
-  background-color: red;
-  color: white;
+  background-color: $main;
+  color: $g-light;
   min-height: 5vh;
   width: 100%;
+  box-shadow: $light-shadow;
+  animation: slideIn 0.2s ease-in;
   &--pending {
-    background-color: blue;
+    background-color: $pending;
   }
   &--done {
-    background-color: green;
+    background-color: $success;
   }
   &--error {
-    background-color: red;
+    background-color: $error;
+  }
+}
+@keyframes slideIn {
+  0% {
+    transform: translateY(-120%);
+  }
+  100% {
+    transform: translateY(0%);
   }
 }

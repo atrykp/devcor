@@ -4,7 +4,7 @@ interface INotificationContext {
   children: React.ReactNode;
 }
 
-type NotificationStatus = "pending" | "done" | "error";
+export type NotificationStatus = "pending" | "done" | "error";
 
 interface INotification {
   status: NotificationStatus;
