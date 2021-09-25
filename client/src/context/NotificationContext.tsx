@@ -4,16 +4,18 @@ interface INotificationContext {
   children: React.ReactNode;
 }
 
+type NotificationStatus = "pending" | "done" | "error";
+
 interface INotification {
-  visible: boolean;
+  status: NotificationStatus;
   message: string;
-  setNewValue(newMessage: string): void;
+  setNewValue(newMessage: string, status: NotificationStatus): void;
 }
 
 const emptyContext: INotification = {
-  visible: false,
+  status: "pending",
   message: "",
-  setNewValue(newMessage: string) {},
+  setNewValue() {},
 };
 
 export const NotificationCtx = createContext(emptyContext);
@@ -21,22 +23,23 @@ export const NotificationCtx = createContext(emptyContext);
 const NotificationContext = ({ children }: INotificationContext) => {
   const [notification, setNotification] = useState<INotification>(emptyContext);
 
-  const showNotification = (message: string) => {
-    setNotification((prevValue) => ({ ...prevValue, message, visible: true }));
+  const showNotification = (message: string, status: NotificationStatus) => {
+    setNotification((prevValue) => ({ ...prevValue, message, status }));
   };
 
   const context = {
-    visible: notification.visible,
+    status: notification.status,
     message: notification.message,
     setNewValue: showNotification,
   };
 
   useEffect(() => {
-    if (notification.visible) {
-      setTimeout(() => {
-        setNotification(emptyContext);
-      }, 4000);
-    }
+    let timerId = setTimeout(() => {
+      setNotification(emptyContext);
+    }, 4000);
+    return () => {
+      clearTimeout(timerId);
+    };
   }, [notification]);
 
   return (

@@ -1,15 +1,19 @@
+import { useContext } from "react";
 import { Switch, Route, Redirect } from "react-router-dom";
 
 import "./App.scss";
 import DefaultLayout from "./components/Layout/DefaultLayout";
-import NotificationContext from "./context/NotificationContext";
+import NotificationBar from "./components/NotificationBar/NotificationBar";
+import { NotificationCtx } from "./context/NotificationContext";
 import AuthorizationScreen from "./Screens/AuthorizationScreen/AuthorizationScreen";
 import StartPage from "./Screens/StartPage/StartPage";
 
 function App() {
+  const ctx = useContext(NotificationCtx);
   return (
-    <NotificationContext>
-      <DefaultLayout>
+    <DefaultLayout>
+      <>
+        {ctx.message && <NotificationBar />}
         <Switch>
           <Route path="/start/:message?" exact>
             <StartPage />
@@ -19,8 +23,8 @@ function App() {
           </Route>
           <Redirect to="/start" />
         </Switch>
-      </DefaultLayout>
-    </NotificationContext>
+      </>
+    </DefaultLayout>
   );
 }
 

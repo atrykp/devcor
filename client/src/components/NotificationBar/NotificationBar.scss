@@ -1,0 +1,18 @@
+.notification-bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: red;
+  color: white;
+  min-height: 5vh;
+  width: 100%;
+  &--pending {
+    background-color: blue;
+  }
+  &--done {
+    background-color: green;
+  }
+  &--error {
+    background-color: red;
+  }
+}
