@@ -2,6 +2,8 @@ import InformationBox from "../../components/InformationBox/InformationBox";
 import informationData from "../../assets/data/information.json";
 import "./StartPage.scss";
 import { useQuery, gql } from "@apollo/client";
+import { useContext } from "react";
+import { NotificationCtx } from "../../context/NotificationContext";
 
 export const TRACKS = gql`
   query ExampleQuery {
@@ -13,10 +15,12 @@ export const TRACKS = gql`
 
 const StartPage = () => {
   const { loading, error, data } = useQuery(TRACKS);
+  const ctx = useContext(NotificationCtx);
 
   return (
     <div className="start-page">
       <div className="start-page__header-wrapper">
+        {ctx.visible && <h1>{ctx.message}</h1>}
         <p className="start-page__header-text">
           Perfect place for developers who want improve skills all the time!
         </p>
