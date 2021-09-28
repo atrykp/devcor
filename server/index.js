@@ -1,16 +1,15 @@
+require("dotenv").config({ path: "./server/.env" });
 const { ApolloServer } = require("apollo-server-express");
 const { ApolloServerPluginDrainHttpServer } = require("apollo-server-core");
 const express = require("express");
 const path = require("path");
-const { gql } = require("apollo-server-core");
+const typeDefs = require("./apollo-server/schema");
 const http = require("http");
 const cors = require("cors");
-require("dotenv").config();
 const connectDb = require("./mongoose");
+const resolvers = require("./apollo-server/resolvers");
 
 const PORT = process.env.PORT || 3001;
-
-const usersObj = [{ name: "patryk" }, { name: "stefan" }];
 
 async function startApolloServer(typeDefs, resolvers) {
   const app = express();
@@ -34,14 +33,6 @@ async function startApolloServer(typeDefs, resolvers) {
   );
 }
 
-const typeDefs = gql`
-  type Query {
-    users: [User!]!
-  }
-  type User {
-    name: String!
-  }
-`;
 const resolvers = {
   Query: {
     users: () => usersObj,

@@ -7,8 +7,21 @@ const typeDefs = gql`
     email: String!
     password: String!
   }
+  type CreateUserResponse {
+    success: Boolean!
+    message: String
+    id: ID!
+  }
   type Query {
-    getUser: User
+    users: [User]!
+    user(id: ID!): User
+  }
+  type Mutation {
+    createUser(
+      email: String!
+      name: String!
+      password: String
+    ): CreateUserResponse!
   }
 `;
 
