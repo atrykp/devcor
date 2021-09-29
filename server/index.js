@@ -33,10 +33,4 @@ async function startApolloServer(typeDefs, resolvers) {
   );
 }
 
-const resolvers = {
-  Query: {
-    users: () => usersObj,
-  },
-};
-
 startApolloServer(typeDefs, resolvers);

@@ -4,6 +4,7 @@ import Modal from "../../components/Modal/Modal";
 import { useForm, SubmitHandler } from "react-hook-form";
 import "./AuthorizationScreen.scss";
 import { EMAIL_VALIDATION, PASSWORD_VALIDATION } from "../../assets/consts";
+import { gql, useMutation } from "@apollo/client";
 
 const SIGN_UP = "SignUp";
 const LOGIN = "Login";
@@ -14,6 +15,15 @@ interface IFormInput {
   password: string;
 }
 
+const CREATE_USER = gql`
+  mutation CreateUser($email: String!, $name: String!, $password: String) {
+    createUser(email: $email, name: $name, password: $password) {
+      id
+      message
+    }
+  }
+`;
+
 const AuthorizationScreen = () => {
   const { type } = useParams<{ type: "signup" | "login" }>();
   const {
@@ -23,7 +33,17 @@ const AuthorizationScreen = () => {
     reset,
   } = useForm<IFormInput>();
 
-  const onSubmit: SubmitHandler<IFormInput> = (data) => console.log(data);
+  const [createUser, { data, loading, error }] = useMutation(CREATE_USER);
+
+  const onSubmit: SubmitHandler<IFormInput> = async (data) => {
+    createUser({
+      variables: {
+        email: data.email,
+        name: data.name,
+        password: data.password,
+      },
+    });
+  };
   const isSignUp = type === "signup";
 
   const history = useHistory();
@@ -60,6 +80,7 @@ const AuthorizationScreen = () => {
             })}
           />
           <input
+            type="password"
             className={`input__auth-screen ${
               errors.password ? "input__auth-screen--error" : ""
             }`}
