@@ -11,6 +11,7 @@ const typeDefs = gql`
     success: Boolean!
     message: String
     id: ID!
+    token: String
   }
   type Query {
     users: [User]!

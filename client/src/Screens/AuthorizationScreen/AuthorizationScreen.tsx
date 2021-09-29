@@ -20,6 +20,8 @@ const CREATE_USER = gql`
     createUser(email: $email, name: $name, password: $password) {
       id
       message
+      success
+      token
     }
   }
 `;
@@ -36,7 +38,7 @@ const AuthorizationScreen = () => {
   const [createUser, { data, loading, error }] = useMutation(CREATE_USER);
 
   const onSubmit: SubmitHandler<IFormInput> = async (data) => {
-    createUser({
+    const newUser = await createUser({
       variables: {
         email: data.email,
         name: data.name,
