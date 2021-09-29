@@ -23,6 +23,7 @@ const typeDefs = gql`
       name: String!
       password: String
     ): CreateUserResponse!
+    loginUser(email: String!, password: String): CreateUserResponse!
   }
 `;
 

@@ -12,17 +12,32 @@ module.exports = {
   Mutation: {
     createUser: async (_, { name, email, password }) => {
       const user = await User.create({ email, name, password });
-      console.log(user._id);
 
       const token = await signToken(user._id);
       if (user) {
         return {
-          id,
+          id: user._id,
           message: "user Created",
           success: true,
           token,
         };
       }
+    },
+    loginUser: async (_, { email, password }) => {
+      const userInfo = await User.findOne({ email }).select("+password");
+
+      const isPasswordCorrect = await userInfo.correctPassword(
+        password,
+        userInfo.password
+      );
+      const token = await signToken(userInfo._id);
+
+      return {
+        id: userInfo._id,
+        message: "user Created",
+        success: true,
+        token,
+      };
     },
   },
 };

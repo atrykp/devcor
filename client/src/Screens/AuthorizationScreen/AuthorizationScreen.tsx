@@ -25,6 +25,16 @@ const CREATE_USER = gql`
     }
   }
 `;
+const LOGIN_USER = gql`
+  mutation LoginUser($email: String!, $password: String) {
+    loginUser(email: $email, password: $password) {
+      id
+      message
+      success
+      token
+    }
+  }
+`;
 
 const AuthorizationScreen = () => {
   const { type } = useParams<{ type: "signup" | "login" }>();
@@ -34,21 +44,46 @@ const AuthorizationScreen = () => {
     formState: { errors },
     reset,
   } = useForm<IFormInput>();
-
-  const [createUser, { data, loading, error }] = useMutation(CREATE_USER);
-
-  const onSubmit: SubmitHandler<IFormInput> = async (data) => {
-    const newUser = await createUser({
-      variables: {
-        email: data.email,
-        name: data.name,
-        password: data.password,
-      },
-    });
-  };
+  const history = useHistory();
   const isSignUp = type === "signup";
 
-  const history = useHistory();
+  const [createUser, { data, loading, error }] = useMutation(CREATE_USER);
+  const [loginUser] = useMutation(LOGIN_USER);
+
+  const onSubmit: SubmitHandler<IFormInput> = async (data) => {
+    if (isSignUp) {
+      try {
+        const newUser = await createUser({
+          variables: {
+            email: data.email,
+            name: data.name,
+            password: data.password,
+          },
+        });
+        if (newUser.data.createUser.success) {
+          history.push(`/profile/${newUser.data.createUser.id}`);
+        }
+      } catch (error: any) {
+        console.log(error.message);
+      }
+    } else {
+      try {
+        const userInfo = await loginUser({
+          variables: {
+            email: data.email,
+            password: data.password,
+          },
+        });
+        console.log(userInfo);
+
+        if (userInfo.data.loginUser.token) {
+          history.push(`/profile/${userInfo.data.loginUser.id}`);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  };
 
   const changePage = () => {
     reset();
@@ -56,7 +91,6 @@ const AuthorizationScreen = () => {
       `${isSignUp ? "/authorization/login" : "/authorization/signup"}`
     );
   };
-  console.log(errors);
 
   return (
     <div className="auth-screen">
