@@ -11,6 +11,15 @@ module.exports = {
   Query: {},
   Mutation: {
     createUser: async (_, { name, email, password }) => {
+      const userExist = await User.findOne({ email });
+      if (userExist)
+        return {
+          id: "",
+          message: "User already exist",
+          success: false,
+          token: "",
+        };
+
       const user = await User.create({ email, name, password });
 
       const token = await signToken(user._id);
@@ -30,6 +39,9 @@ module.exports = {
         password,
         userInfo.password
       );
+
+      if (!isPasswordCorrect) throw new Error("Something went wrong");
+
       const token = await signToken(userInfo._id);
 
       return {

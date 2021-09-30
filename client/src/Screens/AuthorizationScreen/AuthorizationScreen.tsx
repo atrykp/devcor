@@ -5,6 +5,7 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import "./AuthorizationScreen.scss";
 import { EMAIL_VALIDATION, PASSWORD_VALIDATION } from "../../assets/consts";
 import { gql, useMutation } from "@apollo/client";
+import { useNotificationBar } from "../../hooks/useNotificationBar";
 
 const SIGN_UP = "SignUp";
 const LOGIN = "Login";
@@ -47,12 +48,15 @@ const AuthorizationScreen = () => {
   const history = useHistory();
   const isSignUp = type === "signup";
 
-  const [createUser, { data, loading, error }] = useMutation(CREATE_USER);
+  const { showNotification } = useNotificationBar();
+
+  const [createUser] = useMutation(CREATE_USER);
   const [loginUser] = useMutation(LOGIN_USER);
 
   const onSubmit: SubmitHandler<IFormInput> = async (data) => {
     if (isSignUp) {
       try {
+        showNotification("Creating User", "pending");
         const newUser = await createUser({
           variables: {
             email: data.email,
@@ -60,27 +64,30 @@ const AuthorizationScreen = () => {
             password: data.password,
           },
         });
-        if (newUser.data.createUser.success) {
-          history.push(`/profile/${newUser.data.createUser.id}`);
+
+        if (!newUser.data.createUser.success) {
+          throw new Error(newUser.data.createUser.message);
         }
+        history.push(`/profile/${newUser.data.createUser.id}`);
+        showNotification("User created", "done");
       } catch (error: any) {
-        console.log(error.message);
+        showNotification(error.message, "error");
       }
     } else {
       try {
+        showNotification("Checking data...", "pending");
         const userInfo = await loginUser({
           variables: {
             email: data.email,
             password: data.password,
           },
         });
-        console.log(userInfo);
-
         if (userInfo.data.loginUser.token) {
+          showNotification("Welcome!", "done");
           history.push(`/profile/${userInfo.data.loginUser.id}`);
         }
       } catch (error) {
-        console.log(error);
+        showNotification("Wrong password or email", "error");
       }
     }
   };
@@ -123,7 +130,7 @@ const AuthorizationScreen = () => {
             placeholder={"password"}
             {...register("password", {
               required: true,
-              pattern: PASSWORD_VALIDATION,
+              pattern: isSignUp ? PASSWORD_VALIDATION : undefined,
             })}
           />
           {Object.keys(errors).length > 0 && (
@@ -135,8 +142,9 @@ const AuthorizationScreen = () => {
                 )}
                 {errors.password && (
                   <li>
-                    Wrong password min length: 3 one letter, one number, one
-                    capital letter
+                    {isSignUp
+                      ? "Wrong password min length: 3 one letter, one number, one capital letter"
+                      : "Password is required"}
                   </li>
                 )}
               </ul>
