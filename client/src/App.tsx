@@ -6,6 +6,7 @@ import DefaultLayout from "./components/Layout/DefaultLayout";
 import NotificationBar from "./components/NotificationBar/NotificationBar";
 import { NotificationCtx } from "./context/NotificationContext";
 import AuthorizationScreen from "./Screens/AuthorizationScreen/AuthorizationScreen";
+import ProfileScreen from "./Screens/ProfileScreen/ProfileScreen";
 import StartPage from "./Screens/StartPage/StartPage";
 
 function App() {
@@ -20,6 +21,9 @@ function App() {
           </Route>
           <Route path="/authorization/:type" exact>
             <AuthorizationScreen />
+          </Route>
+          <Route path="/profile/:id" exact>
+            <ProfileScreen />
           </Route>
           <Redirect to="/start" />
         </Switch>
