@@ -10,6 +10,7 @@ import NotificationContext from "./context/NotificationContext";
 const client = new ApolloClient({
   uri: "http://localhost:3001/graphql",
   cache: new InMemoryCache(),
+  credentials: "same-origin",
 });
 
 ReactDOM.render(

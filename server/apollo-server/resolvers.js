@@ -32,8 +32,9 @@ module.exports = {
         };
       }
     },
-    loginUser: async (_, { email, password }) => {
+    loginUser: async (_, { email, password }, context) => {
       const userInfo = await User.findOne({ email }).select("+password");
+      const { cookie } = context;
 
       const isPasswordCorrect = await userInfo.correctPassword(
         password,
@@ -43,6 +44,8 @@ module.exports = {
       if (!isPasswordCorrect) throw new Error("Something went wrong");
 
       const token = await signToken(userInfo._id);
+
+      // cookie("hello", "333");
 
       return {
         id: userInfo._id,
