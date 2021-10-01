@@ -32,9 +32,8 @@ module.exports = {
         };
       }
     },
-    loginUser: async (_, { email, password }, context) => {
+    loginUser: async (_, { email, password }, ctx) => {
       const userInfo = await User.findOne({ email }).select("+password");
-      const { cookie } = context;
 
       const isPasswordCorrect = await userInfo.correctPassword(
         password,
@@ -45,7 +44,10 @@ module.exports = {
 
       const token = await signToken(userInfo._id);
 
-      // cookie("hello", "333");
+      ctx.res.cookie("token", token, {
+        httpOnly: true,
+        maxAge: 1000 * 60 * 30,
+      });
 
       return {
         id: userInfo._id,

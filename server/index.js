@@ -9,6 +9,7 @@ const cors = require("cors");
 const connectDb = require("./mongoose");
 const resolvers = require("./apollo-server/resolvers");
 const cookieParser = require("cookie-parser");
+const jwt = require("jsonwebtoken");
 
 const PORT = process.env.PORT || 3001;
 
@@ -27,7 +28,17 @@ async function startApolloServer(typeDefs, resolvers) {
     typeDefs,
     resolvers,
     context: ({ req, res }) => {
-      res.cookie("hello", "world");
+      const { token } = req.cookies;
+
+      if (token) {
+        const { id } = jwt.verify(token, process.env.JWT_PASS);
+        req.isLogged = !!id;
+      }
+
+      return {
+        req,
+        res,
+      };
     },
     plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
   });
@@ -37,7 +48,7 @@ async function startApolloServer(typeDefs, resolvers) {
   // app.get("*", (req, res) => {
   //   res.sendFile(path.resolve(__dirname, "../client/build", "index.html"));
   // });
-  server.applyMiddleware({ app });
+  server.applyMiddleware({ app, path: "/", cors: false });
   connectDb();
   await new Promise((resolve) => httpServer.listen({ port: PORT }, resolve));
   console.log(
