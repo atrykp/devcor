@@ -1,23 +1,25 @@
-import { KeyObject } from "crypto";
 import "./TabelInfo.scss";
 
 interface ITabelInfo {
   data: {
     [key: string]: string;
-  }[];
+  };
 }
 
 const TabelInfo = ({ data }: ITabelInfo) => {
-  const information = data.map((element: any, index) => (
-    <div>
-      <p>{Object.keys(element)[index]}</p>
-      <p></p>
-    </div>
-  ));
+  const keys = Object.keys(data);
+
+  const information = keys.map((element: any) => {
+    return (
+      <div className="tabel-info__row">
+        <p className="tabel-info__key">{element}:</p>
+        <p className="tabel-info__value">{data[element]}</p>
+      </div>
+    );
+  });
   return (
     <>
-      <h1>Tabel Info</h1>
-      <div>{information}</div>
+      <div className="tabel-info">{information}</div>
     </>
   );
 };
