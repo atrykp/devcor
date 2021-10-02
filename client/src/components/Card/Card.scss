@@ -1,0 +1,12 @@
+@import "../../sass/variables";
+
+.card {
+  display: grid;
+  align-items: center;
+  padding: 5%;
+  box-shadow: $light-shadow;
+  width: 90%;
+  margin: 5% auto;
+  border-radius: 5px;
+  max-width: 500px;
+}

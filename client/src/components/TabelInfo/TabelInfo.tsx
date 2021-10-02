@@ -1,3 +1,4 @@
+import Card from "../Card/Card";
 import "./TabelInfo.scss";
 
 interface ITabelInfo {
@@ -19,7 +20,9 @@ const TabelInfo = ({ data }: ITabelInfo) => {
   });
   return (
     <>
-      <div className="tabel-info">{information}</div>
+      <Card>
+        <div className="tabel-info">{information}</div>
+      </Card>
     </>
   );
 };
