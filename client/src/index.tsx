@@ -6,6 +6,7 @@ import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter as Router } from "react-router-dom";
 import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
 import NotificationContext from "./context/NotificationContext";
+import UserContext from "./context/UserContext";
 
 const client = new ApolloClient({
   uri: "http://localhost:3001/graphql",
@@ -17,9 +18,11 @@ ReactDOM.render(
   <React.StrictMode>
     <ApolloProvider client={client}>
       <NotificationContext>
-        <Router>
-          <App />
-        </Router>
+        <UserContext>
+          <Router>
+            <App />
+          </Router>
+        </UserContext>
       </NotificationContext>
     </ApolloProvider>
   </React.StrictMode>,

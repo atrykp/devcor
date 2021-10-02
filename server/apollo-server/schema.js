@@ -5,7 +5,6 @@ const typeDefs = gql`
     id: ID!
     name: String!
     email: String!
-    password: String!
   }
   type CreateUserResponse {
     success: Boolean!
