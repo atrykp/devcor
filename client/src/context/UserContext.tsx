@@ -7,7 +7,7 @@ interface IUserCtx {
   setUserData(data: IUserData): void;
 }
 
-interface IUserData {
+export interface IUserData {
   name: string;
   email: string;
   id: string;

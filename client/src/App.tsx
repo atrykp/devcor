@@ -5,12 +5,14 @@ import "./App.scss";
 import DefaultLayout from "./components/Layout/DefaultLayout";
 import NotificationBar from "./components/NotificationBar/NotificationBar";
 import { NotificationCtx } from "./context/NotificationContext";
+import { useAuth } from "./hooks/useAuth";
 import AuthorizationScreen from "./Screens/AuthorizationScreen/AuthorizationScreen";
 import ProfileScreen from "./Screens/ProfileScreen/ProfileScreen";
 import StartPage from "./Screens/StartPage/StartPage";
 
 function App() {
   const ctx = useContext(NotificationCtx);
+  const [loading, user] = useAuth();
   return (
     <DefaultLayout>
       <>
