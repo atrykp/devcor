@@ -8,7 +8,16 @@ const signToken = (id) => {
 };
 
 module.exports = {
-  Query: {},
+  Query: {
+    getUser: async (_, { id }) => {
+      const user = await User.findOne({ _id: id });
+      return {
+        name: user.name,
+        email: user.email,
+        id,
+      };
+    },
+  },
   Mutation: {
     createUser: async (_, { name, email, password }) => {
       const userExist = await User.findOne({ email });

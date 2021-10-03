@@ -12,7 +12,7 @@ const TabelInfo = ({ data }: ITabelInfo) => {
 
   const information = keys.map((element: any) => {
     return (
-      <div className="tabel-info__row">
+      <div key={element} className="tabel-info__row">
         <p className="tabel-info__key">{element}:</p>
         <p className="tabel-info__value">{data[element]}</p>
       </div>

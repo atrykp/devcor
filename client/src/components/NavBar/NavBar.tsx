@@ -11,7 +11,7 @@ const NavBar = () => {
       <h1 onClick={() => history.push("/")}>
         dev<span className="navbar__logo-color">cor</span>
       </h1>
-      <Button callback={() => history.push("/authorization/signup")}>
+      <Button callback={() => history.push("/authorization/login")}>
         Join
       </Button>
     </div>
