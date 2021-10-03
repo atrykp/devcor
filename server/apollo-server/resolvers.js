@@ -17,6 +17,21 @@ module.exports = {
         id,
       };
     },
+    isUserAuth: async (_, __, ctx) => {
+      const { userId, isLogged } = ctx.req;
+      console.log(userId);
+      console.log(isLogged);
+
+      if (!isLogged) return null;
+      const user = await User.findOne({ _id: userId });
+      console.log(user);
+
+      return {
+        name: user.name,
+        email: user.email,
+        id: userId,
+      };
+    },
   },
   Mutation: {
     createUser: async (_, { name, email, password }) => {

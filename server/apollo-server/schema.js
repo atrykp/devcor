@@ -15,6 +15,7 @@ const typeDefs = gql`
   type Query {
     users: [User]!
     getUser(id: ID!): User
+    isUserAuth: User
   }
   type Mutation {
     createUser(

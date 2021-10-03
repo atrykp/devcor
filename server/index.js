@@ -33,6 +33,7 @@ async function startApolloServer(typeDefs, resolvers) {
       if (token) {
         const { id } = jwt.verify(token, process.env.JWT_PASS);
         req.isLogged = !!id;
+        req.userId = id;
       }
 
       return {

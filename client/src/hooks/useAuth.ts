@@ -16,9 +16,10 @@ export const useAuth = () => {
   const [user, setUser] = useState<IUserData>();
   const ctx = useContext(UserCtx);
   const { loading, error, data } = useQuery(ISAUTH);
+  console.log(data);
 
   useEffect(() => {
-    if (!data) return;
+    if (!data?.isUserAuth) return;
     const {
       isUserAuth: { id, email, name },
     } = data;
