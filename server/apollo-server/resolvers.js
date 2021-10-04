@@ -19,8 +19,6 @@ module.exports = {
     },
     isUserAuth: async (_, __, ctx) => {
       const { userId, isLogged } = ctx.req;
-      console.log(userId);
-      console.log(isLogged);
 
       if (!isLogged) return null;
       const user = await User.findOne({ _id: userId });

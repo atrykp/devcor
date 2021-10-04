@@ -13,10 +13,9 @@ const ISAUTH = gql`
 `;
 
 export const useAuth = () => {
-  const [user, setUser] = useState<IUserData>();
+  const [user, setUser] = useState<IUserData>({ name: "", email: "", id: "" });
   const ctx = useContext(UserCtx);
   const { loading, error, data } = useQuery(ISAUTH);
-  console.log(data);
 
   useEffect(() => {
     if (!data?.isUserAuth) return;
@@ -27,5 +26,5 @@ export const useAuth = () => {
     setUser({ id, email, name });
   }, [data]);
 
-  return [loading, user];
+  return [user];
 };
