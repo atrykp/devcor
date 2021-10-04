@@ -22,7 +22,6 @@ module.exports = {
 
       if (!isLogged) return null;
       const user = await User.findOne({ _id: userId });
-      console.log(user);
 
       return {
         name: user.name,

@@ -4,6 +4,7 @@ import { useContext, useEffect } from "react";
 import { useParams } from "react-router";
 import TabelInfo from "../../components/TabelInfo/TabelInfo";
 import { UserCtx } from "../../context/UserContext";
+import { useAuth } from "../../hooks/useAuth";
 import "./ProfileScreen.scss";
 
 export const USER = gql`
@@ -17,30 +18,19 @@ export const USER = gql`
 `;
 
 export default function ProfileScreen() {
+  useAuth("protect");
   const { id } = useParams<{ id: string }>();
+  console.log(id);
+
   const user = useContext(UserCtx);
-
-  const { loading, error, data } = useQuery(USER, {
-    variables: { id },
-  });
-
-  useEffect(() => {
-    if (!data) return;
-    const {
-      getUser: { name, email, id },
-    } = data;
-    user.setUserData({ name, email, id });
-  }, [data]);
 
   return (
     <div className="profile-screen">
       <h1 className="screen-header">Profile Screen</h1>
-      {loading ? (
+      {!user.id ? (
         <h1>loading...</h1>
       ) : (
-        <TabelInfo
-          data={{ name: data.getUser.name, email: data.getUser.email }}
-        />
+        <TabelInfo data={{ name: user.name, email: user.email }} />
       )}
     </div>
   );

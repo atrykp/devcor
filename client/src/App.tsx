@@ -8,12 +8,10 @@ import { NotificationCtx } from "./context/NotificationContext";
 import { useAuth } from "./hooks/useAuth";
 import AuthorizationScreen from "./Screens/AuthorizationScreen/AuthorizationScreen";
 import ProfileScreen from "./Screens/ProfileScreen/ProfileScreen";
-import PrivateRoute from "./Screens/router/PrivateRoute";
 import StartPage from "./Screens/StartPage/StartPage";
 
 function App() {
   const ctx = useContext(NotificationCtx);
-  const [user] = useAuth();
 
   return (
     <DefaultLayout>
@@ -26,7 +24,9 @@ function App() {
           <Route path="/authorization/:type" exact>
             <AuthorizationScreen />
           </Route>
-          <PrivateRoute path="/profile/:id" component={ProfileScreen} exact />
+          <Route path="/profile/:id" exact>
+            <ProfileScreen />
+          </Route>
           <Redirect to="/start" />
         </Switch>
       </>

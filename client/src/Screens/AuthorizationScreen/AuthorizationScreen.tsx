@@ -6,6 +6,7 @@ import "./AuthorizationScreen.scss";
 import { EMAIL_VALIDATION, PASSWORD_VALIDATION } from "../../assets/consts";
 import { gql, useMutation } from "@apollo/client";
 import { useNotificationBar } from "../../hooks/useNotificationBar";
+import { useAuth } from "../../hooks/useAuth";
 
 const SIGN_UP = "SignUp";
 const LOGIN = "Login";
@@ -38,6 +39,7 @@ const LOGIN_USER = gql`
 `;
 
 const AuthorizationScreen = () => {
+  useAuth("unprotected");
   const { type } = useParams<{ type: "signup" | "login" }>();
   const {
     register,

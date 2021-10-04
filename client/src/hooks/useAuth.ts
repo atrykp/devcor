@@ -1,5 +1,6 @@
 import { gql, useQuery } from "@apollo/client";
 import { useContext, useEffect, useState } from "react";
+import { useHistory } from "react-router";
 import { IUserData, UserCtx } from "../context/UserContext";
 
 const ISAUTH = gql`
@@ -12,19 +13,28 @@ const ISAUTH = gql`
   }
 `;
 
-export const useAuth = () => {
+export const useAuth = (protect: string) => {
   const [user, setUser] = useState<IUserData>({ name: "", email: "", id: "" });
   const ctx = useContext(UserCtx);
   const { loading, error, data } = useQuery(ISAUTH);
+  const history = useHistory();
 
   useEffect(() => {
-    if (!data?.isUserAuth) return;
+    if (loading) return;
+    else if (!data?.isUserAuth && protect === "unprotected") {
+      return;
+    } else if (!data?.isUserAuth && protect === "protect") {
+      return history.push("/authorization/login");
+    } else if (data?.isUserAuth && protect === "unprotected") {
+      history.push(`/profile/${data.isUserAuth.id}`);
+    } else if (ctx.id === data.isUserAuth.id) return;
+
     const {
       isUserAuth: { id, email, name },
     } = data;
     ctx.setUserData({ id, email, name });
     setUser({ id, email, name });
-  }, [data]);
+  }, [data, protect, history, ctx, loading]);
 
-  return [user];
+  return [user, loading];
 };
