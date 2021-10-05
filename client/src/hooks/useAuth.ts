@@ -16,17 +16,19 @@ const ISAUTH = gql`
 export const useAuth = (protect: string) => {
   const [user, setUser] = useState<IUserData>({ name: "", email: "", id: "" });
   const ctx = useContext(UserCtx);
-  const { loading, error, data } = useQuery(ISAUTH);
-  const history = useHistory();
+  const { loading, error, data, refetch } = useQuery(ISAUTH);
 
+  const history = useHistory();
   useEffect(() => {
-    if (loading) return;
-    else if (!data?.isUserAuth && protect === "unprotected") {
+    refetch();
+  }, []);
+  useEffect(() => {
+    if (!data?.isUserAuth && protect === "unprotected") {
       return;
     } else if (!data?.isUserAuth && protect === "protect") {
       return history.push("/authorization/login");
     } else if (data?.isUserAuth && protect === "unprotected") {
-      history.push(`/profile/${data.isUserAuth.id}`);
+      return history.push(`/profile/${data.isUserAuth.id}`);
     } else if (ctx.id === data.isUserAuth.id) return;
 
     const {

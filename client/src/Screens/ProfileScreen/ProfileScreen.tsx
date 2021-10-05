@@ -1,10 +1,12 @@
-import { useQuery } from "@apollo/client";
-import gql from "graphql-tag";
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import { useParams } from "react-router";
-import TabelInfo from "../../components/TabelInfo/TabelInfo";
+import gql from "graphql-tag";
+
 import { UserCtx } from "../../context/UserContext";
 import { useAuth } from "../../hooks/useAuth";
+
+import TabelInfo from "../../components/TabelInfo/TabelInfo";
+
 import "./ProfileScreen.scss";
 
 export const USER = gql`
@@ -20,7 +22,6 @@ export const USER = gql`
 export default function ProfileScreen() {
   useAuth("protect");
   const { id } = useParams<{ id: string }>();
-  console.log(id);
 
   const user = useContext(UserCtx);
 
