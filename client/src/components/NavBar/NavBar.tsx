@@ -21,7 +21,7 @@ const NavBar = () => {
           )
         }
       >
-        {ctx.id ? "Profile" : "Join"}
+        {ctx.id ? ctx.name : "Join"}
       </Button>
     </div>
   );

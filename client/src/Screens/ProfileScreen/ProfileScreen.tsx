@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { useParams } from "react-router";
+import { useHistory, useParams } from "react-router";
 import gql from "graphql-tag";
 
 import { UserCtx } from "../../context/UserContext";
@@ -8,6 +8,7 @@ import { useAuth } from "../../hooks/useAuth";
 import TabelInfo from "../../components/TabelInfo/TabelInfo";
 
 import "./ProfileScreen.scss";
+import Button from "../../components/Button/Button";
 
 export const USER = gql`
   query UserQuery($id: ID!) {
@@ -21,7 +22,7 @@ export const USER = gql`
 
 export default function ProfileScreen() {
   useAuth("protect");
-  const { id } = useParams<{ id: string }>();
+  const history = useHistory();
 
   const user = useContext(UserCtx);
 
@@ -33,6 +34,10 @@ export default function ProfileScreen() {
       ) : (
         <TabelInfo data={{ name: user.name, email: user.email }} />
       )}
+      <Button callback={() => history.push("/language")}>English</Button>
+      <Button>Notes</Button>
+      <Button>Timer</Button>
+      <Button>Logout</Button>
     </div>
   );
 }

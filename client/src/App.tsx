@@ -5,8 +5,8 @@ import "./App.scss";
 import DefaultLayout from "./components/Layout/DefaultLayout";
 import NotificationBar from "./components/NotificationBar/NotificationBar";
 import { NotificationCtx } from "./context/NotificationContext";
-import { useAuth } from "./hooks/useAuth";
 import AuthorizationScreen from "./Screens/AuthorizationScreen/AuthorizationScreen";
+import LanguageScreen from "./Screens/LanguageScreen/LanguageScreen";
 import ProfileScreen from "./Screens/ProfileScreen/ProfileScreen";
 import StartPage from "./Screens/StartPage/StartPage";
 
@@ -26,6 +26,9 @@ function App() {
           </Route>
           <Route path="/profile/:id" exact>
             <ProfileScreen />
+          </Route>
+          <Route path="/language" exact>
+            <LanguageScreen />
           </Route>
           <Redirect to="/start" />
         </Switch>

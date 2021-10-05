@@ -1,15 +1,16 @@
-require("dotenv").config({ path: "./server/.env" });
-const { ApolloServer } = require("apollo-server-express");
-const { ApolloServerPluginDrainHttpServer } = require("apollo-server-core");
 const express = require("express");
+const cors = require("cors");
+const connectDb = require("./mongoose");
+const jwt = require("jsonwebtoken");
 const path = require("path");
 const typeDefs = require("./apollo-server/schema");
 const http = require("http");
-const cors = require("cors");
-const connectDb = require("./mongoose");
 const resolvers = require("./apollo-server/resolvers");
 const cookieParser = require("cookie-parser");
-const jwt = require("jsonwebtoken");
+
+require("dotenv").config({ path: "./server/.env" });
+const { ApolloServer } = require("apollo-server-express");
+const { ApolloServerPluginDrainHttpServer } = require("apollo-server-core");
 
 const PORT = process.env.PORT || 3001;
 
