@@ -2,8 +2,10 @@ import { useContext } from "react";
 import { useHistory } from "react-router";
 import { UserCtx } from "../../context/UserContext";
 
-import Button from "../Button/Button";
+import IconButton from "../IconButton/IconButton";
+import arrow from "../../assets/icons/downArrow.svg";
 import "./NavBar.scss";
+import Button from "../Button/Button";
 
 const NavBar = () => {
   const history = useHistory();
@@ -14,15 +16,18 @@ const NavBar = () => {
       <h1 onClick={() => history.push("/")}>
         dev<span className="navbar__logo-color">cor</span>
       </h1>
-      <Button
-        callback={() =>
-          history.push(
-            `${ctx.id ? `/profile/${ctx.id}` : "/authorization/login"}`
-          )
-        }
-      >
-        {ctx.id ? ctx.name : "Join"}
-      </Button>
+      {ctx.id ? (
+        <IconButton
+          icon={arrow}
+          callback={() => history.push(`/profile/${ctx.id}`)}
+        >
+          {ctx.name}
+        </IconButton>
+      ) : (
+        <Button callback={() => history.push("/authorization/login")}>
+          Join
+        </Button>
+      )}
     </div>
   );
 };

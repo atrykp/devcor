@@ -1,0 +1,30 @@
+@import "../../sass/variables";
+@import "../../sass/mixins";
+
+.icon-button {
+  height: 60px;
+  width: 90px;
+  background-color: $main;
+  color: $main-xlight;
+  border-radius: 5px;
+  border-style: none;
+  font-size: $normal;
+  max-width: 120px;
+  height: 45px;
+  display: flex;
+  background-position: center 20;
+  background-repeat: no-repeat;
+  background-size: 30%;
+  padding: 0 2.5%;
+  justify-content: space-around;
+
+  &__text {
+    align-self: center;
+  }
+  &__img {
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    width: 40%;
+  }
+}

@@ -17,10 +17,17 @@ const IconButton = ({
   styles,
 }: IIconButton) => {
   return (
-    <div className="icon-button">
-      <button className={`icon-button__button ${styles ? styles : ""}`}>
-        {children}
-      </button>
+    <div
+      className="icon-button"
+      //
+    >
+      <p className={`icon-button__text ${styles || ""}`}>{children}</p>
+      {icon && (
+        <div
+          style={{ backgroundImage: `url(${icon || ""})` }}
+          className="icon-button__img"
+        ></div>
+      )}
       {label && <p>{label}</p>}
     </div>
   );
