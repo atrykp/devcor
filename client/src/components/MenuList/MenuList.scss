@@ -1,0 +1,17 @@
+@import "../../sass/variables";
+
+.menu-list {
+  &__wrapper {
+    width: 200px;
+    position: absolute;
+    background-color: $gg-light;
+    right: 18px;
+    top: 75px;
+    padding: 4%;
+    box-shadow: $light-shadow;
+  }
+  &__list {
+    list-style: none;
+    font-size: 2rem;
+  }
+}

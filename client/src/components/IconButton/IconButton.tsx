@@ -17,10 +17,7 @@ const IconButton = ({
   styles,
 }: IIconButton) => {
   return (
-    <div
-      className="icon-button"
-      //
-    >
+    <div className="icon-button" onClick={() => callback?.()}>
       <p className={`icon-button__text ${styles || ""}`}>{children}</p>
       {icon && (
         <div
