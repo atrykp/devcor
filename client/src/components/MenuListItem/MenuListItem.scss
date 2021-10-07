@@ -1,0 +1,10 @@
+@import "../../sass/variables";
+
+.menu-list-item {
+  padding: 10px;
+  text-align: center;
+  margin: 2px auto;
+  &:active {
+    background-color: $main-light;
+  }
+}

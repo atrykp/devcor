@@ -13,18 +13,21 @@ const NavBar = () => {
   const history = useHistory();
   const ctx = useContext(UserCtx);
 
+  const closeMenu = () => {
+    setIsListOpen(false);
+  };
+
   return (
     <div className="navbar">
       <h1 onClick={() => history.push("/")}>
         dev<span className="navbar__logo-color">cor</span>
       </h1>
-      {isListOpen && <MenuList />}
+      {isListOpen && <MenuList closeMenu={closeMenu} />}
       {ctx.id ? (
         <IconButton
           icon={arrow}
           callback={() => {
             setIsListOpen((prevValue) => !prevValue);
-            history.push(`/profile/${ctx.id}}`);
           }}
         >
           {ctx.name}

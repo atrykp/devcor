@@ -34,10 +34,6 @@ export default function ProfileScreen() {
       ) : (
         <TabelInfo data={{ name: user.name, email: user.email }} />
       )}
-      <Button callback={() => history.push("/language")}>English</Button>
-      <Button>Notes</Button>
-      <Button>Timer</Button>
-      <Button>Logout</Button>
     </div>
   );
 }
