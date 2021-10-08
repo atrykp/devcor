@@ -4,9 +4,10 @@ import Modal from "../../components/Modal/Modal";
 import { useForm, SubmitHandler } from "react-hook-form";
 import "./AuthorizationScreen.scss";
 import { EMAIL_VALIDATION, PASSWORD_VALIDATION } from "../../assets/consts";
-import { gql, useMutation } from "@apollo/client";
+import { gql, useLazyQuery, useMutation } from "@apollo/client";
 import { useNotificationBar } from "../../hooks/useNotificationBar";
 import { useAuth } from "../../hooks/useAuth";
+import { useEffect } from "react";
 
 const SIGN_UP = "SignUp";
 const LOGIN = "Login";
@@ -28,7 +29,7 @@ const CREATE_USER = gql`
   }
 `;
 const LOGIN_USER = gql`
-  mutation LoginUser($email: String!, $password: String) {
+  query LoginUser($email: String!, $password: String) {
     loginUser(email: $email, password: $password) {
       id
       message
@@ -53,7 +54,11 @@ const AuthorizationScreen = () => {
   const { showNotification } = useNotificationBar();
 
   const [createUser] = useMutation(CREATE_USER);
-  const [loginUser] = useMutation(LOGIN_USER);
+  // to do change use mutation to use query
+  const [loginUser, { loading, error, data: userData }] =
+    useLazyQuery(LOGIN_USER);
+
+  console.log(userData);
 
   const onSubmit: SubmitHandler<IFormInput> = async (data) => {
     if (isSignUp) {
@@ -78,16 +83,12 @@ const AuthorizationScreen = () => {
     } else {
       try {
         showNotification("Checking data...", "pending");
-        const userInfo = await loginUser({
+        const userInfo: any = await loginUser({
           variables: {
             email: data.email,
             password: data.password,
           },
         });
-        if (userInfo.data.loginUser.token) {
-          showNotification("Welcome!", "done");
-          history.push(`/profile/${userInfo.data.loginUser.id}`);
-        }
       } catch (error) {
         showNotification("Wrong password or email", "error");
       }
@@ -100,6 +101,14 @@ const AuthorizationScreen = () => {
       `${isSignUp ? "/authorization/login" : "/authorization/signup"}`
     );
   };
+
+  useEffect(() => {
+    if (!userData) return;
+    if (userData.loginUser.token) {
+      showNotification("Welcome!", "done");
+      history.push(`/profile/${userData.loginUser.id}`);
+    }
+  }, [userData, history, showNotification]);
 
   return (
     <div className="auth-screen">

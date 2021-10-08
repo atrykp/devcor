@@ -17,6 +17,30 @@ module.exports = {
         id,
       };
     },
+    loginUser: async (_, { email, password }, ctx) => {
+      const userInfo = await User.findOne({ email }).select("+password");
+
+      const isPasswordCorrect = await userInfo.correctPassword(
+        password,
+        userInfo.password
+      );
+
+      if (!isPasswordCorrect) throw new Error("Something went wrong");
+
+      const token = await signToken(userInfo._id);
+
+      ctx.res.cookie("token", token, {
+        httpOnly: true,
+        maxAge: 1000 * 60 * 30,
+      });
+
+      return {
+        id: userInfo._id,
+        message: "user Created",
+        success: true,
+        token,
+      };
+    },
     isUserAuth: async (_, __, ctx) => {
       const { userId, isLogged } = ctx.req;
 
@@ -52,30 +76,6 @@ module.exports = {
           token,
         };
       }
-    },
-    loginUser: async (_, { email, password }, ctx) => {
-      const userInfo = await User.findOne({ email }).select("+password");
-
-      const isPasswordCorrect = await userInfo.correctPassword(
-        password,
-        userInfo.password
-      );
-
-      if (!isPasswordCorrect) throw new Error("Something went wrong");
-
-      const token = await signToken(userInfo._id);
-
-      ctx.res.cookie("token", token, {
-        httpOnly: true,
-        maxAge: 1000 * 60 * 30,
-      });
-
-      return {
-        id: userInfo._id,
-        message: "user Created",
-        success: true,
-        token,
-      };
     },
   },
 };
