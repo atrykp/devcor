@@ -3,6 +3,9 @@
 .layout {
   width: 100%;
   min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   &__footer {
     min-height: 15vh;
     background-color: $main;

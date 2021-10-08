@@ -54,11 +54,8 @@ const AuthorizationScreen = () => {
   const { showNotification } = useNotificationBar();
 
   const [createUser] = useMutation(CREATE_USER);
-  // to do change use mutation to use query
   const [loginUser, { loading, error, data: userData }] =
     useLazyQuery(LOGIN_USER);
-
-  console.log(userData);
 
   const onSubmit: SubmitHandler<IFormInput> = async (data) => {
     if (isSignUp) {
