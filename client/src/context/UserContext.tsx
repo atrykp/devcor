@@ -1,22 +1,27 @@
 import React, { useState, createContext } from "react";
 
-interface IUserCtx {
-  name: string;
-  email: string;
-  id: string;
-  setUserData(data: IUserData): void;
-}
-
 export interface IUserData {
   name: string;
   email: string;
   id: string;
+  language: {
+    native: string;
+    learn: string;
+  };
+}
+
+interface IUserCtx extends IUserData {
+  setUserData(data: IUserData): void;
 }
 
 const emptyUser: IUserCtx = {
   name: "",
   email: "",
   id: "",
+  language: {
+    native: "",
+    learn: "",
+  },
   setUserData() {},
 };
 
@@ -26,8 +31,8 @@ const UserContext = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<IUserCtx>(emptyUser);
 
   const setUserData = (data: IUserData) => {
-    const { email, name, id } = data;
-    const newData = { email, name, id, setUserData };
+    const { email, name, id, language } = data;
+    const newData = { email, name, id, language, setUserData };
     setUser(newData);
   };
 
@@ -35,6 +40,7 @@ const UserContext = ({ children }: { children: React.ReactNode }) => {
     email: user.email,
     name: user.name,
     id: user.id,
+    language: user.language,
     setUserData,
   };
 

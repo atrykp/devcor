@@ -18,6 +18,10 @@ const userSchema = new Schema({
     type: String,
     required: true,
   },
+  language: {
+    native: String,
+    learn: String,
+  },
 });
 
 userSchema.pre("save", async function (next) {

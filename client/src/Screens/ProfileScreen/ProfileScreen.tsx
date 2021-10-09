@@ -8,22 +8,9 @@ import { useAuth } from "../../hooks/useAuth";
 import TabelInfo from "../../components/TabelInfo/TabelInfo";
 
 import "./ProfileScreen.scss";
-import Button from "../../components/Button/Button";
-
-export const USER = gql`
-  query UserQuery($id: ID!) {
-    getUser(id: $id) {
-      name
-      email
-      id
-    }
-  }
-`;
 
 export default function ProfileScreen() {
   useAuth("protect");
-  const history = useHistory();
-
   const user = useContext(UserCtx);
 
   return (

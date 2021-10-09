@@ -15,6 +15,7 @@ module.exports = {
         name: user.name,
         email: user.email,
         id,
+        language: user.language,
       };
     },
     loginUser: async (_, { email, password }, ctx) => {
@@ -46,16 +47,17 @@ module.exports = {
 
       if (!isLogged) return null;
       const user = await User.findOne({ _id: userId });
-
       return {
         name: user.name,
         email: user.email,
         id: userId,
+        nativeLanguage: user.language.native,
+        learnLanguage: user.language.learn,
       };
     },
   },
   Mutation: {
-    createUser: async (_, { name, email, password }) => {
+    createUser: async (_, { name, email, password }, ctx) => {
       const userExist = await User.findOne({ email });
       if (userExist)
         return {
@@ -65,9 +67,19 @@ module.exports = {
           token: "",
         };
 
-      const user = await User.create({ email, name, password });
-
+      const user = await User.create({
+        email,
+        name,
+        password,
+        language: { native: "", learn: "" },
+      });
       const token = await signToken(user._id);
+
+      ctx.res.cookie("token", token, {
+        httpOnly: true,
+        maxAge: 1000 * 60 * 30,
+      });
+
       if (user) {
         return {
           id: user._id,

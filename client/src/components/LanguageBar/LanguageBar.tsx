@@ -30,7 +30,7 @@ const LanguageBar = () => {
           handleChange={handleNativChange}
         />
         <SelectLanguage
-          label="native"
+          label="learn"
           options={options}
           handleChange={handleLearnChange}
         />

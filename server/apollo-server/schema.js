@@ -1,17 +1,6 @@
 const { gql } = require("apollo-server-core");
 
 const typeDefs = gql`
-  type User {
-    id: ID!
-    name: String!
-    email: String!
-  }
-  type CreateUserResponse {
-    success: Boolean!
-    message: String
-    id: ID!
-    token: String
-  }
   type Query {
     users: [User]!
     getUser(id: ID!): User
@@ -24,6 +13,23 @@ const typeDefs = gql`
       name: String!
       password: String
     ): CreateUserResponse!
+  }
+  type Lan {
+    native: String!
+    learn: String!
+  }
+  type User {
+    id: ID!
+    name: String!
+    email: String!
+    nativeLanguage: String
+    learnLanguage: String
+  }
+  type CreateUserResponse {
+    success: Boolean!
+    message: String
+    id: ID!
+    token: String
   }
 `;
 

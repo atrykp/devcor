@@ -9,12 +9,19 @@ const ISAUTH = gql`
       id
       email
       name
+      nativeLanguage
+      learnLanguage
     }
   }
 `;
 
 export const useAuth = (protect: string) => {
-  const [user, setUser] = useState<IUserData>({ name: "", email: "", id: "" });
+  const [user, setUser] = useState<IUserData>({
+    name: "",
+    email: "",
+    id: "",
+    language: { native: "", learn: "" },
+  });
   const ctx = useContext(UserCtx);
   const { loading, error, data } = useQuery(ISAUTH, {
     fetchPolicy: "cache-and-network",
@@ -34,10 +41,20 @@ export const useAuth = (protect: string) => {
     } else if (ctx.id === data.isUserAuth.id) return;
 
     const {
-      isUserAuth: { id, email, name },
+      isUserAuth: { id, email, name, nativeLanguage, learnLanguage },
     } = data;
-    ctx.setUserData({ id, email, name });
-    setUser({ id, email, name });
+    ctx.setUserData({
+      id,
+      email,
+      name,
+      language: { native: nativeLanguage, learn: learnLanguage },
+    });
+    setUser({
+      id,
+      email,
+      name,
+      language: { native: nativeLanguage, learn: learnLanguage },
+    });
   }, [data, protect, history, ctx, loading]);
 
   return [loading, user];
