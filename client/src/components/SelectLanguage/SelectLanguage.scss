@@ -1,0 +1,9 @@
+@import "../../sass/variables";
+
+.select-language {
+  width: 50%;
+  &__select {
+    margin-top: 5px;
+    color: $gray;
+  }
+}

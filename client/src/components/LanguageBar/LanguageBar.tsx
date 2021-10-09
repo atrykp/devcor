@@ -1,5 +1,6 @@
 import { useState } from "react";
 import Select from "react-select";
+import SelectLanguage from "../SelectLanguage/SelectLanguage";
 
 import "./LanguageBar.scss";
 
@@ -10,36 +11,29 @@ const options = [
 ];
 
 const LanguageBar = () => {
-  const [lang, setLang] = useState(null);
+  const [nativLang, setNativLang] = useState(null);
+  const [learnLang, setLearnLang] = useState(null);
 
-  const handleChange = (selected: any) => {
-    setLang(selected);
+  const handleNativChange = (selected: any) => {
+    setNativLang(selected);
+  };
+  const handleLearnChange = (selected: any) => {
+    setNativLang(selected);
   };
 
   return (
     <>
       <div className="language-bar">
-        <div className="language-bar__lang">
-          <p>native:</p>
-          <Select
-            value={lang}
-            onChange={handleChange}
-            options={options}
-            placeholder="language"
-            className="language-bar__select"
-            classNamePrefix="language-bar__select--option"
-          />
-        </div>
-        <div className="language-bar__lang">
-          <p>learn:</p>
-          <Select
-            value={lang}
-            onChange={handleChange}
-            options={options}
-            placeholder="language"
-            className="language-bar__select"
-          />
-        </div>
+        <SelectLanguage
+          label="native"
+          options={options}
+          handleChange={handleNativChange}
+        />
+        <SelectLanguage
+          label="native"
+          options={options}
+          handleChange={handleLearnChange}
+        />
       </div>
     </>
   );
