@@ -1,5 +1,5 @@
-import { gql, useQuery } from "@apollo/client";
 import { useContext, useEffect, useState } from "react";
+import { gql, useQuery } from "@apollo/client";
 import { useHistory } from "react-router";
 import { IUserData, UserCtx } from "../context/UserContext";
 
@@ -16,13 +16,15 @@ const ISAUTH = gql`
 export const useAuth = (protect: string) => {
   const [user, setUser] = useState<IUserData>({ name: "", email: "", id: "" });
   const ctx = useContext(UserCtx);
-  const { loading, error, data, refetch } = useQuery(ISAUTH, {
+  const { loading, error, data } = useQuery(ISAUTH, {
     fetchPolicy: "cache-and-network",
+    notifyOnNetworkStatusChange: true,
   });
 
   const history = useHistory();
 
   useEffect(() => {
+    if (loading) return;
     if (!data?.isUserAuth && protect === "unprotected") {
       return;
     } else if (!data?.isUserAuth && protect === "protect") {

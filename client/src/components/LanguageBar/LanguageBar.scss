@@ -1,0 +1,16 @@
+@import "../../sass/variables";
+
+.language-bar {
+  background-color: $g-light;
+  padding: 5%;
+  display: flex;
+  width: 100%;
+  gap: 15px;
+  &__select {
+    margin-top: 5px;
+    color: $gray;
+  }
+  &__lang {
+    width: 50%;
+  }
+}
