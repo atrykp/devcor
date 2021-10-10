@@ -15,7 +15,15 @@ const SelectLanguage = ({ label, handleChange, options }: ISelectLanguage) => {
         onChange={handleChange}
         options={options}
         placeholder="language"
-        className="select-language__select"
+        theme={(theme) => ({
+          ...theme,
+          colors: {
+            ...theme.colors,
+            primary25: "#cffafe",
+            primary: "#0891b2",
+          },
+        })}
+        className="select-language-container"
       />
     </div>
   );

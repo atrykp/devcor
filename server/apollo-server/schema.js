@@ -1,4 +1,4 @@
-const { gql } = require("apollo-server-core");
+const { gql } = require("apollo-server-express");
 
 const typeDefs = gql`
   type Query {
@@ -14,16 +14,15 @@ const typeDefs = gql`
       password: String
     ): CreateUserResponse!
   }
-  type Lan {
-    native: String!
-    learn: String!
-  }
   type User {
     id: ID!
     name: String!
     email: String!
-    nativeLanguage: String
-    learnLanguage: String
+    language: Lan
+  }
+  type Lan {
+    native: String
+    learn: String
   }
   type CreateUserResponse {
     success: Boolean!

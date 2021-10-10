@@ -9,8 +9,10 @@ const ISAUTH = gql`
       id
       email
       name
-      nativeLanguage
-      learnLanguage
+      language {
+        native
+        learn
+      }
     }
   }
 `;
@@ -23,6 +25,7 @@ export const useAuth = (protect: string) => {
     language: { native: "", learn: "" },
   });
   const ctx = useContext(UserCtx);
+
   const { loading, error, data } = useQuery(ISAUTH, {
     fetchPolicy: "cache-and-network",
     notifyOnNetworkStatusChange: true,
@@ -41,19 +44,19 @@ export const useAuth = (protect: string) => {
     } else if (ctx.id === data.isUserAuth.id) return;
 
     const {
-      isUserAuth: { id, email, name, nativeLanguage, learnLanguage },
+      isUserAuth: { id, email, name, language },
     } = data;
     ctx.setUserData({
       id,
       email,
       name,
-      language: { native: nativeLanguage, learn: learnLanguage },
+      language,
     });
     setUser({
       id,
       email,
       name,
-      language: { native: nativeLanguage, learn: learnLanguage },
+      language,
     });
   }, [data, protect, history, ctx, loading]);
 

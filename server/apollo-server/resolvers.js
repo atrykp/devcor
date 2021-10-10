@@ -51,8 +51,7 @@ module.exports = {
         name: user.name,
         email: user.email,
         id: userId,
-        nativeLanguage: user.language.native,
-        learnLanguage: user.language.learn,
+        language: user.language,
       };
     },
   },
