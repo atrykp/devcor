@@ -11,7 +11,7 @@ export interface IUserData {
 }
 
 interface IUserCtx extends IUserData {
-  setUserData(data: IUserData): void;
+  setUserData(data?: IUserData): void;
 }
 
 const emptyUser: IUserCtx = {
@@ -30,7 +30,7 @@ export const UserCtx = createContext(emptyUser);
 const UserContext = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<IUserCtx>(emptyUser);
 
-  const setUserData = (data: IUserData) => {
+  const setUserData = (data: IUserData = emptyUser) => {
     const { email, name, id, language } = data;
     const newData = { email, name, id, language, setUserData };
     setUser(newData);

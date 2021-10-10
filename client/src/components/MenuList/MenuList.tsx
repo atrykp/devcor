@@ -36,6 +36,7 @@ const MenuList = ({ closeMenu }: IMenuList) => {
       if (data.logoutUser.status) {
         showNotification(data.logoutUser.message, "done");
         history.push("/authorization/login");
+        ctx.setUserData();
       }
     } catch (error) {
       showNotification("something went wrong", "error");

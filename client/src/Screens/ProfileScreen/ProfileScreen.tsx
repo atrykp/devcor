@@ -19,7 +19,14 @@ export default function ProfileScreen() {
       {!user.id ? (
         <h1>loading...</h1>
       ) : (
-        <TabelInfo data={{ name: user.name, email: user.email }} />
+        <TabelInfo
+          data={{
+            name: user.name,
+            email: user.email,
+            "native language": user.language.native || "not set",
+            "learn language": user.language.learn || "not set",
+          }}
+        />
       )}
     </div>
   );
