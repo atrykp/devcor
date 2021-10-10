@@ -13,6 +13,7 @@ const typeDefs = gql`
       name: String!
       password: String
     ): CreateUserResponse!
+    logoutUser(id: ID!): MessageResponse
   }
   type User {
     id: ID!
@@ -29,6 +30,10 @@ const typeDefs = gql`
     message: String
     id: ID!
     token: String
+  }
+  type MessageResponse {
+    status: Boolean!
+    message: String!
   }
 `;
 

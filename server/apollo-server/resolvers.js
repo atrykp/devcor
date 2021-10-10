@@ -1,5 +1,6 @@
 const User = require("../models/userModel");
 const jwt = require("jsonwebtoken");
+require("dotenv").config({ path: "../.env" });
 
 const signToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_PASS, {
@@ -87,6 +88,18 @@ module.exports = {
           token,
         };
       }
+    },
+    logoutUser: async (_, { id }, ctx) => {
+      const { token } = ctx.req.cookies;
+      const { id: reqId } = jwt.verify(token, process.env.JWT_PASS);
+      if (id === reqId) {
+        ctx.res.cookie("token", "", {
+          httpOnly: true,
+          maxAge: 1,
+        });
+        return { message: "user logged out", status: true };
+      }
+      return { message: "something went wrong", status: false };
     },
   },
 };
