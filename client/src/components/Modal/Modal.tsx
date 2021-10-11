@@ -1,3 +1,5 @@
+import ReactDOM from "react-dom";
+import { useEffect } from "react";
 import Button from "../Button/Button";
 import "./Modal.scss";
 
@@ -10,6 +12,8 @@ interface IModal {
   cancelTxt?: string;
 }
 
+const portal = document.getElementById("modal-portal");
+
 const Modal = ({
   title,
   children,
@@ -18,7 +22,15 @@ const Modal = ({
   confirmTxt,
   cancelTxt,
 }: IModal) => {
-  return (
+  const node = document.createElement("div");
+
+  useEffect(() => {
+    portal?.appendChild(node);
+    return () => {
+      portal?.removeChild(node);
+    };
+  }, []);
+  return ReactDOM.createPortal(
     <div className="modal">
       <p className="modal__header">{title}</p>
       {children}
@@ -30,7 +42,8 @@ const Modal = ({
         {cancelCallback ||
           (cancelTxt && <Button callback={cancelCallback}>{cancelTxt}</Button>)}
       </div>
-    </div>
+    </div>,
+    node
   );
 };
 

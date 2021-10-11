@@ -3,6 +3,7 @@ import { Switch, Route, Redirect } from "react-router-dom";
 
 import "./App.scss";
 import DefaultLayout from "./components/Layout/DefaultLayout";
+import Modal from "./components/Modal/Modal";
 import NotificationBar from "./components/NotificationBar/NotificationBar";
 import { NotificationCtx } from "./context/NotificationContext";
 import AuthorizationScreen from "./Screens/AuthorizationScreen/AuthorizationScreen";

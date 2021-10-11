@@ -1,6 +1,5 @@
 import { useHistory, useParams } from "react-router";
 import Button from "../../components/Button/Button";
-import Modal from "../../components/Modal/Modal";
 import { useForm, SubmitHandler } from "react-hook-form";
 import "./AuthorizationScreen.scss";
 import { EMAIL_VALIDATION, PASSWORD_VALIDATION } from "../../assets/consts";
@@ -8,6 +7,7 @@ import { gql, useLazyQuery, useMutation } from "@apollo/client";
 import { useNotificationBar } from "../../hooks/useNotificationBar";
 import { useAuth } from "../../hooks/useAuth";
 import { useEffect } from "react";
+import CardTitle from "../../components/CardTitle/CardTitle";
 
 const SIGN_UP = "SignUp";
 const LOGIN = "Login";
@@ -109,7 +109,7 @@ const AuthorizationScreen = () => {
 
   return (
     <div className="auth-screen">
-      <Modal title={isSignUp ? "Sign Up" : "Login"}>
+      <CardTitle title={isSignUp ? "Sign Up" : "Login"}>
         <form className="auth-screen__form" onSubmit={handleSubmit(onSubmit)}>
           {isSignUp && (
             <input
@@ -168,7 +168,7 @@ const AuthorizationScreen = () => {
             {!isSignUp ? SIGN_UP : LOGIN}
           </Button>
         </div>
-      </Modal>
+      </CardTitle>
     </div>
   );
 };
