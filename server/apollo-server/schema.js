@@ -14,11 +14,26 @@ const typeDefs = gql`
       password: String
     ): CreateUserResponse!
     logoutUser(id: ID!): MessageResponse
+    updateUser(
+      id: ID!
+      name: String
+      email: String
+      password: String
+      native: String
+      learn: String
+    ): UpdateUser
   }
   type User {
     id: ID!
     name: String!
     email: String!
+    language: Lan
+  }
+  type UpdateUser {
+    id: ID!
+    name: String
+    email: String
+    password: String
     language: Lan
   }
   type Lan {

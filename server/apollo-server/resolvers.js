@@ -101,5 +101,7 @@ module.exports = {
       }
       return { message: "something went wrong", status: false };
     },
+
+    updateUser: async (_, { id }, ctx) => {},
   },
 };
