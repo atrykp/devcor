@@ -1,6 +1,4 @@
 import { useContext } from "react";
-import { useHistory, useParams } from "react-router";
-import gql from "graphql-tag";
 
 import { UserCtx } from "../../context/UserContext";
 import { useAuth } from "../../hooks/useAuth";

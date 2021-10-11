@@ -35,12 +35,12 @@ const Modal = ({
       <p className="modal__header">{title}</p>
       {children}
       <div className="modal__buttons">
-        {confirmCallback ||
-          (confirmTxt && (
-            <Button callback={confirmCallback}>{confirmTxt}</Button>
-          ))}
-        {cancelCallback ||
-          (cancelTxt && <Button callback={cancelCallback}>{cancelTxt}</Button>)}
+        {confirmCallback && confirmTxt && (
+          <Button callback={confirmCallback}>{confirmTxt}</Button>
+        )}
+        {cancelCallback && cancelTxt && (
+          <Button callback={cancelCallback}>{cancelTxt}</Button>
+        )}
       </div>
     </div>,
     node
