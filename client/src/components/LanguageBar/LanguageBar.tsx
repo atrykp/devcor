@@ -22,10 +22,10 @@ const UPDATE_USER_LANGUAGE = gql`
 `;
 
 const LanguageBar = () => {
+  const ctx = useContext(UserCtx);
   const [nativLang, setNativLang] = useState("");
   const [learnLang, setLearnLang] = useState("");
 
-  const ctx = useContext(UserCtx);
   const {
     id,
     language: { learn, native },
@@ -34,7 +34,7 @@ const LanguageBar = () => {
   const [updateUserLanguage, { loading, error, data }] =
     useMutation(UPDATE_USER_LANGUAGE);
 
-  const handleNativChange = async (selected: any) => {
+  const handleNativChange = async (selected: any, elemId: any) => {
     setNativLang(selected);
     const resposeData = await updateUserLanguage({
       variables: { id, native: selected.value, learn },
@@ -54,11 +54,15 @@ const LanguageBar = () => {
           label="native"
           options={options}
           handleChange={handleNativChange}
+          defaultValue={ctx.language.native}
+          elemId={"native"}
         />
         <SelectLanguage
           label="learn"
           options={options}
           handleChange={handleLearnChange}
+          defaultValue={ctx.language.learn}
+          elemId={"learn"}
         />
       </div>
     </>

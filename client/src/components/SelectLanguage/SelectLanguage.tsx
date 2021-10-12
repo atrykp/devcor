@@ -1,18 +1,31 @@
 import Select from "react-select";
+import AsyncSelect from "react-select/async";
+
 import "./SelectLanguage.scss";
 
 interface ISelectLanguage {
   label: string;
-  handleChange(selected: any): void;
+  handleChange(selected: any, elemId: any): void;
   options: any;
+  defaultValue: string;
+  elemId: string;
 }
 
-const SelectLanguage = ({ label, handleChange, options }: ISelectLanguage) => {
+const SelectLanguage = ({
+  label,
+  handleChange,
+  options,
+  defaultValue,
+  elemId,
+}: ISelectLanguage) => {
+  const setDefaultLanguage = () =>
+    options.find((elem: any) => elem.value === defaultValue);
   return (
     <div className="select-language">
       <p>{label}:</p>
+
       <Select
-        onChange={handleChange}
+        onChange={(select) => handleChange(select, elemId)}
         options={options}
         placeholder="language"
         theme={(theme) => ({
@@ -24,6 +37,7 @@ const SelectLanguage = ({ label, handleChange, options }: ISelectLanguage) => {
           },
         })}
         className="select-language-container"
+        value={setDefaultLanguage()}
       />
     </div>
   );
