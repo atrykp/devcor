@@ -118,7 +118,8 @@ module.exports = {
         },
         { new: true }
       );
-      console.log(data);
+      if (!data) return { status: false, message: "can't change language" };
+      return { status: true, message: "user language updated" };
     },
   },
 };

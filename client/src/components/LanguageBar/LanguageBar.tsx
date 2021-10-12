@@ -4,7 +4,7 @@ import { gql, useMutation } from "@apollo/client";
 import SelectLanguage from "../SelectLanguage/SelectLanguage";
 
 import "./LanguageBar.scss";
-import UserContext, { UserCtx } from "../../context/UserContext";
+import { UserCtx } from "../../context/UserContext";
 
 const options = [
   { value: "english", label: "English" },
@@ -20,11 +20,10 @@ const UPDATE_USER_LANGUAGE = gql`
     }
   }
 `;
+const NATIVE = "native";
 
 const LanguageBar = () => {
   const ctx = useContext(UserCtx);
-  const [nativLang, setNativLang] = useState("");
-  const [learnLang, setLearnLang] = useState("");
 
   const {
     id,
@@ -34,17 +33,23 @@ const LanguageBar = () => {
   const [updateUserLanguage, { loading, error, data }] =
     useMutation(UPDATE_USER_LANGUAGE);
 
-  const handleNativChange = async (selected: any, elemId: any) => {
-    setNativLang(selected);
-    const resposeData = await updateUserLanguage({
-      variables: { id, native: selected.value, learn },
-    });
-  };
-  const handleLearnChange = async (selected: any) => {
-    setLearnLang(selected);
-    updateUserLanguage({
-      variables: { id, learn: selected.value, native },
-    });
+  useEffect(() => {
+    if (data?.updateUserLanguage?.status) {
+      console.log(data.updateUserLanguage.message);
+    }
+  }, [data]);
+
+  const handleSelecet = async (selected: any, elemId: string) => {
+    let response: any;
+    if (elemId === NATIVE) {
+      response = await updateUserLanguage({
+        variables: { id, native: selected.value, learn },
+      });
+    } else {
+      response = await updateUserLanguage({
+        variables: { id, learn: selected.value, native },
+      });
+    }
   };
 
   return (
@@ -53,14 +58,14 @@ const LanguageBar = () => {
         <SelectLanguage
           label="native"
           options={options}
-          handleChange={handleNativChange}
+          handleChange={handleSelecet}
           defaultValue={ctx.language.native}
           elemId={"native"}
         />
         <SelectLanguage
           label="learn"
           options={options}
-          handleChange={handleLearnChange}
+          handleChange={handleSelecet}
           defaultValue={ctx.language.learn}
           elemId={"learn"}
         />
