@@ -1,8 +1,10 @@
-import { useState } from "react";
-import Select from "react-select";
+import { useContext, useEffect, useState } from "react";
+import { gql, useMutation } from "@apollo/client";
+
 import SelectLanguage from "../SelectLanguage/SelectLanguage";
 
 import "./LanguageBar.scss";
+import UserContext, { UserCtx } from "../../context/UserContext";
 
 const options = [
   { value: "english", label: "English" },
@@ -10,15 +12,39 @@ const options = [
   { value: "german", label: "German" },
 ];
 
-const LanguageBar = () => {
-  const [nativLang, setNativLang] = useState(null);
-  const [learnLang, setLearnLang] = useState(null);
+const UPDATE_USER_LANGUAGE = gql`
+  mutation UpdateUserLanguage($id: ID!, $native: String, $learn: String) {
+    updateUserLanguage(id: $id, native: $native, learn: $learn) {
+      status
+      message
+    }
+  }
+`;
 
-  const handleNativChange = (selected: any) => {
+const LanguageBar = () => {
+  const [nativLang, setNativLang] = useState("");
+  const [learnLang, setLearnLang] = useState("");
+
+  const ctx = useContext(UserCtx);
+  const {
+    id,
+    language: { learn, native },
+  } = ctx;
+
+  const [updateUserLanguage, { loading, error, data }] =
+    useMutation(UPDATE_USER_LANGUAGE);
+
+  const handleNativChange = async (selected: any) => {
     setNativLang(selected);
+    const resposeData = await updateUserLanguage({
+      variables: { id, native: selected.value, learn },
+    });
   };
-  const handleLearnChange = (selected: any) => {
-    setNativLang(selected);
+  const handleLearnChange = async (selected: any) => {
+    setLearnLang(selected);
+    updateUserLanguage({
+      variables: { id, learn: selected.value, native },
+    });
   };
 
   return (

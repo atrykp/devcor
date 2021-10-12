@@ -103,5 +103,22 @@ module.exports = {
     },
 
     updateUser: async (_, { id }, ctx) => {},
+    updateUserLanguage: async (_, { id, native, learn }, ctx) => {
+      if (!ctx.req.isLogged)
+        return { status: false, message: "can't change language" };
+      const update = { native, learn };
+      for (let key in update) {
+        if (!update[key]) update[key] = "";
+      }
+
+      const data = await User.findByIdAndUpdate(
+        id,
+        {
+          language: { ...update },
+        },
+        { new: true }
+      );
+      console.log(data);
+    },
   },
 };

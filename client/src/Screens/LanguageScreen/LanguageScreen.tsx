@@ -35,11 +35,6 @@ const UPDATE_USER = gql`
 `;
 
 const LanguageScreen = () => {
-  const [updateUserData, { loading, error, data }] = useMutation(UPDATE_USER);
-  useEffect(() => {
-    updateUserData({ variables: { id: "33" } });
-  }, []);
-
   useAuth("protect");
   return (
     <div className="language-screen">
