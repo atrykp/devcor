@@ -19,7 +19,8 @@ const ISAUTH = gql`
 `;
 
 export const useAuth = (protect: string) => {
-  const commonObjElements = 4;
+  const [commonObjElements, setCommonObjElements] = useState(0);
+
   const [user, setUser] = useState<IUserData>({
     name: "",
     email: "",
@@ -49,7 +50,8 @@ export const useAuth = (protect: string) => {
         Object.entries(data.isUserAuth),
         _.isEqual
       ).length;
-      if (common_elements >= commonObjElements) return;
+      if (common_elements >= commonObjElements && common_elements !== 0)
+        return setCommonObjElements(common_elements);
     }
 
     const {
