@@ -30,8 +30,12 @@ const LanguageBar = () => {
     language: { learn, native },
   } = ctx;
 
-  const [updateUserLanguage, { loading, error, data }] =
-    useMutation(UPDATE_USER_LANGUAGE);
+  const [updateUserLanguage, { loading, error, data }] = useMutation(
+    UPDATE_USER_LANGUAGE,
+    {
+      refetchQueries: ["IsUserAuth"],
+    }
+  );
 
   useEffect(() => {
     if (data?.updateUserLanguage?.status) {
