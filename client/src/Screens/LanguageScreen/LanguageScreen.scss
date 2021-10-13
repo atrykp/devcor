@@ -1,2 +1,11 @@
+@import "../../sass/variables";
+
 .language-screen {
+  &__section-header {
+    font-size: $normal;
+    font-weight: bold;
+  }
+  &__dictionary {
+    min-height: 200px;
+  }
 }

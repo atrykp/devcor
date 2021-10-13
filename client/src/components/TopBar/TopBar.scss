@@ -1,0 +1,10 @@
+@import "../../sass/variables";
+
+.top-bar {
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+
+  min-height: 50px;
+  border-bottom: 1px solid $gray;
+}
