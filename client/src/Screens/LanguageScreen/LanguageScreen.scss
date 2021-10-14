@@ -4,6 +4,7 @@
   &__section-header {
     font-size: $normal;
     font-weight: bold;
+    align-self: center;
   }
   &__dictionary {
     min-height: 200px;
@@ -11,5 +12,22 @@
   &__menu-icon {
     font-size: $large;
     color: $gray;
+    width: 100%;
+    text-align: end;
+    align-self: center;
+  }
+  &__buttons {
+    display: none;
+  }
+  &__buttons--mobile {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    position: absolute;
+    right: 0;
+    top: 70px;
+    background-color: $g-light;
+    box-shadow: $light-shadow;
+    padding: 10px;
   }
 }

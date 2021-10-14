@@ -31,5 +31,6 @@
   }
   &--menu-list {
     @include transparent-button;
+    width: 100%;
   }
 }

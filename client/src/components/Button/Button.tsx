@@ -17,4 +17,12 @@ const Button = ({ children, styles, callback }: IButton) => {
   );
 };
 
+export const MenuButton = ({ children, ...props }: IButton) => {
+  return (
+    <Button styles={"button--menu-list"} {...props}>
+      {children}
+    </Button>
+  );
+};
+
 export default Button;
