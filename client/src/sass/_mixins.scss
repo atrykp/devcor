@@ -30,6 +30,11 @@
   }
 }
 
+@mixin transparent-button {
+  background-color: transparent;
+  color: $gray;
+}
+
 @mixin mq($breakpoint) {
   $size: map-get($breakpoints, $breakpoint);
   @if ($size) {

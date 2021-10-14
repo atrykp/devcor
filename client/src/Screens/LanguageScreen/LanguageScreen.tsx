@@ -46,9 +46,12 @@ const LanguageScreen = () => {
         <LanguageContainer>
           <p className="language-screen__section-header">Dictionary</p>
           <TopBar>
-            <Button>Add new word</Button>
-            <Button>search</Button>
-            <Button>add words from text</Button>
+            <i className="fas fa-ellipsis-v language-screen__menu-icon"></i>
+            <div className="language-screen__buttons">
+              <Button styles="button--menu-list">Add new word</Button>
+              <Button styles="button--menu-list">search</Button>
+              <Button styles="button--menu-list">add words from text</Button>
+            </div>
           </TopBar>
           <div className="language-screen__dictionary"></div>
         </LanguageContainer>

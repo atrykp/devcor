@@ -16,8 +16,7 @@
     padding: 0;
   }
   &--secondary {
-    background-color: transparent;
-    color: $gray;
+    @include transparent-button;
     text-decoration: underline;
     &:hover {
       filter: brightness(0.8);
@@ -29,5 +28,8 @@
     &:hover {
       filter: brightness(0.8);
     }
+  }
+  &--menu-list {
+    @include transparent-button;
   }
 }
