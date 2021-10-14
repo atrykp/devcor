@@ -56,9 +56,9 @@ const LanguageScreen = () => {
                 isMenuList ? "language-screen__buttons--mobile" : ""
               }`}
             >
-              <MenuButton>add new word</MenuButton>
+              <MenuButton>add word</MenuButton>
               <MenuButton>search</MenuButton>
-              <MenuButton>add words from text</MenuButton>
+              <MenuButton>add from text</MenuButton>
             </div>
           </TopBar>
           <div className="language-screen__dictionary"></div>

@@ -1,4 +1,5 @@
 @import "../../sass/variables";
+@import "../../sass/mixins";
 
 .language-screen {
   &__section-header {
@@ -15,9 +16,15 @@
     width: 100%;
     text-align: end;
     align-self: center;
+    @include mq(small) {
+      display: none;
+    }
   }
   &__buttons {
     display: none;
+    @include mq(small) {
+      display: flex;
+    }
   }
   &__buttons--mobile {
     display: flex;

@@ -33,6 +33,7 @@
 @mixin transparent-button {
   background-color: transparent;
   color: $gray;
+  cursor: pointer;
 }
 
 @mixin mq($breakpoint) {
