@@ -3,20 +3,13 @@ import "./Input.scss";
 interface IInput {
   type?: string;
   styles?: string;
-  placeholderTxt?: string;
+  placeholder?: string;
   register?: any;
   name?: string;
 }
 
-const Input = ({ type, styles, placeholderTxt, register, name }: IInput) => {
-  return (
-    <input
-      type={type ? type : "text"}
-      className={`input ${styles ? styles : ""}`}
-      placeholder={placeholderTxt}
-      {...register(name)}
-    />
-  );
+const Input = ({ type, styles, register, name, ...props }: IInput) => {
+  return <input className={`input ${styles ? styles : ""}`} {...props} />;
 };
 
 export default Input;

@@ -31,16 +31,20 @@ const Modal = ({
     };
   }, []);
   return ReactDOM.createPortal(
-    <div className="modal">
-      <p className="modal__header">{title}</p>
-      {children}
-      <div className="modal__buttons">
-        {confirmCallback && confirmTxt && (
-          <Button callback={confirmCallback}>{confirmTxt}</Button>
-        )}
-        {cancelCallback && cancelTxt && (
-          <Button callback={cancelCallback}>{cancelTxt}</Button>
-        )}
+    <div className="modal__background">
+      <div className="modal">
+        <p className="modal__header">{title}</p>
+        {children}
+        <div className="modal__buttons">
+          {confirmCallback && confirmTxt && (
+            <Button callback={confirmCallback}>{confirmTxt}</Button>
+          )}
+          {cancelCallback && cancelTxt && (
+            <Button callback={cancelCallback} styles="button--secondary">
+              {cancelTxt}
+            </Button>
+          )}
+        </div>
       </div>
     </div>,
     node

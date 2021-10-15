@@ -3,4 +3,5 @@
 
 .input {
   @include input;
+  border-color: $ggg-light;
 }

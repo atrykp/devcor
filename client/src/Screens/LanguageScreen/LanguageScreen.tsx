@@ -1,11 +1,14 @@
 import { gql, useMutation } from "@apollo/client";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import Button, { MenuButton } from "../../components/Button/Button";
 
 import Card from "../../components/Card/Card";
+import Input from "../../components/Input/Input";
 import LanguageBar from "../../components/LanguageBar/LanguageBar";
 import LanguageContainer from "../../components/LanguageContainer/LanguageContainer";
+import Modal from "../../components/Modal/Modal";
 import TopBar from "../../components/TopBar/TopBar";
+import { UserCtx } from "../../context/UserContext";
 import { useAuth } from "../../hooks/useAuth";
 import "./LanguageScreen.scss";
 
@@ -39,12 +42,29 @@ const UPDATE_USER = gql`
 
 const LanguageScreen = () => {
   const [isMenuList, setIsMenuList] = useState(false);
+  const [isAddWord, setIsAddWord] = useState(false);
   useAuth("protect");
+  const ctx = useContext(UserCtx);
   return (
     <div className="language-screen">
       <LanguageBar />
       <Card>
         <LanguageContainer>
+          {isAddWord && (
+            <Modal
+              title={"Add Word"}
+              confirmTxt={"save"}
+              cancelTxt={"cancel"}
+              cancelCallback={() => setIsAddWord(false)}
+              confirmCallback={() => console.log("save new word")}
+            >
+              <div className="modal__inputs">
+                <Input type="text" placeholder={`${ctx.language.learn}`} />
+                <Input type="text" placeholder={`${ctx.language.native}`} />
+              </div>
+            </Modal>
+          )}
+
           <TopBar>
             <p className="language-screen__section-header">Dictionary</p>
             <i
@@ -56,9 +76,10 @@ const LanguageScreen = () => {
                 isMenuList ? "language-screen__buttons--mobile" : ""
               }`}
             >
-              <MenuButton>add word</MenuButton>
-              <MenuButton>search</MenuButton>
-              <MenuButton>add from text</MenuButton>
+              <MenuButton callback={() => setIsAddWord(true)}>
+                add new word
+              </MenuButton>
+              <MenuButton>more...</MenuButton>
             </div>
           </TopBar>
           <div className="language-screen__dictionary"></div>
