@@ -54,9 +54,11 @@ const LanguageScreen = () => {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<Inputs>();
   const onSubmit: SubmitHandler<Inputs> = (data) => console.log(data);
+
   return (
     <div className="language-screen">
       <LanguageBar />
@@ -67,16 +69,21 @@ const LanguageScreen = () => {
               title={"Add Word"}
               confirmTxt={"save"}
               cancelTxt={"cancel"}
-              cancelCallback={() => setIsAddWord(false)}
-              confirmCallback={() => handleSubmit(onSubmit)}
+              cancelCallback={() => {
+                reset();
+                setIsAddWord(false);
+              }}
+              confirmCallback={() => handleSubmit(onSubmit)()}
             >
               <div className="modal__inputs">
                 <form onSubmit={handleSubmit(onSubmit)}>
                   <Input
+                    styles={errors?.to ? "input--error" : ""}
                     placeholder={`${ctx.language.learn}`}
                     {...register("to", { required: true })}
                   />
                   <Input
+                    styles={errors?.from ? "input--error" : ""}
                     placeholder={`${ctx.language.native}`}
                     {...register("from", { required: true })}
                   />
@@ -85,12 +92,11 @@ const LanguageScreen = () => {
             </Modal>
           )}
 
-          <TopBar>
-            <p className="language-screen__section-header">Dictionary</p>
-            <i
-              className="fas fa-ellipsis-v language-screen__menu-icon"
-              onClick={() => setIsMenuList((prevVal) => !prevVal)}
-            ></i>
+          <TopBar
+            title={"Dictionary"}
+            onMore={() => setIsMenuList((prevVal) => !prevVal)}
+            moreIcon
+          >
             <div
               className={`language-screen__buttons ${
                 isMenuList ? "language-screen__buttons--mobile" : ""
@@ -105,8 +111,12 @@ const LanguageScreen = () => {
           <div className="language-screen__dictionary"></div>
         </LanguageContainer>
       </Card>
-      <Card>Flashcards</Card>
-      <Card>Repeat</Card>
+      <Card>
+        <TopBar title="FlashCards" moreText></TopBar>
+      </Card>
+      <Card>
+        <TopBar title="Repeat" moreText></TopBar>
+      </Card>
     </div>
   );
 };

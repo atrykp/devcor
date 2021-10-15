@@ -14,6 +14,7 @@ interface IModal {
 
 const portal = document.getElementById("modal-portal");
 
+const node = document.createElement("div");
 const Modal = ({
   title,
   children,
@@ -22,8 +23,6 @@ const Modal = ({
   confirmTxt,
   cancelTxt,
 }: IModal) => {
-  const node = document.createElement("div");
-
   useEffect(() => {
     portal?.appendChild(node);
     return () => {
