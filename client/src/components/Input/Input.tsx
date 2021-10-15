@@ -1,15 +1,17 @@
+import React from "react";
 import "./Input.scss";
 
 interface IInput {
-  type?: string;
   styles?: string;
   placeholder?: string;
-  register?: any;
-  name?: string;
 }
 
-const Input = ({ type, styles, register, name, ...props }: IInput) => {
-  return <input className={`input ${styles ? styles : ""}`} {...props} />;
-};
+const Input = React.forwardRef<HTMLInputElement, IInput>(
+  ({ styles, ...props }, ref) => {
+    return (
+      <input className={`input ${styles ? styles : ""}`} {...props} ref={ref} />
+    );
+  }
+);
 
 export default Input;

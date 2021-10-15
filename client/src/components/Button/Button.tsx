@@ -4,6 +4,7 @@ interface IButton {
   children?: string;
   styles?: string;
   callback?(): void;
+  type?: string;
 }
 
 const Button = ({ children, styles, callback }: IButton) => {

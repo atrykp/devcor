@@ -1,5 +1,6 @@
 import { gql, useMutation } from "@apollo/client";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
+import { useForm, SubmitHandler } from "react-hook-form";
 import Button, { MenuButton } from "../../components/Button/Button";
 
 import Card from "../../components/Card/Card";
@@ -39,12 +40,23 @@ const UPDATE_USER = gql`
     }
   }
 `;
+type Inputs = {
+  to: string;
+  from: string;
+};
 
 const LanguageScreen = () => {
   const [isMenuList, setIsMenuList] = useState(false);
   const [isAddWord, setIsAddWord] = useState(false);
   useAuth("protect");
   const ctx = useContext(UserCtx);
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<Inputs>();
+  const onSubmit: SubmitHandler<Inputs> = (data) => console.log(data);
   return (
     <div className="language-screen">
       <LanguageBar />
@@ -56,11 +68,19 @@ const LanguageScreen = () => {
               confirmTxt={"save"}
               cancelTxt={"cancel"}
               cancelCallback={() => setIsAddWord(false)}
-              confirmCallback={() => console.log("save new word")}
+              confirmCallback={() => handleSubmit(onSubmit)}
             >
               <div className="modal__inputs">
-                <Input type="text" placeholder={`${ctx.language.learn}`} />
-                <Input type="text" placeholder={`${ctx.language.native}`} />
+                <form onSubmit={handleSubmit(onSubmit)}>
+                  <Input
+                    placeholder={`${ctx.language.learn}`}
+                    {...register("to", { required: true })}
+                  />
+                  <Input
+                    placeholder={`${ctx.language.native}`}
+                    {...register("from", { required: true })}
+                  />
+                </form>
               </div>
             </Modal>
           )}
