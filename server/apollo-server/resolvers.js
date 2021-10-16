@@ -1,5 +1,7 @@
 const User = require("../models/userModel");
+const Language = require("../models/languageModel");
 const jwt = require("jsonwebtoken");
+const { words } = require("lodash");
 require("dotenv").config({ path: "../.env" });
 
 const signToken = (id) => {
@@ -120,6 +122,16 @@ module.exports = {
       );
       if (!data) return { status: false, message: "can't change language" };
       return { status: true, message: "user language updated" };
+    },
+    addWord: async (_, { userId, from, to }, ctx) => {
+      if (!ctx.req.isLogged)
+        return { status: false, message: "sorry something went wrong" };
+
+      const languageObj = await Language.findOneAndUpdate(
+        { userId },
+        dictionary.words.push({ from, to }),
+        { new: true }
+      );
     },
   },
 };

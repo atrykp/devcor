@@ -23,6 +23,7 @@ const typeDefs = gql`
       learn: String
     ): UpdateUser
     updateUserLanguage(id: ID!, native: String, learn: String): MessageResponse
+    addWord(userId: ID!, from: String, to: String): MessageResponse
   }
   type User {
     id: ID!

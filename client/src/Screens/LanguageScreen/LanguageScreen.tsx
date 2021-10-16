@@ -1,4 +1,4 @@
-import { gql, useMutation } from "@apollo/client";
+import { from, gql, useMutation } from "@apollo/client";
 import { useContext, useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import Button, { MenuButton } from "../../components/Button/Button";
@@ -40,6 +40,14 @@ const UPDATE_USER = gql`
     }
   }
 `;
+const ADD_WORD = gql`
+  mutation addWord($userId: ID!, $from: String, $to: String) {
+    addWord(userId: $userId, from: $from, to: $to) {
+      status
+      message
+    }
+  }
+`;
 type Inputs = {
   to: string;
   from: string;
@@ -50,6 +58,7 @@ const LanguageScreen = () => {
   const [isAddWord, setIsAddWord] = useState(false);
   useAuth("protect");
   const ctx = useContext(UserCtx);
+  const [addWord] = useMutation(ADD_WORD);
 
   const {
     register,
@@ -57,7 +66,13 @@ const LanguageScreen = () => {
     reset,
     formState: { errors },
   } = useForm<Inputs>();
-  const onSubmit: SubmitHandler<Inputs> = (data) => console.log(data);
+  const onSubmit: SubmitHandler<Inputs> = async (data) => {
+    console.log(data);
+
+    await addWord({
+      variables: { userId: ctx.id, from: data.from, to: data.to },
+    });
+  };
 
   return (
     <div className="language-screen">
