@@ -6,6 +6,7 @@ const typeDefs = gql`
     getUser(id: ID!): User
     isUserAuth: User
     loginUser(email: String!, password: String): CreateUserResponse!
+    getLanguageObj(userId: ID!): LanguageObject
   }
   type Mutation {
     createUser(
@@ -51,6 +52,24 @@ const typeDefs = gql`
   type MessageResponse {
     status: Boolean!
     message: String!
+  }
+  type FlashCard {
+    from: String
+    fromLang: String
+    to: String
+    toLang: String
+    iCan: Boolean
+  }
+
+  type DictionaryWord {
+    from: String
+    to: String
+  }
+
+  type LanguageObject {
+    userId: ID
+    dictionary: [DictionaryWord]
+    flashcards: [FlashCard]
   }
 `;
 

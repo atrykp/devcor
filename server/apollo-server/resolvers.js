@@ -57,6 +57,19 @@ module.exports = {
         language: user.language,
       };
     },
+    getLanguageObj: async (_, { userId }, ctx) => {
+      if (!ctx.req.isLogged)
+        return { status: false, message: "sorry something went wrong" };
+      const languageObject = await Language.findOne({ userId });
+
+      if (!languageObject) {
+        const newLangObj = await Language.create({
+          userId,
+          dictionary: [],
+          flashcards: [],
+        });
+      }
+    },
   },
   Mutation: {
     createUser: async (_, { name, email, password }, ctx) => {

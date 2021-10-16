@@ -1,4 +1,4 @@
-import { from, gql, useMutation } from "@apollo/client";
+import { from, gql, useMutation, useQuery } from "@apollo/client";
 import { useContext, useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import Button, { MenuButton } from "../../components/Button/Button";
@@ -48,6 +48,24 @@ const ADD_WORD = gql`
     }
   }
 `;
+const GET_LANGUAGE_OBJ = gql`
+  query GetLanguageObj($userId: ID!) {
+    getLanguageObj(userId: $userId) {
+      userId
+      dictionary {
+        from
+        to
+      }
+      flashcards {
+        from
+        fromLang
+        to
+        toLang
+        iCan
+      }
+    }
+  }
+`;
 type Inputs = {
   to: string;
   from: string;
@@ -58,7 +76,11 @@ const LanguageScreen = () => {
   const [isAddWord, setIsAddWord] = useState(false);
   useAuth("protect");
   const ctx = useContext(UserCtx);
-  const [addWord] = useMutation(ADD_WORD);
+  const { loading, error, data } = useQuery(GET_LANGUAGE_OBJ, {
+    variables: { userId: ctx.id },
+  });
+  // const [addWord] = useMutation(ADD_WORD);
+  console.log(data);
 
   const {
     register,
@@ -69,9 +91,9 @@ const LanguageScreen = () => {
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     console.log(data);
 
-    await addWord({
-      variables: { userId: ctx.id, from: data.from, to: data.to },
-    });
+    // await addWord({
+    //   variables: { userId: ctx.id, from: data.from, to: data.to },
+    // });
   };
 
   return (

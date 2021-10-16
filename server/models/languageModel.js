@@ -8,20 +8,17 @@ const languageSchema = new Schema({
     required: true,
     unique: true,
   },
-  dictionary: {
-    words: [{ from: String, to: String }],
-  },
-  flashcards: {
-    list: [
-      {
-        from: String,
-        fromLang: String,
-        to: String,
-        toLang: String,
-        iCan: Boolean,
-      },
-    ],
-  },
+  dictionary: [{ from: String, to: String }],
+
+  flashcards: [
+    {
+      from: String,
+      fromLang: String,
+      to: String,
+      toLang: String,
+      iCan: Boolean,
+    },
+  ],
 });
 
 module.exports = mongoose.model("Language", languageSchema);
