@@ -5,6 +5,7 @@ import SelectLanguage from "../SelectLanguage/SelectLanguage";
 
 import "./LanguageBar.scss";
 import { UserCtx } from "../../context/UserContext";
+import { useNotificationBar } from "../../hooks/useNotificationBar";
 
 const options = [
   { value: "english", label: "English" },
@@ -24,6 +25,7 @@ const NATIVE = "native";
 
 const LanguageBar = () => {
   const ctx = useContext(UserCtx);
+  const { showNotification } = useNotificationBar();
 
   const {
     id,
@@ -39,7 +41,7 @@ const LanguageBar = () => {
 
   useEffect(() => {
     if (data?.updateUserLanguage?.status) {
-      console.log(data.updateUserLanguage.message);
+      showNotification("Language changed", "done");
     }
   }, [data]);
 

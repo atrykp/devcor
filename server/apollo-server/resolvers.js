@@ -60,7 +60,7 @@ module.exports = {
     getLanguageObj: async (_, { userId }, ctx) => {
       if (!ctx.req.isLogged)
         return { status: false, message: "sorry something went wrong" };
-      const languageObject = await Language.findOne({ userId });
+      const languageObject = await Language.findOne({ userId }).select("-_id");
 
       if (!languageObject) {
         const newLangObj = await Language.create({
@@ -68,7 +68,10 @@ module.exports = {
           dictionary: [],
           flashcards: [],
         });
+        return { userId, dictionary: [], flashcards: [] };
       }
+      const { dictionary, flashcards } = languageObject;
+      return { userId, dictionary, flashcards };
     },
   },
   Mutation: {
@@ -140,11 +143,14 @@ module.exports = {
       if (!ctx.req.isLogged)
         return { status: false, message: "sorry something went wrong" };
 
-      const languageObj = await Language.findOneAndUpdate(
-        { userId },
-        dictionary.words.push({ from, to }),
-        { new: true }
-      );
+      const languageObj = await Language.findOne({ userId });
+      languageObj.dictionary.push({ from, to });
+      const changedLangObj = await languageObj.save();
+      if (changedLangObj)
+        return {
+          status: true,
+          message: "word added",
+        };
     },
   },
 };
