@@ -1,21 +1,29 @@
 import "./WordElement.scss";
 
-const WordElement = () => {
+interface IWordElement {
+  fromLang: string;
+  toLang: string;
+  from: string;
+  to: string;
+  id: string;
+}
+
+const WordElement = ({ fromLang, toLang, from, to, id }: IWordElement) => {
   return (
     <div className="word-element">
       <div className="word-element__translation">
         <div className="word-element__from">
-          <p>english</p>
-          <p>hello</p>
+          <p className="word-element__translation-language">english</p>
+          <p className="word-element__translation-word">hello</p>
         </div>
         <div className="word-element__to">
-          <p>polish</p>
-          <p>witaj</p>
+          <p className="word-element__translation-language">polish</p>
+          <p className="word-element__translation-word">witaj</p>
         </div>
       </div>
       <div className="word-element__buttons">
-        <button>edit</button>
-        <button>remove</button>
+        <i className="fas fa-edit"></i>
+        <i className="fas fa-trash-alt"></i>
       </div>
     </div>
   );

@@ -44,8 +44,20 @@ import "./LanguageScreen.scss";
 //   }
 // `;
 const ADD_WORD = gql`
-  mutation addWord($userId: ID!, $from: String, $to: String) {
-    addWord(userId: $userId, from: $from, to: $to) {
+  mutation addWord(
+    $userId: ID!
+    $from: String
+    $to: String
+    $fromLang: String
+    $toLang: String
+  ) {
+    addWord(
+      userId: $userId
+      from: $from
+      to: $to
+      fromLang: $fromLang
+      toLang: $toLang
+    ) {
       status
       message
     }
@@ -56,8 +68,11 @@ const GET_LANGUAGE_OBJ = gql`
     getLanguageObj(userId: $userId) {
       userId
       dictionary {
+        fromLang
+        toLang
         from
         to
+        id
       }
       flashcards {
         from
@@ -85,6 +100,7 @@ const LanguageScreen = () => {
   const { loading, error, data } = useQuery(GET_LANGUAGE_OBJ, {
     variables: { userId: ctx.id },
   });
+
   const [addWord, { data: addWordResponse }] = useMutation(ADD_WORD);
 
   const {
@@ -96,7 +112,13 @@ const LanguageScreen = () => {
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     showNotification("Adding word", "pending");
     const { data: saveResult } = await addWord({
-      variables: { userId: ctx.id, from: data.from, to: data.to },
+      variables: {
+        userId: ctx.id,
+        from: data.from,
+        to: data.to,
+        fromLang: ctx.language.learn,
+        toLang: ctx.language.native,
+      },
     });
     if (!saveResult.addWord.status)
       return showNotification(saveResult.addWord.message, "error");
@@ -156,9 +178,7 @@ const LanguageScreen = () => {
             </div>
           </TopBar>
           <div className="language-screen__dictionary">
-            <WordsList>
-              <WordElement />
-            </WordsList>
+            {/* <WordsList></WordsList> */}
           </div>
         </LanguageContainer>
       </Card>

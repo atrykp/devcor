@@ -139,12 +139,12 @@ module.exports = {
       if (!data) return { status: false, message: "can't change language" };
       return { status: true, message: "user language updated" };
     },
-    addWord: async (_, { userId, from, to }, ctx) => {
+    addWord: async (_, { userId, from, to, fromLang, toLang }, ctx) => {
       if (!ctx.req.isLogged)
         return { status: false, message: "sorry something went wrong" };
 
       const languageObj = await Language.findOne({ userId });
-      languageObj.dictionary.push({ from, to });
+      languageObj.dictionary.push({ from, to, fromLang, toLang });
       const changedLangObj = await languageObj.save();
 
       if (!changedLangObj)

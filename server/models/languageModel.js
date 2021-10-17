@@ -8,7 +8,7 @@ const languageSchema = new Schema({
     required: true,
     unique: true,
   },
-  dictionary: [{ from: String, to: String }],
+  dictionary: [{ from: String, to: String, fromLang: String, toLang: String }],
 
   flashcards: [
     {

@@ -24,7 +24,13 @@ const typeDefs = gql`
       learn: String
     ): UpdateUser
     updateUserLanguage(id: ID!, native: String, learn: String): MessageResponse
-    addWord(userId: ID!, from: String, to: String): MessageResponse
+    addWord(
+      userId: ID!
+      from: String
+      to: String
+      fromLang: String
+      toLang: String
+    ): MessageResponse
   }
   type User {
     id: ID!
@@ -64,6 +70,9 @@ const typeDefs = gql`
   type DictionaryWord {
     from: String
     to: String
+    fromLang: String
+    toLang: String
+    id: ID
   }
 
   type LanguageObject {

@@ -1,0 +1,38 @@
+@import "../../sass/variables";
+
+.word-element {
+  border: 1px solid $ggg-light;
+  border-radius: 5px;
+  margin: 20px auto;
+  padding: 15px 10px 60px;
+  position: relative;
+  box-shadow: $light-shadow;
+  &__translation {
+    display: flex;
+  }
+  &__translation-language {
+  }
+  &__translation-word {
+    font-size: $xlarge;
+    font-weight: bold;
+  }
+  &__from {
+    flex: 1 1 0;
+  }
+  &__to {
+    flex: 1 1 0;
+  }
+  &__buttons {
+    position: absolute;
+    right: 20px;
+    left: 20px;
+    bottom: 5px;
+    display: flex;
+    width: 80%;
+    padding: 10px 0 5px;
+    justify-content: space-around;
+    margin: 0px auto;
+    font-size: $large;
+    border-top: 1px solid $ggg-light;
+  }
+}
