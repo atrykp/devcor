@@ -146,11 +146,16 @@ module.exports = {
       const languageObj = await Language.findOne({ userId });
       languageObj.dictionary.push({ from, to });
       const changedLangObj = await languageObj.save();
-      if (changedLangObj)
+
+      if (!changedLangObj)
         return {
-          status: true,
-          message: "word added",
+          status: false,
+          message: "cannot add a word",
         };
+      return {
+        status: true,
+        message: "Word added",
+      };
     },
   },
 };

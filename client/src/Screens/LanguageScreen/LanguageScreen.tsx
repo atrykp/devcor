@@ -11,6 +11,7 @@ import Modal from "../../components/Modal/Modal";
 import TopBar from "../../components/TopBar/TopBar";
 import { UserCtx } from "../../context/UserContext";
 import { useAuth } from "../../hooks/useAuth";
+import { useNotificationBar } from "../../hooks/useNotificationBar";
 import "./LanguageScreen.scss";
 
 // const UPDATE_USER = gql`
@@ -72,10 +73,13 @@ type Inputs = {
 };
 
 const LanguageScreen = () => {
+  useAuth("protect");
   const [isMenuList, setIsMenuList] = useState(false);
   const [isAddWord, setIsAddWord] = useState(false);
-  useAuth("protect");
+
+  const { showNotification } = useNotificationBar();
   const ctx = useContext(UserCtx);
+
   const { loading, error, data } = useQuery(GET_LANGUAGE_OBJ, {
     variables: { userId: ctx.id },
   });
@@ -88,9 +92,16 @@ const LanguageScreen = () => {
     formState: { errors },
   } = useForm<Inputs>();
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    await addWord({
+    showNotification("Adding word", "pending");
+    const { data: saveResult } = await addWord({
       variables: { userId: ctx.id, from: data.from, to: data.to },
     });
+    if (!saveResult.addWord.status)
+      return showNotification(saveResult.addWord.message, "error");
+    showNotification(saveResult.addWord.message, "done");
+    reset();
+    setIsAddWord(false);
+    setIsMenuList(false);
   };
 
   return (
