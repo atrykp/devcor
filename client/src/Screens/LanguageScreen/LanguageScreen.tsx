@@ -9,6 +9,8 @@ import LanguageBar from "../../components/LanguageBar/LanguageBar";
 import LanguageContainer from "../../components/LanguageContainer/LanguageContainer";
 import Modal from "../../components/Modal/Modal";
 import TopBar from "../../components/TopBar/TopBar";
+import WordElement from "../../components/WordElement/WordElement";
+import WordsList from "../../components/WordsLlist/WordsList";
 import { UserCtx } from "../../context/UserContext";
 import { useAuth } from "../../hooks/useAuth";
 import { useNotificationBar } from "../../hooks/useNotificationBar";
@@ -153,7 +155,11 @@ const LanguageScreen = () => {
               <MenuButton>more...</MenuButton>
             </div>
           </TopBar>
-          <div className="language-screen__dictionary"></div>
+          <div className="language-screen__dictionary">
+            <WordsList>
+              <WordElement />
+            </WordsList>
+          </div>
         </LanguageContainer>
       </Card>
       <Card>
