@@ -11,7 +11,10 @@ interface ITopBar {
 
 const TopBar = ({ children, title, moreIcon, onMore, moreText }: ITopBar) => {
   return (
-    <div className="top-bar">
+    <div
+      className="top-bar"
+      style={{ justifyContent: !moreIcon ? "flex-start" : "" }}
+    >
       {title && <p className="top-bar__header">{title}</p>}
       {moreIcon && (
         <i

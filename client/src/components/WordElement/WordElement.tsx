@@ -1,6 +1,6 @@
 import "./WordElement.scss";
 
-interface IWordElement {
+export interface IWordElement {
   fromLang: string;
   toLang: string;
   from: string;
