@@ -2,6 +2,7 @@ import { gql, useMutation, useQuery } from "@apollo/client";
 import _ from "lodash";
 import { useContext, useEffect, useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
+import { useHistory } from "react-router";
 import { MenuButton } from "../../components/Button/Button";
 
 import Card from "../../components/Card/Card";
@@ -107,6 +108,8 @@ const LanguageScreen = () => {
 
   const [addWord, { data: addWordResponse }] = useMutation(ADD_WORD);
 
+  const history = useHistory();
+
   const {
     register,
     handleSubmit,
@@ -200,7 +203,9 @@ const LanguageScreen = () => {
               <MenuButton callback={() => setIsAddWord(true)}>
                 add new word
               </MenuButton>
-              <MenuButton>more...</MenuButton>
+              <MenuButton callback={() => history.push("/language/dictionary")}>
+                more...
+              </MenuButton>
             </div>
           </TopBar>
           <div className="language-screen__dictionary">

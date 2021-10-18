@@ -7,6 +7,7 @@ import Modal from "./components/Modal/Modal";
 import NotificationBar from "./components/NotificationBar/NotificationBar";
 import { NotificationCtx } from "./context/NotificationContext";
 import AuthorizationScreen from "./Screens/AuthorizationScreen/AuthorizationScreen";
+import DictionaryScreen from "./Screens/DicitonaryScreen/DictionaryScreen";
 import LanguageScreen from "./Screens/LanguageScreen/LanguageScreen";
 import ProfileScreen from "./Screens/ProfileScreen/ProfileScreen";
 import StartPage from "./Screens/StartPage/StartPage";
@@ -30,6 +31,9 @@ function App() {
           </Route>
           <Route path="/language" exact>
             <LanguageScreen />
+          </Route>
+          <Route path="/language/dictionary" exact>
+            <DictionaryScreen />
           </Route>
           <Redirect to="/start" />
         </Switch>
