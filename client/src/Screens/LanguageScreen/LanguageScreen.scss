@@ -33,8 +33,9 @@
     position: absolute;
     right: 0;
     top: 70px;
-    background-color: $g-light;
-    box-shadow: $light-shadow;
+    background-color: white;
+    box-shadow: $xshadow;
     padding: 10px;
+    z-index: 1;
   }
 }

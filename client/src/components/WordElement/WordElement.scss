@@ -9,12 +9,19 @@
   box-shadow: $light-shadow;
   &__translation {
     display: flex;
+    flex-wrap: wrap;
   }
   &__translation-language {
   }
   &__translation-word {
     font-size: $xlarge;
     font-weight: bold;
+    &--small {
+      font-size: $normal;
+    }
+    &--xsmall {
+      font-size: $small;
+    }
   }
   &__from {
     flex: 1 1 0;

@@ -116,8 +116,8 @@ const LanguageScreen = () => {
         userId: ctx.id,
         from: data.from,
         to: data.to,
-        fromLang: ctx.language.learn,
-        toLang: ctx.language.native,
+        fromLang: ctx.language.native,
+        toLang: ctx.language.learn,
       },
     });
     if (!saveResult.addWord.status)
@@ -178,7 +178,22 @@ const LanguageScreen = () => {
             </div>
           </TopBar>
           <div className="language-screen__dictionary">
-            {/* <WordsList></WordsList> */}
+            <WordsList>
+              {!loading &&
+                data.getLanguageObj.dictionary.slice(-3).map((element: any) => {
+                  const { from, to, fromLang, toLang, id } = element;
+                  return (
+                    <WordElement
+                      key={id}
+                      from={from}
+                      to={to}
+                      fromLang={fromLang}
+                      toLang={toLang}
+                      id={id}
+                    />
+                  );
+                })}
+            </WordsList>
           </div>
         </LanguageContainer>
       </Card>
