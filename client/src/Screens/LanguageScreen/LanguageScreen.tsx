@@ -17,6 +17,7 @@ import WordElement, {
 import WordsList from "../../components/WordsLlist/WordsList";
 import { LanguageCtx } from "../../context/LanguageContext";
 import { UserCtx } from "../../context/UserContext";
+import { useAddWord } from "../../hooks/useAddWord";
 import { useAuth } from "../../hooks/useAuth";
 import { useNotificationBar } from "../../hooks/useNotificationBar";
 import "./LanguageScreen.scss";
@@ -48,73 +49,27 @@ import "./LanguageScreen.scss";
 //     }
 //   }
 // `;
-const ADD_WORD = gql`
-  mutation addWord(
-    $userId: ID!
-    $from: String
-    $to: String
-    $fromLang: String
-    $toLang: String
-  ) {
-    addWord(
-      userId: $userId
-      from: $from
-      to: $to
-      fromLang: $fromLang
-      toLang: $toLang
-    ) {
-      status
-      message
-    }
-  }
-`;
-
-type Inputs = {
-  to: string;
-  from: string;
-};
 
 const LanguageScreen = () => {
   useAuth("protect");
   const [isMenuList, setIsMenuList] = useState(false);
-  const [isAddWord, setIsAddWord] = useState(false);
+
   const [randomWord, setRandomWord] = useState<IWordElement>();
 
-  const { showNotification } = useNotificationBar();
+  const {
+    handleSubmit,
+    errors,
+    reset,
+    register,
+    onSubmit,
+    isAddWord,
+    handleAddWordModal,
+  } = useAddWord();
 
   const ctx = useContext(UserCtx);
   const langCtx = useContext(LanguageCtx);
 
-  const [addWord] = useMutation(ADD_WORD, {
-    refetchQueries: ["GetLanguageObj"],
-  });
-
   const history = useHistory();
-
-  const {
-    register,
-    handleSubmit,
-    reset,
-    formState: { errors },
-  } = useForm<Inputs>();
-  const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    showNotification("Adding word", "pending");
-    const { data: saveResult } = await addWord({
-      variables: {
-        userId: ctx.id,
-        from: data.from,
-        to: data.to,
-        fromLang: ctx.language.native,
-        toLang: ctx.language.learn,
-      },
-    });
-    if (!saveResult.addWord.status)
-      return showNotification(saveResult.addWord.message, "error");
-    showNotification(saveResult.addWord.message, "done");
-    reset();
-    setIsAddWord(false);
-    setIsMenuList(false);
-  };
 
   useEffect(() => {
     if (langCtx.userId && !randomWord) {
@@ -148,7 +103,7 @@ const LanguageScreen = () => {
               cancelTxt={"cancel"}
               cancelCallback={() => {
                 reset();
-                setIsAddWord(false);
+                handleAddWordModal(false);
               }}
               confirmCallback={() => handleSubmit(onSubmit)()}
             >
@@ -179,7 +134,12 @@ const LanguageScreen = () => {
                 isMenuList ? "language-screen__buttons--mobile" : ""
               }`}
             >
-              <MenuButton callback={() => setIsAddWord(true)}>
+              <MenuButton
+                callback={() => {
+                  setIsMenuList(false);
+                  handleAddWordModal(true);
+                }}
+              >
                 add new word
               </MenuButton>
               <MenuButton callback={() => history.push("/language/dictionary")}>
