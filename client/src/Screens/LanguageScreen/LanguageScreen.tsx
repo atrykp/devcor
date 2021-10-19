@@ -1,4 +1,4 @@
-import { gql, useMutation, useQuery } from "@apollo/client";
+import { gql, useMutation } from "@apollo/client";
 import _ from "lodash";
 import { useContext, useEffect, useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
@@ -15,6 +15,7 @@ import WordElement, {
   IWordElement,
 } from "../../components/WordElement/WordElement";
 import WordsList from "../../components/WordsLlist/WordsList";
+import { LanguageCtx } from "../../context/LanguageContext";
 import { UserCtx } from "../../context/UserContext";
 import { useAuth } from "../../hooks/useAuth";
 import { useNotificationBar } from "../../hooks/useNotificationBar";
@@ -67,27 +68,7 @@ const ADD_WORD = gql`
     }
   }
 `;
-const GET_LANGUAGE_OBJ = gql`
-  query GetLanguageObj($userId: ID!) {
-    getLanguageObj(userId: $userId) {
-      userId
-      dictionary {
-        fromLang
-        toLang
-        from
-        to
-        id
-      }
-      flashcards {
-        from
-        fromLang
-        to
-        toLang
-        iCan
-      }
-    }
-  }
-`;
+
 type Inputs = {
   to: string;
   from: string;
@@ -100,13 +81,13 @@ const LanguageScreen = () => {
   const [randomWord, setRandomWord] = useState<IWordElement>();
 
   const { showNotification } = useNotificationBar();
+
   const ctx = useContext(UserCtx);
+  const langCtx = useContext(LanguageCtx);
 
-  const { loading, error, data } = useQuery(GET_LANGUAGE_OBJ, {
-    variables: { userId: ctx.id },
+  const [addWord] = useMutation(ADD_WORD, {
+    refetchQueries: ["GetLanguageObj"],
   });
-
-  const [addWord, { data: addWordResponse }] = useMutation(ADD_WORD);
 
   const history = useHistory();
 
@@ -136,14 +117,12 @@ const LanguageScreen = () => {
   };
 
   useEffect(() => {
-    if (data && !randomWord) {
+    if (langCtx.userId && !randomWord) {
       const word =
-        data?.getLanguageObj?.dictionary[
-          _.random(0, data.getLanguageObj.dictionary.length)
-        ];
+        langCtx.dictionary[_.random(0, langCtx.dictionary.length - 1)];
       setRandomWord(word);
     }
-  }, [data, randomWord]);
+  }, [randomWord, langCtx]);
 
   return (
     <div className="language-screen">
@@ -210,22 +189,20 @@ const LanguageScreen = () => {
           </TopBar>
           <div className="language-screen__dictionary">
             <WordsList>
-              {!loading &&
-                data.getLanguageObj.dictionary
-                  .slice(-3)
-                  .map((element: IWordElement) => {
-                    const { from, to, fromLang, toLang, id } = element;
-                    return (
-                      <WordElement
-                        key={id}
-                        from={from}
-                        to={to}
-                        fromLang={fromLang}
-                        toLang={toLang}
-                        id={id}
-                      />
-                    );
-                  })}
+              {langCtx.userId &&
+                langCtx.dictionary.slice(-3).map((element: IWordElement) => {
+                  const { from, to, fromLang, toLang, id } = element;
+                  return (
+                    <WordElement
+                      key={id}
+                      from={from}
+                      to={to}
+                      fromLang={fromLang}
+                      toLang={toLang}
+                      id={id}
+                    />
+                  );
+                })}
             </WordsList>
           </div>
         </LanguageContainer>

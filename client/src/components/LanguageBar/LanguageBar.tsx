@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect } from "react";
 import { gql, useMutation } from "@apollo/client";
 
 import SelectLanguage from "../SelectLanguage/SelectLanguage";
@@ -32,12 +32,9 @@ const LanguageBar = () => {
     language: { learn, native },
   } = ctx;
 
-  const [updateUserLanguage, { loading, error, data }] = useMutation(
-    UPDATE_USER_LANGUAGE,
-    {
-      refetchQueries: ["IsUserAuth"],
-    }
-  );
+  const [updateUserLanguage, { data }] = useMutation(UPDATE_USER_LANGUAGE, {
+    refetchQueries: ["IsUserAuth"],
+  });
 
   useEffect(() => {
     if (data?.updateUserLanguage?.status) {
