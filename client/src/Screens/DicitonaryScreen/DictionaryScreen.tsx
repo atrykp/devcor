@@ -17,6 +17,7 @@ const DictionaryScreen = () => {
   useAuth("protect");
   const langCtx = useContext(LanguageCtx);
   const { isAddWord, handleAddWordModal, ctx, ...config } = useAddWord();
+
   return (
     <div className="dictionary-screen">
       <p className="dictionary-screen__title">Dictionary</p>

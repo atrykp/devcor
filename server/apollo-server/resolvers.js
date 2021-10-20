@@ -157,5 +157,21 @@ module.exports = {
         message: "Word added",
       };
     },
+    removeWord: async (_, { wordId }, ctx) => {
+      if (!ctx.req.isLogged)
+        return { status: false, message: "sorry something went wrong" };
+      const languageObj = await Language.findOne({ userId: ctx.req.userId });
+      if (!languageObj)
+        return { status: false, message: "sorry something went wrong" };
+      try {
+        languageObj.dictionary = languageObj.dictionary.filter(
+          (element) => element._id.toString() !== wordId
+        );
+        await languageObj.save();
+        return { status: true, message: "word deleted" };
+      } catch (error) {
+        return { status: false, message: error.message };
+      }
+    },
   },
 };

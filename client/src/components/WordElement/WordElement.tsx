@@ -1,3 +1,4 @@
+import { useMutation, gql } from "@apollo/client";
 import "./WordElement.scss";
 
 export interface IWordElement {
@@ -8,9 +9,21 @@ export interface IWordElement {
   id: string;
 }
 
+const REMOVE_WORD = gql`
+  mutation RemoveWord($wordId: ID!) {
+    removeWord(wordId: $wordId) {
+      status
+      message
+    }
+  }
+`;
+
 const WordElement = ({ fromLang, toLang, from, to, id }: IWordElement) => {
   const editWord = (id: string) => {};
-  const removeWord = (id: string) => {};
+  const [removeWord] = useMutation(REMOVE_WORD, {
+    refetchQueries: ["GetLanguageObj"],
+  });
+
   return (
     <div className="word-element">
       <div className="word-element__translation">
@@ -45,7 +58,16 @@ const WordElement = ({ fromLang, toLang, from, to, id }: IWordElement) => {
       </div>
       <div className="word-element__buttons">
         <i className="fas fa-edit" onClick={() => editWord(id)}></i>
-        <i className="fas fa-trash-alt" onClick={() => removeWord(id)}></i>
+        <i
+          className="fas fa-trash-alt"
+          onClick={() =>
+            removeWord({
+              variables: {
+                wordId: id,
+              },
+            })
+          }
+        ></i>
       </div>
     </div>
   );
