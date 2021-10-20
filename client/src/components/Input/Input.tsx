@@ -4,6 +4,7 @@ import "./Input.scss";
 interface IInput {
   styles?: string;
   placeholder?: string;
+  defaultValue?: string;
 }
 
 const Input = React.forwardRef<HTMLInputElement, IInput>(

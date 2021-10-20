@@ -173,5 +173,23 @@ module.exports = {
         return { status: false, message: error.message };
       }
     },
+    editWord: async (_, { wordId, from, to }, ctx) => {
+      if (!ctx.req.isLogged)
+        return { status: false, message: "sorry something went wrong" };
+      const languageObj = await Language.findOne({ userId: ctx.req.userId });
+      if (!languageObj)
+        return { status: false, message: "sorry something went wrong" };
+      try {
+        languageObj.dictionary = languageObj.dictionary.map((element) => {
+          if (element._id.toString() !== wordId) return element;
+          const newElement = { ...element, to, from };
+          return newElement;
+        });
+        await languageObj.save();
+        return { status: true, message: "word edited" };
+      } catch (error) {
+        return { status: false, message: error.message };
+      }
+    },
   },
 };
