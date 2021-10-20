@@ -1,28 +1,22 @@
 import { useContext } from "react";
+
+import AddWordModal from "../../components/AddWordModal/AddWordModal";
 import { MenuButton } from "../../components/Button/Button";
-import Input from "../../components/Input/Input";
-import Modal from "../../components/Modal/Modal";
 import WordElement, {
   IWordElement,
 } from "../../components/WordElement/WordElement";
+
 import { LanguageCtx } from "../../context/LanguageContext";
+
 import { useAddWord } from "../../hooks/useAddWord";
 import { useAuth } from "../../hooks/useAuth";
+
 import "./DictionaryScreen.scss";
 
 const DictionaryScreen = () => {
   useAuth("protect");
   const langCtx = useContext(LanguageCtx);
-  const {
-    handleSubmit,
-    errors,
-    reset,
-    register,
-    onSubmit,
-    isAddWord,
-    handleAddWordModal,
-    ctx,
-  } = useAddWord();
+  const { isAddWord, handleAddWordModal, ctx, ...config } = useAddWord();
   return (
     <div className="dictionary-screen">
       <p className="dictionary-screen__title">Dictionary</p>
@@ -47,31 +41,11 @@ const DictionaryScreen = () => {
         )}
       </div>
       {isAddWord && (
-        <Modal
-          title={"Add Word"}
-          confirmTxt={"save"}
-          cancelTxt={"cancel"}
-          cancelCallback={() => {
-            reset();
-            handleAddWordModal(false);
-          }}
-          confirmCallback={() => handleSubmit(onSubmit)()}
-        >
-          <div className="modal__inputs">
-            <form onSubmit={handleSubmit(onSubmit)}>
-              <Input
-                styles={errors?.to ? "input--error" : ""}
-                placeholder={`${ctx.language.learn}`}
-                {...register("to", { required: true })}
-              />
-              <Input
-                styles={errors?.from ? "input--error" : ""}
-                placeholder={`${ctx.language.native}`}
-                {...register("from", { required: true })}
-              />
-            </form>
-          </div>
-        </Modal>
+        <AddWordModal
+          ctx={ctx}
+          handleAddWordModal={handleAddWordModal}
+          {...config}
+        />
       )}
     </div>
   );
