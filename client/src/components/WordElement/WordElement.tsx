@@ -1,5 +1,6 @@
 import { useMutation, gql } from "@apollo/client";
-import { useState } from "react";
+import _ from "lodash";
+import { useRef, useState } from "react";
 import Button from "../Button/Button";
 import Input from "../Input/Input";
 import "./WordElement.scss";
@@ -20,27 +21,51 @@ const REMOVE_WORD = gql`
     }
   }
 `;
+const EDIT_WORD = gql`
+  mutation EditWord($wordId: ID!, $from: String, $to: String) {
+    editWord(wordId: $wordId, from: $from, to: $to) {
+      status
+      message
+    }
+  }
+`;
 
 const WordElement = ({ fromLang, toLang, from, to, id }: IWordElement) => {
   const [isEdit, setIsEdit] = useState(false);
-  const editWord = (id: string) => {};
   const [removeWord] = useMutation(REMOVE_WORD, {
     refetchQueries: ["GetLanguageObj"],
   });
+  const [editWord] = useMutation(EDIT_WORD, {
+    refetchQueries: ["GetLanguageObj"],
+  });
+  const fromRef = useRef<HTMLInputElement>(null);
+  const toRef = useRef<HTMLInputElement>(null);
+
+  const onEditWord = async () => {
+    const inputsValues = {
+      from: fromRef?.current?.value,
+      to: toRef?.current?.value,
+    };
+    const editObj = _.pickBy(inputsValues, _.identity);
+    console.log({ ...editObj, wordId: id });
+    await editWord({ variables: { ...editObj, wordId: id } });
+  };
 
   return (
     <div className="word-element">
       {isEdit ? (
         <>
           <h1>edit mode</h1>
-          <Input defaultValue={from} />
-          <Input defaultValue={to} />
+          <Input defaultValue={from} ref={fromRef} />
+          <Input defaultValue={to} ref={toRef} />
+          <Button callback={onEditWord}>edit</Button>
           <Button
             callback={() => {
               setIsEdit(false);
             }}
+            styles="button--secondary"
           >
-            edit
+            cancel
           </Button>
         </>
       ) : (

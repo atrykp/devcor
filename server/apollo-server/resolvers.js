@@ -173,7 +173,7 @@ module.exports = {
         return { status: false, message: error.message };
       }
     },
-    editWord: async (_, { wordId, from, to }, ctx) => {
+    editWord: async (_, { from, to, wordId }, ctx) => {
       if (!ctx.req.isLogged)
         return { status: false, message: "sorry something went wrong" };
       const languageObj = await Language.findOne({ userId: ctx.req.userId });
@@ -182,8 +182,9 @@ module.exports = {
       try {
         languageObj.dictionary = languageObj.dictionary.map((element) => {
           if (element._id.toString() !== wordId) return element;
-          const newElement = { ...element, to, from };
-          return newElement;
+          if (from) element.from = from;
+          if (to) element.to = to;
+          return element;
         });
         await languageObj.save();
         return { status: true, message: "word edited" };
