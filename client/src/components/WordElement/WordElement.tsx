@@ -2,6 +2,7 @@ import { useMutation, gql } from "@apollo/client";
 import _ from "lodash";
 import { useRef, useState } from "react";
 import Button from "../Button/Button";
+import EditWordElement from "../EditWordElement/EditWordElement";
 import Input from "../Input/Input";
 import "./WordElement.scss";
 
@@ -38,36 +39,26 @@ const WordElement = ({ fromLang, toLang, from, to, id }: IWordElement) => {
   const [editWord] = useMutation(EDIT_WORD, {
     refetchQueries: ["GetLanguageObj"],
   });
-  const fromRef = useRef<HTMLInputElement>(null);
-  const toRef = useRef<HTMLInputElement>(null);
 
-  const onEditWord = async () => {
+  const onEditWord = async (fromVal: string, toVal: string) => {
     const inputsValues = {
-      from: fromRef?.current?.value,
-      to: toRef?.current?.value,
+      from: fromVal,
+      to: toVal,
     };
     const editObj = _.pickBy(inputsValues, _.identity);
-    console.log({ ...editObj, wordId: id });
     await editWord({ variables: { ...editObj, wordId: id } });
   };
 
+  const closeEdit = () => setIsEdit(false);
   return (
     <div className="word-element">
       {isEdit ? (
-        <>
-          <h1>edit mode</h1>
-          <Input defaultValue={from} ref={fromRef} />
-          <Input defaultValue={to} ref={toRef} />
-          <Button callback={onEditWord}>edit</Button>
-          <Button
-            callback={() => {
-              setIsEdit(false);
-            }}
-            styles="button--secondary"
-          >
-            cancel
-          </Button>
-        </>
+        <EditWordElement
+          from={from}
+          to={to}
+          onEditWord={onEditWord}
+          closeEdit={closeEdit}
+        />
       ) : (
         <>
           <div className="word-element__translation">
