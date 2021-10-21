@@ -4,7 +4,7 @@ import Button from "../Button/Button";
 import "./Modal.scss";
 
 interface IModal {
-  children: React.ReactNode;
+  children?: React.ReactNode;
   title?: string;
   confirmCallback?: () => void;
   cancelCallback?: () => void;

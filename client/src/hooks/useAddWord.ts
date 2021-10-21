@@ -59,7 +59,6 @@ export const useAddWord = () => {
     showNotification(saveResult.addWord.message, "done");
     reset();
     setIsAddWord(false);
-    // setIsMenuList(false);
   };
 
   const handleAddWordModal = (value: boolean) => setIsAddWord(value);
