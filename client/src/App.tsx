@@ -9,6 +9,7 @@ import AuthorizationScreen from "./Screens/AuthorizationScreen/AuthorizationScre
 import DictionaryScreen from "./Screens/DicitonaryScreen/DictionaryScreen";
 import LanguageScreen from "./Screens/LanguageScreen/LanguageScreen";
 import ProfileScreen from "./Screens/ProfileScreen/ProfileScreen";
+import ScanTextScreen from "./Screens/ScanTextScreen/ScanTextScreen";
 import StartPage from "./Screens/StartPage/StartPage";
 
 function App() {
@@ -33,6 +34,9 @@ function App() {
           </Route>
           <Route path="/language/dictionary" exact>
             <DictionaryScreen />
+          </Route>
+          <Route path="/language/scanText" exact>
+            <ScanTextScreen />
           </Route>
           <Redirect to="/start" />
         </Switch>

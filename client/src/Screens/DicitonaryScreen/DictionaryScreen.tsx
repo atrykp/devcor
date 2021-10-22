@@ -1,4 +1,5 @@
 import { useContext } from "react";
+import { useHistory } from "react-router";
 
 import AddWordModal from "../../components/AddWordModal/AddWordModal";
 import { MenuButton } from "../../components/Button/Button";
@@ -17,12 +18,15 @@ const DictionaryScreen = () => {
   useAuth("protect");
   const langCtx = useContext(LanguageCtx);
   const { isAddWord, handleAddWordModal, ctx, ...config } = useAddWord();
+  const history = useHistory();
 
   return (
     <div className="dictionary-screen">
       <p className="dictionary-screen__title">Dictionary</p>
       <div className="dictionary-screen__buttons">
-        <MenuButton>Scan text</MenuButton>
+        <MenuButton callback={() => history.push("/language/scanText")}>
+          Scan text
+        </MenuButton>
         <MenuButton>Search</MenuButton>
         <MenuButton
           callback={() => {
