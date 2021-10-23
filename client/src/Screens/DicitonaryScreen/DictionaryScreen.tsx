@@ -3,6 +3,7 @@ import { useHistory } from "react-router";
 
 import AddWordModal from "../../components/AddWordModal/AddWordModal";
 import { MenuButton } from "../../components/Button/Button";
+import IconButton from "../../components/IconButton/IconButton";
 import WordElement, {
   IWordElement,
 } from "../../components/WordElement/WordElement";
@@ -28,13 +29,14 @@ const DictionaryScreen = () => {
           Scan text
         </MenuButton>
         <MenuButton>Search</MenuButton>
-        <MenuButton
+        <IconButton
           callback={() => {
             handleAddWordModal(true);
           }}
+          styles="button--round dictionary-screen__button--add"
         >
-          add
-        </MenuButton>
+          <i className="fas fa-plus"></i>
+        </IconButton>
       </div>
       <div className="dictionary-screen__words">
         {langCtx.dictionary.length > 0 ? (

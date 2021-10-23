@@ -2,7 +2,7 @@ import React from "react";
 import "./IconButton.scss";
 
 interface IIconButton {
-  children?: string;
+  children?: React.ReactNode;
   label?: string;
   icon?: string;
   callback?(): void;
@@ -17,8 +17,8 @@ const IconButton = ({
   styles,
 }: IIconButton) => {
   return (
-    <div className="icon-button" onClick={() => callback?.()}>
-      <p className={`icon-button__text ${styles || ""}`}>{children}</p>
+    <div className={`icon-button ${styles || ""}`} onClick={() => callback?.()}>
+      <p className={`icon-button__text`}>{children}</p>
       {icon && (
         <div
           style={{ backgroundImage: `url(${icon || ""})` }}

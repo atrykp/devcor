@@ -21,4 +21,10 @@
     justify-content: center;
     column-gap: 20px;
   }
+  &__button--add {
+    position: absolute;
+    background-color: $accent;
+    bottom: 18vh;
+    right: 10px;
+  }
 }
