@@ -4,18 +4,26 @@ import "./ScanTextScreen.scss";
 const ScanTextScreen = () => {
   return (
     <div className="scan-text-screen">
-      <p className="scan-text-screen__title">Scan text screen</p>
+      <p className="scan-text-screen__title">Scan text</p>
       <div className="scan-text-screen__top-bar">
-        <Button styles="button--secondary">Show ignore list</Button>
+        <Button styles="button--secondary scan-text-screen__button-ignore">
+          Show ignore list
+        </Button>
       </div>
       <textarea className="scan-text-screen__text-area"></textarea>
-      <input type="checkbox" name="ignore my words" id="ignoreList" />
-      <label htmlFor="ignoreList">Ignore words from my ignore list</label>
-      <input type="checkbox" name="ignore my words" id="wordsList" />
-      <label htmlFor="wordsList">Ignore words from my list</label>
+
+      <label htmlFor="ignoreList">
+        <input type="checkbox" name="ignore my words" id="ignoreList" />
+        Ignore words from my ignore list
+      </label>
+
+      <label htmlFor="wordsList">
+        <input type="checkbox" name="ignore my words" id="wordsList" />
+        Ignore words from my list
+      </label>
       <button>set min length</button>
 
-      <Button>Scan</Button>
+      <Button styles="scan-text-screen__scan-btn">Scan</Button>
     </div>
   );
 };
