@@ -50,4 +50,9 @@
     gap: 5px;
     justify-items: center;
   }
+  &__error {
+    width: 90%;
+    margin: 0 auto;
+    color: $error;
+  }
 }
