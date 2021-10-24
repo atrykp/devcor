@@ -19,6 +19,7 @@ const languageSchema = new Schema({
       iCan: Boolean,
     },
   ],
+  ignoreWords: [String],
 });
 
 module.exports = mongoose.model("Language", languageSchema);

@@ -7,12 +7,14 @@ export interface ILanguageData {
   userId: string;
   dictionary: IWordElement[];
   flashcards: [];
+  ignoreWords: string[];
 }
 
 const emptyLanguage: ILanguageData = {
   userId: "",
   dictionary: [],
   flashcards: [],
+  ignoreWords: [],
 };
 
 const GET_LANGUAGE_OBJ = gql`
@@ -33,6 +35,7 @@ const GET_LANGUAGE_OBJ = gql`
         toLang
         iCan
       }
+      ignoreWords
     }
   }
 `;
@@ -53,9 +56,9 @@ const LanguageContext = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     if (data) {
       const {
-        getLanguageObj: { userId, dictionary, flashcards },
+        getLanguageObj: { userId, dictionary, flashcards, ignoreWords },
       } = data;
-      setLanguage({ userId, dictionary, flashcards });
+      setLanguage({ userId, dictionary, flashcards, ignoreWords });
     }
   }, [data]);
 

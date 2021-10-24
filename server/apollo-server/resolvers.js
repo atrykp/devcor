@@ -67,11 +67,12 @@ module.exports = {
           userId,
           dictionary: [],
           flashcards: [],
+          ignoreWords: [],
         });
-        return { userId, dictionary: [], flashcards: [] };
+        return { userId, dictionary: [], flashcards: [], ignoreWords: [] };
       }
-      const { dictionary, flashcards } = languageObject;
-      return { userId, dictionary, flashcards };
+      const { dictionary, flashcards, ignoreWords } = languageObject;
+      return { userId, dictionary, flashcards, ignoreWords };
     },
   },
   Mutation: {

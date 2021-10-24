@@ -1,12 +1,14 @@
 import { toInteger } from "lodash";
-import { useEffect, useRef, useState } from "react";
+import { useContext, useRef, useState } from "react";
 import Button from "../../components/Button/Button";
+import { LanguageCtx } from "../../context/LanguageContext";
 import "./ScanTextScreen.scss";
 
 const IGNORE_LIST = "ignoreList";
 const WORDS_LIST = "wordsList";
 
 const ScanTextScreen = () => {
+  const langCtx = useContext(LanguageCtx);
   const [isError, setIsError] = useState(false);
   const [rangeValue, setRangeValue] = useState(3);
   const [checkBoxesValues, setCheckBoxesValues] = useState({
@@ -15,7 +17,6 @@ const ScanTextScreen = () => {
   });
   const rangeRef = useRef<HTMLInputElement>(null!);
   const textAreaRef = useRef<HTMLTextAreaElement>(null!);
-
   const setCheckboxValue = (key: "ignoreList" | "wordsList") => {
     setCheckBoxesValues((prevValue) => ({
       ...prevValue,

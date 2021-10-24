@@ -81,6 +81,7 @@ const typeDefs = gql`
     userId: ID
     dictionary: [DictionaryWord]
     flashcards: [FlashCard]
+    ignoreWords: [String]
   }
 `;
 
