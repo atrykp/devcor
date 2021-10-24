@@ -19,6 +19,11 @@
     width: 90%;
     height: 35vh;
     margin: 0 auto;
+    padding: 10px;
+    font-size: $normal;
+    border-radius: 5px;
+    resize: none;
+    color: $gray;
   }
   &__button-ignore {
     max-width: none;
@@ -28,5 +33,21 @@
     margin: 20px 0;
     align-self: flex-end;
     margin-right: 5%;
+  }
+  &__slider-input {
+    display: flex;
+    width: 90%;
+    margin: 10px auto;
+    justify-content: space-around;
+    font-size: $small;
+  }
+  &__check-boxes {
+    display: flex;
+    flex-direction: column;
+    width: 90%;
+    margin: 10px auto;
+    font-size: $small;
+    gap: 5px;
+    justify-items: center;
   }
 }
