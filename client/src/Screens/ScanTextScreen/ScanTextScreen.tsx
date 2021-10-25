@@ -20,6 +20,14 @@ const ADD_IGNORE_WORD = gql`
     }
   }
 `;
+const REMOVE_IGNORE_WORD = gql`
+  mutation RemoveIgnoreWord($word: String) {
+    removeIgnoreWord(word: $word) {
+      status
+      message
+    }
+  }
+`;
 
 const ScanTextScreen = () => {
   useAuth("protect");
@@ -33,6 +41,9 @@ const ScanTextScreen = () => {
     wordsList: false,
   });
   const [addIgnoreWord] = useMutation(ADD_IGNORE_WORD, {
+    refetchQueries: ["GetLanguageObj"],
+  });
+  const [removeIgnoreWord] = useMutation(REMOVE_IGNORE_WORD, {
     refetchQueries: ["GetLanguageObj"],
   });
   const rangeRef = useRef<HTMLInputElement>(null!);
@@ -60,6 +71,14 @@ const ScanTextScreen = () => {
     const { data } = await addIgnoreWord({
       variables: {
         word: newWord,
+      },
+    });
+  };
+  const onRemoveIgnoreWord = async (word: string) => {
+    if (!word) return;
+    const { data } = await removeIgnoreWord({
+      variables: {
+        word,
       },
     });
   };
@@ -119,7 +138,11 @@ const ScanTextScreen = () => {
       </Button>
       {isIgnoreList && (
         <Modal title="ignore list">
-          <IgnoreWord>hello</IgnoreWord>
+          {langCtx.ignoreWords.map((element: string) => (
+            <IgnoreWord key={element} onRemove={onRemoveIgnoreWord}>
+              {element}
+            </IgnoreWord>
+          ))}
           <div className="scan-text-screen__add-ignore">
             <Input styles="scan-text-screen__add-input" ref={addIgnoreRef} />
             <i className="fas fa-plus-square" onClick={onSaveIgnoreWord}></i>

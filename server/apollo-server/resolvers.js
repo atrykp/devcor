@@ -220,5 +220,34 @@ module.exports = {
         message: "Word added",
       };
     },
+    removeIgnoreWord: async (_, { word }, ctx) => {
+      if (!ctx.req.isLogged)
+        return { status: false, message: "sorry something went wrong" };
+
+      const languageObj = await Language.findOne({ userId: ctx.req.userId });
+
+      const isExisting = languageObj.ignoreWords.includes(word);
+
+      if (!isExisting)
+        return {
+          status: false,
+          message: "can not find word",
+        };
+
+      languageObj.ignoreWords = languageObj.ignoreWords.filter(
+        (element) => element !== word
+      );
+      const changedLangObj = await languageObj.save();
+
+      if (!changedLangObj)
+        return {
+          status: false,
+          message: "cannot remove a word",
+        };
+      return {
+        status: true,
+        message: "Word removed",
+      };
+    },
   },
 };
