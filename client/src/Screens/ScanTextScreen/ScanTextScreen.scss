@@ -57,8 +57,13 @@
   }
   &__add-ignore {
     display: flex;
+    align-items: center;
+  }
+  &__add-input {
+    padding-right: 15px;
   }
 }
 .fa-plus-square {
   font-size: 6rem;
+  margin-left: -10px;
 }

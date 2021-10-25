@@ -1,3 +1,4 @@
+import { useMutation, gql } from "@apollo/client";
 import { toInteger } from "lodash";
 import { useContext, useRef, useState } from "react";
 import Button from "../../components/Button/Button";
@@ -11,15 +12,28 @@ import "./ScanTextScreen.scss";
 const IGNORE_LIST = "ignoreList";
 const WORDS_LIST = "wordsList";
 
+const ADD_IGNORE_WORD = gql`
+  mutation AddIgnoreWord($word: String) {
+    addIgnoreWord(word: $word) {
+      status
+      message
+    }
+  }
+`;
+
 const ScanTextScreen = () => {
   useAuth("protect");
   const langCtx = useContext(LanguageCtx);
+  const addIgnoreRef = useRef<HTMLInputElement>(null!);
   const [isError, setIsError] = useState(false);
   const [isIgnoreList, setIsIgnoreList] = useState(false);
   const [rangeValue, setRangeValue] = useState(3);
   const [checkBoxesValues, setCheckBoxesValues] = useState({
     ignoreList: false,
     wordsList: false,
+  });
+  const [addIgnoreWord] = useMutation(ADD_IGNORE_WORD, {
+    refetchQueries: ["GetLanguageObj"],
   });
   const rangeRef = useRef<HTMLInputElement>(null!);
   const textAreaRef = useRef<HTMLTextAreaElement>(null!);
@@ -39,6 +53,15 @@ const ScanTextScreen = () => {
       text: textAreaRef.current.value,
     };
     console.log(formValues);
+  };
+  const onSaveIgnoreWord = async () => {
+    const newWord = addIgnoreRef.current.value;
+    if (!newWord) return;
+    const { data } = await addIgnoreWord({
+      variables: {
+        word: newWord,
+      },
+    });
   };
 
   return (
@@ -98,8 +121,8 @@ const ScanTextScreen = () => {
         <Modal title="ignore list">
           <IgnoreWord>hello</IgnoreWord>
           <div className="scan-text-screen__add-ignore">
-            <Input />
-            <i className="fas fa-plus-square"></i>
+            <Input styles="scan-text-screen__add-input" ref={addIgnoreRef} />
+            <i className="fas fa-plus-square" onClick={onSaveIgnoreWord}></i>
           </div>
 
           <Button

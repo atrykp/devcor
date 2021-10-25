@@ -1,7 +1,7 @@
 const User = require("../models/userModel");
 const Language = require("../models/languageModel");
 const jwt = require("jsonwebtoken");
-const { words } = require("lodash");
+
 require("dotenv").config({ path: "../.env" });
 
 const signToken = (id) => {
@@ -192,6 +192,33 @@ module.exports = {
       } catch (error) {
         return { status: false, message: error.message };
       }
+    },
+    addIgnoreWord: async (_, { word }, ctx) => {
+      if (!ctx.req.isLogged)
+        return { status: false, message: "sorry something went wrong" };
+
+      const languageObj = await Language.findOne({ userId: ctx.req.userId });
+
+      const isExisting = languageObj.ignoreWords.includes(word);
+
+      if (isExisting)
+        return {
+          status: false,
+          message: "word already exist",
+        };
+
+      languageObj.ignoreWords.push(word);
+      const changedLangObj = await languageObj.save();
+
+      if (!changedLangObj)
+        return {
+          status: false,
+          message: "cannot add a word",
+        };
+      return {
+        status: true,
+        message: "Word added",
+      };
     },
   },
 };

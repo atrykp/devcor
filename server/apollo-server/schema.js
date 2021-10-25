@@ -33,6 +33,7 @@ const typeDefs = gql`
     ): MessageResponse
     removeWord(wordId: ID!): MessageResponse
     editWord(wordId: ID!, from: String, to: String): MessageResponse
+    addIgnoreWord(word: String): MessageResponse
   }
   type User {
     id: ID!
