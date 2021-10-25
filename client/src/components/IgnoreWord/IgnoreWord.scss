@@ -1,0 +1,19 @@
+@import "../../sass/variables";
+
+.ignore-word {
+  display: flex;
+  border-radius: 5px;
+  width: 30%;
+  padding: 5px;
+  align-items: center;
+  justify-content: space-between;
+  background-color: $gray;
+  color: $g-light;
+  font-size: $normal;
+
+  &__button {
+    background-color: transparent;
+    border-style: none;
+    color: $g-light;
+  }
+}

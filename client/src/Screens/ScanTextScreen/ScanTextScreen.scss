@@ -55,4 +55,10 @@
     margin: 0 auto;
     color: $error;
   }
+  &__add-ignore {
+    display: flex;
+  }
+}
+.fa-plus-square {
+  font-size: 6rem;
 }

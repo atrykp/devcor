@@ -1,15 +1,21 @@
 import { toInteger } from "lodash";
 import { useContext, useRef, useState } from "react";
 import Button from "../../components/Button/Button";
+import IgnoreWord from "../../components/IgnoreWord/IgnoreWord";
+import Input from "../../components/Input/Input";
+import Modal from "../../components/Modal/Modal";
 import { LanguageCtx } from "../../context/LanguageContext";
+import { useAuth } from "../../hooks/useAuth";
 import "./ScanTextScreen.scss";
 
 const IGNORE_LIST = "ignoreList";
 const WORDS_LIST = "wordsList";
 
 const ScanTextScreen = () => {
+  useAuth("protect");
   const langCtx = useContext(LanguageCtx);
   const [isError, setIsError] = useState(false);
+  const [isIgnoreList, setIsIgnoreList] = useState(false);
   const [rangeValue, setRangeValue] = useState(3);
   const [checkBoxesValues, setCheckBoxesValues] = useState({
     ignoreList: false,
@@ -39,7 +45,10 @@ const ScanTextScreen = () => {
     <div className="scan-text-screen">
       <p className="scan-text-screen__title">Scan text</p>
       <div className="scan-text-screen__top-bar">
-        <Button styles="button--secondary scan-text-screen__button-ignore">
+        <Button
+          styles="button--secondary scan-text-screen__button-ignore"
+          callback={() => setIsIgnoreList(true)}
+        >
           Show ignore list
         </Button>
       </div>
@@ -85,6 +94,22 @@ const ScanTextScreen = () => {
       <Button styles="scan-text-screen__scan-btn" callback={() => onSubmit()}>
         Scan
       </Button>
+      {isIgnoreList && (
+        <Modal title="ignore list">
+          <IgnoreWord>hello</IgnoreWord>
+          <div className="scan-text-screen__add-ignore">
+            <Input />
+            <i className="fas fa-plus-square"></i>
+          </div>
+
+          <Button
+            styles="button--secondary"
+            callback={() => setIsIgnoreList(false)}
+          >
+            close
+          </Button>
+        </Modal>
+      )}
     </div>
   );
 };
