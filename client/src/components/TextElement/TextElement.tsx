@@ -1,11 +1,11 @@
-import "./IgnoreWord.scss";
+import "./TextElement.scss";
 
-interface IIgnoreWord {
+interface ITextElement {
   children: string;
   onRemove(word: string): void;
 }
 
-const IgnoreWord = ({ children, onRemove }: IIgnoreWord) => {
+const TextElement = ({ children, onRemove }: ITextElement) => {
   return (
     <div className="ignore-word">
       <p>{children}</p>
@@ -18,4 +18,4 @@ const IgnoreWord = ({ children, onRemove }: IIgnoreWord) => {
   );
 };
 
-export default IgnoreWord;
+export default TextElement;

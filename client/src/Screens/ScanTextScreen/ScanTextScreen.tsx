@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import { toInteger } from "lodash";
+import _, { toInteger } from "lodash";
 
 import Button from "../../components/Button/Button";
 import IgnoreWordModal from "../../components/IgnoreWordModal/IgnoreWordModal";
@@ -7,12 +7,16 @@ import IgnoreWordModal from "../../components/IgnoreWordModal/IgnoreWordModal";
 import { useAuth } from "../../hooks/useAuth";
 
 import "./ScanTextScreen.scss";
+import Modal from "../../components/Modal/Modal";
+import TextElement from "../../components/TextElement/TextElement";
 
 const IGNORE_LIST = "ignoreList";
 const WORDS_LIST = "wordsList";
 
 const ScanTextScreen = () => {
   useAuth("protect");
+  const [isScanned, setIsScanned] = useState(false);
+  const [scannedList, setScannedList] = useState<string[]>([]);
   const [isError, setIsError] = useState(false);
   const [isIgnoreList, setIsIgnoreList] = useState(false);
   const [rangeValue, setRangeValue] = useState(3);
@@ -38,10 +42,17 @@ const ScanTextScreen = () => {
       range: rangeValue,
       text: textAreaRef.current.value,
     };
-    console.log(formValues);
+    setIsScanned(true);
+    let wordsFromTxt = formValues.text.replace(/[^a-zA-Z ]/g, "").split(" ");
+
+    wordsFromTxt = _.uniq(wordsFromTxt)
+      .map((element) => element.toLowerCase())
+      .sort();
+    setScannedList(wordsFromTxt);
   };
 
   const closeModal = () => setIsIgnoreList(false);
+  const closeScanned = () => setIsScanned(false);
 
   return (
     <div className="scan-text-screen">
@@ -97,6 +108,21 @@ const ScanTextScreen = () => {
         Scan
       </Button>
       {isIgnoreList && <IgnoreWordModal closeModal={closeModal} />}
+      {isScanned && (
+        <Modal
+          title="scanning text"
+          cancelCallback={closeScanned}
+          cancelTxt="close"
+        >
+          <div className="scan-text-screen__words-list">
+            {scannedList.map((element: string) => (
+              <TextElement key={element} onRemove={() => console.log(element)}>
+                {element}
+              </TextElement>
+            ))}
+          </div>
+        </Modal>
+      )}
     </div>
   );
 };

@@ -2,7 +2,7 @@ import { useMutation, gql } from "@apollo/client";
 import { useContext, useRef } from "react";
 import { LanguageCtx } from "../../context/LanguageContext";
 import Button from "../Button/Button";
-import IgnoreWord from "../IgnoreWord/IgnoreWord";
+import TextElement from "../TextElement/TextElement";
 import Input from "../Input/Input";
 import Modal from "../Modal/Modal";
 import "./IgnoreWordModal.scss";
@@ -59,9 +59,9 @@ const IgnoreWordModal = ({ closeModal }: IIgnoreModal) => {
     <Modal title="ignore list">
       <div className="ignore-word-modal__list">
         {langCtx.ignoreWords.map((element: string) => (
-          <IgnoreWord key={element} onRemove={onRemoveIgnoreWord}>
+          <TextElement key={element} onRemove={onRemoveIgnoreWord}>
             {element}
-          </IgnoreWord>
+          </TextElement>
         ))}
       </div>
 

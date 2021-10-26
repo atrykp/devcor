@@ -55,4 +55,8 @@
     margin: 0 auto;
     color: $error;
   }
+  &__words-list {
+    max-height: 50vh;
+    overflow-y: scroll;
+  }
 }
