@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useContext, useRef, useState } from "react";
 import _, { toInteger } from "lodash";
 
 import Button from "../../components/Button/Button";
@@ -9,6 +9,7 @@ import { useAuth } from "../../hooks/useAuth";
 import "./ScanTextScreen.scss";
 import Modal from "../../components/Modal/Modal";
 import TextElement from "../../components/TextElement/TextElement";
+import { LanguageCtx } from "../../context/LanguageContext";
 
 const IGNORE_LIST = "ignoreList";
 const WORDS_LIST = "wordsList";
@@ -34,20 +35,44 @@ const ScanTextScreen = () => {
     }));
   };
 
+  const langCtx = useContext(LanguageCtx);
+
   const onSubmit = () => {
     if (!textAreaRef.current.value) return setIsError(true);
     if (isError) setIsError(false);
     const formValues = {
-      ...checkBoxesValues,
-      range: rangeValue,
+      filters: {
+        ...checkBoxesValues,
+        range: rangeValue,
+      },
+
       text: textAreaRef.current.value,
     };
     setIsScanned(true);
     let wordsFromTxt = formValues.text.replace(/[^a-zA-Z ]/g, "").split(" ");
-
     wordsFromTxt = _.uniq(wordsFromTxt)
       .map((element) => element.toLowerCase())
       .sort();
+
+    wordsFromTxt = wordsFromTxt.filter(
+      (element: string) => element.length >= formValues.filters.range
+    );
+
+    if (formValues.filters.ignoreList) {
+      wordsFromTxt = wordsFromTxt.filter(
+        (element: string) => !langCtx.ignoreWords.includes(element)
+      );
+    }
+    if (formValues.filters.wordsList) {
+      wordsFromTxt = wordsFromTxt.filter((element: string) => {
+        const dictionaryArr: string[] = [];
+        langCtx.dictionary.forEach((element: any) => {
+          dictionaryArr.push(element.from);
+          dictionaryArr.push(element.to);
+        });
+        return !dictionaryArr.includes(element);
+      });
+    }
     setScannedList(wordsFromTxt);
   };
 
@@ -114,13 +139,20 @@ const ScanTextScreen = () => {
           cancelCallback={closeScanned}
           cancelTxt="close"
         >
-          <div className="scan-text-screen__words-list">
-            {scannedList.map((element: string) => (
-              <TextElement key={element} onRemove={() => console.log(element)}>
-                {element}
-              </TextElement>
-            ))}
-          </div>
+          {!!scannedList.length ? (
+            <div className="scan-text-screen__words-list">
+              {scannedList.map((element: string) => (
+                <TextElement
+                  key={element}
+                  onRemove={() => console.log(element)}
+                >
+                  {element}
+                </TextElement>
+              ))}
+            </div>
+          ) : (
+            <h1>Loading...</h1>
+          )}
         </Modal>
       )}
     </div>
