@@ -1,38 +1,18 @@
-import { useMutation, gql } from "@apollo/client";
+import { useRef, useState } from "react";
 import { toInteger } from "lodash";
-import { useContext, useRef, useState } from "react";
+
 import Button from "../../components/Button/Button";
-import IgnoreWord from "../../components/IgnoreWord/IgnoreWord";
-import Input from "../../components/Input/Input";
-import Modal from "../../components/Modal/Modal";
-import { LanguageCtx } from "../../context/LanguageContext";
+import IgnoreWordModal from "../../components/IgnoreWordModal/IgnoreWordModal";
+
 import { useAuth } from "../../hooks/useAuth";
+
 import "./ScanTextScreen.scss";
 
 const IGNORE_LIST = "ignoreList";
 const WORDS_LIST = "wordsList";
 
-const ADD_IGNORE_WORD = gql`
-  mutation AddIgnoreWord($word: String) {
-    addIgnoreWord(word: $word) {
-      status
-      message
-    }
-  }
-`;
-const REMOVE_IGNORE_WORD = gql`
-  mutation RemoveIgnoreWord($word: String) {
-    removeIgnoreWord(word: $word) {
-      status
-      message
-    }
-  }
-`;
-
 const ScanTextScreen = () => {
   useAuth("protect");
-  const langCtx = useContext(LanguageCtx);
-  const addIgnoreRef = useRef<HTMLInputElement>(null!);
   const [isError, setIsError] = useState(false);
   const [isIgnoreList, setIsIgnoreList] = useState(false);
   const [rangeValue, setRangeValue] = useState(3);
@@ -40,12 +20,7 @@ const ScanTextScreen = () => {
     ignoreList: false,
     wordsList: false,
   });
-  const [addIgnoreWord] = useMutation(ADD_IGNORE_WORD, {
-    refetchQueries: ["GetLanguageObj"],
-  });
-  const [removeIgnoreWord] = useMutation(REMOVE_IGNORE_WORD, {
-    refetchQueries: ["GetLanguageObj"],
-  });
+
   const rangeRef = useRef<HTMLInputElement>(null!);
   const textAreaRef = useRef<HTMLTextAreaElement>(null!);
   const setCheckboxValue = (key: "ignoreList" | "wordsList") => {
@@ -65,23 +40,8 @@ const ScanTextScreen = () => {
     };
     console.log(formValues);
   };
-  const onSaveIgnoreWord = async () => {
-    const newWord = addIgnoreRef.current.value;
-    if (!newWord) return;
-    const { data } = await addIgnoreWord({
-      variables: {
-        word: newWord,
-      },
-    });
-  };
-  const onRemoveIgnoreWord = async (word: string) => {
-    if (!word) return;
-    const { data } = await removeIgnoreWord({
-      variables: {
-        word,
-      },
-    });
-  };
+
+  const closeModal = () => setIsIgnoreList(false);
 
   return (
     <div className="scan-text-screen">
@@ -136,26 +96,7 @@ const ScanTextScreen = () => {
       <Button styles="scan-text-screen__scan-btn" callback={() => onSubmit()}>
         Scan
       </Button>
-      {isIgnoreList && (
-        <Modal title="ignore list">
-          {langCtx.ignoreWords.map((element: string) => (
-            <IgnoreWord key={element} onRemove={onRemoveIgnoreWord}>
-              {element}
-            </IgnoreWord>
-          ))}
-          <div className="scan-text-screen__add-ignore">
-            <Input styles="scan-text-screen__add-input" ref={addIgnoreRef} />
-            <i className="fas fa-plus-square" onClick={onSaveIgnoreWord}></i>
-          </div>
-
-          <Button
-            styles="button--secondary"
-            callback={() => setIsIgnoreList(false)}
-          >
-            close
-          </Button>
-        </Modal>
-      )}
+      {isIgnoreList && <IgnoreWordModal closeModal={closeModal} />}
     </div>
   );
 };

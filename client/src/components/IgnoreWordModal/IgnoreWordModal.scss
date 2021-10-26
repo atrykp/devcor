@@ -1,0 +1,18 @@
+.ignore-word-modal {
+  &__add-ignore {
+    display: flex;
+    align-items: center;
+  }
+  &__add-input {
+    padding-right: 15px;
+  }
+  &__list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(50px, 30%));
+    gap: 10px;
+  }
+}
+.fa-plus-square {
+  font-size: 6rem;
+  margin-left: -10px;
+}
