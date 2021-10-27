@@ -31,12 +31,14 @@ const ScanTextScreen = () => {
   const [isError, setIsError] = useState(false);
   const [isIgnoreList, setIsIgnoreList] = useState(false);
   const [rangeValue, setRangeValue] = useState(3);
+  const [popularityValue, setPopularityValue] = useState(3);
   const [checkBoxesValues, setCheckBoxesValues] = useState({
     ignoreList: false,
     wordsList: false,
   });
 
   const rangeRef = useRef<HTMLInputElement>(null!);
+  const popularityRef = useRef<HTMLInputElement>(null!);
   const textAreaRef = useRef<HTMLTextAreaElement>(null!);
   const setCheckboxValue = (key: "ignoreList" | "wordsList") => {
     setCheckBoxesValues((prevValue) => ({
@@ -58,18 +60,29 @@ const ScanTextScreen = () => {
       filters: {
         ...checkBoxesValues,
         range: rangeValue,
+        popularity: popularityValue,
       },
 
       text: textAreaRef.current.value,
     };
     setIsScanned(true);
+
     let wordsFromTxt = formValues.text.replace(/[^a-zA-Z ]/g, "").split(" ");
+
+    const counts: any = {};
+    wordsFromTxt.forEach(function (element) {
+      const word = element.toLowerCase();
+      counts[word] = (counts[word] || 0) + 1;
+    });
+
     wordsFromTxt = _.uniq(wordsFromTxt)
       .map((element) => element.toLowerCase())
       .sort();
 
     wordsFromTxt = wordsFromTxt.filter(
-      (element: string) => element.length >= formValues.filters.range
+      (element: string) =>
+        element.length >= formValues.filters.range &&
+        counts[element] >= formValues.filters.popularity
     );
 
     if (formValues.filters.ignoreList) {
@@ -153,6 +166,19 @@ const ScanTextScreen = () => {
           ref={rangeRef}
         />
         <p>min. word length: {rangeValue}</p>
+      </div>
+      <div className="scan-text-screen__slider-input">
+        <input
+          type="range"
+          min="0"
+          max="20"
+          defaultValue={popularityValue}
+          onChange={() =>
+            setPopularityValue(toInteger(popularityRef.current.value))
+          }
+          ref={popularityRef}
+        />
+        <p>popularity: {popularityValue}</p>
       </div>
 
       <Button styles="scan-text-screen__scan-btn" callback={() => onSubmit()}>
