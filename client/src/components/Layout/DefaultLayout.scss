@@ -9,5 +9,6 @@
   &__footer {
     min-height: 15vh;
     background-color: $main;
+    z-index: 3;
   }
 }

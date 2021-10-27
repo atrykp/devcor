@@ -249,5 +249,13 @@ module.exports = {
         message: "Word removed",
       };
     },
+    addAndTranslateWords: async (_, { words }, ctx) => {
+      if (!ctx.req.isLogged)
+        return { status: false, message: "sorry something went wrong" };
+
+      const languageObj = await Language.findOne({ userId: ctx.req.userId });
+
+      console.log(words);
+    },
   },
 };

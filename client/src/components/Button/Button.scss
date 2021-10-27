@@ -2,13 +2,14 @@
 @import "../../sass/mixins";
 
 .button {
-  padding: 3% 10%;
+  padding: 3%;
   background-color: $main;
   color: $main-xlight;
   border-radius: 5px;
   border-style: none;
   font-size: $normal;
-  max-width: 120px;
+  max-width: 200px;
+  min-width: 100px;
   height: 45px;
   cursor: pointer;
   @include mq(xsmall) {

@@ -10,9 +10,19 @@ import "./ScanTextScreen.scss";
 import Modal from "../../components/Modal/Modal";
 import TextElement from "../../components/TextElement/TextElement";
 import { LanguageCtx } from "../../context/LanguageContext";
+import { useMutation, gql } from "@apollo/client";
 
 const IGNORE_LIST = "ignoreList";
 const WORDS_LIST = "wordsList";
+
+const ADD_AND_TRANSLATE_WORDS = gql`
+  mutation AddAndTranslateWords($words: [String]) {
+    addAndTranslateWords(words: $words) {
+      status
+      message
+    }
+  }
+`;
 
 const ScanTextScreen = () => {
   useAuth("protect");
@@ -34,6 +44,10 @@ const ScanTextScreen = () => {
       [key]: !prevValue[key],
     }));
   };
+
+  const [addAndTranslate, { data }] = useMutation(ADD_AND_TRANSLATE_WORDS, {
+    refetchQueries: ["GetLanguageObj"],
+  });
 
   const langCtx = useContext(LanguageCtx);
 
@@ -78,6 +92,18 @@ const ScanTextScreen = () => {
 
   const closeModal = () => setIsIgnoreList(false);
   const closeScanned = () => setIsScanned(false);
+  const removeWordFromList = (word: string) => {
+    setScannedList((prevValue) =>
+      prevValue.filter((element: string) => element !== word)
+    );
+  };
+  const saveAndTranslate = async () => {
+    const { data } = await addAndTranslate({
+      variables: {
+        words: scannedList,
+      },
+    });
+  };
 
   return (
     <div className="scan-text-screen">
@@ -138,13 +164,15 @@ const ScanTextScreen = () => {
           title="scanning text"
           cancelCallback={closeScanned}
           cancelTxt="close"
+          confirmTxt="save&translate"
+          confirmCallback={() => saveAndTranslate()}
         >
           {!!scannedList.length ? (
             <div className="scan-text-screen__words-list">
               {scannedList.map((element: string) => (
                 <TextElement
                   key={element}
-                  onRemove={() => console.log(element)}
+                  onRemove={() => removeWordFromList(element)}
                 >
                   {element}
                 </TextElement>

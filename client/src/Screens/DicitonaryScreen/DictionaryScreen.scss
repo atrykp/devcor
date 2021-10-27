@@ -3,6 +3,7 @@
 
 .dictionary-screen {
   flex-grow: 1;
+  position: relative;
   &__title {
     font-size: $xlarge;
     text-align: center;
@@ -20,11 +21,13 @@
     grid-template-columns: repeat(auto-fit, minmax(250px, 300px));
     justify-content: center;
     column-gap: 20px;
+    position: sticky;
   }
   &__button--add {
-    position: absolute;
+    position: fixed;
     background-color: $accent;
-    bottom: 18vh;
+    bottom: 20px;
     right: 10px;
+    z-index: 1;
   }
 }
