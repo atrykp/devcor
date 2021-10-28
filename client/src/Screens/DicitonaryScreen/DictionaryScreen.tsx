@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useHistory } from "react-router";
 import { useLazyQuery, gql } from "@apollo/client";
 
@@ -32,15 +32,21 @@ const DICTIONARY_SEARCH = gql`
 const DictionaryScreen = () => {
   useAuth("protect");
   const [isSearch, setIsSearch] = useState(false);
+  const [searchResult, setSearchResult] = useState<any[] | null>(null);
   const langCtx = useContext(LanguageCtx);
   const { isAddWord, handleAddWordModal, ctx, ...config } = useAddWord();
   const history = useHistory();
   const [searchDictionary, { data }] = useLazyQuery(DICTIONARY_SEARCH);
 
-  const onSearch = (value: string) => {
-    console.log(value);
-    const result = searchDictionary({ variables: { userQuery: value } });
+  const onSearch = async (value: string) => {
+    searchDictionary({ variables: { userQuery: value } });
   };
+
+  useEffect(() => {
+    if (data) {
+      setSearchResult(data.searchDictionary);
+    }
+  }, [data]);
 
   return (
     <div className="dictionary-screen">
@@ -49,7 +55,14 @@ const DictionaryScreen = () => {
         <MenuButton callback={() => history.push("/language/scanText")}>
           Scan text
         </MenuButton>
-        <MenuButton callback={() => setIsSearch((prevValue) => !prevValue)}>
+        <MenuButton
+          callback={() => {
+            setIsSearch((prevValue) => !prevValue);
+            if (isSearch) {
+              setSearchResult(null);
+            }
+          }}
+        >
           {isSearch ? "Close X" : "Search"}
         </MenuButton>
         <IconButton
@@ -63,13 +76,19 @@ const DictionaryScreen = () => {
       </div>
       <div className="dictionary-screen__words">
         {isSearch && <SearchInput searchCallback={onSearch} />}
-        {langCtx.dictionary.length > 0 ? (
-          langCtx.dictionary.map((element: IWordElement) => (
+        {!isSearch &&
+          (langCtx.dictionary.length > 0 ? (
+            langCtx.dictionary.map((element: IWordElement) => (
+              <WordElement {...element} key={element.id} />
+            ))
+          ) : (
+            <p>its nothing here</p>
+          ))}
+        {isSearch &&
+          searchResult &&
+          searchResult.map((element: any) => (
             <WordElement {...element} key={element.id} />
-          ))
-        ) : (
-          <p>its nothing here</p>
-        )}
+          ))}
       </div>
       {isAddWord && (
         <AddWordModal
