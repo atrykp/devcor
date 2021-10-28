@@ -74,6 +74,15 @@ module.exports = {
       const { dictionary, flashcards, ignoreWords } = languageObject;
       return { userId, dictionary, flashcards, ignoreWords };
     },
+    searchDictionary: async (_, { userQuery }, ctx) => {
+      if (!ctx.req.isLogged)
+        return { status: false, message: "sorry something went wrong" };
+      const languageObject = await Language.findOne({ userId: ctx.req.userId });
+      const result = languageObject.dictionary.filter(
+        (element) => element.from === userQuery || element.to === userQuery
+      );
+      return result;
+    },
   },
   Mutation: {
     createUser: async (_, { name, email, password }, ctx) => {

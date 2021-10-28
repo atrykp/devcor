@@ -1,5 +1,6 @@
-import { useContext, useRef, useState } from "react";
+import { useContext, useState } from "react";
 import { useHistory } from "react-router";
+import { useLazyQuery, gql } from "@apollo/client";
 
 import AddWordModal from "../../components/AddWordModal/AddWordModal";
 import { MenuButton } from "../../components/Button/Button";
@@ -16,15 +17,29 @@ import { useAuth } from "../../hooks/useAuth";
 
 import "./DictionaryScreen.scss";
 
+const DICTIONARY_SEARCH = gql`
+  query SearchDictionary($userQuery: String!) {
+    searchDictionary(userQuery: $userQuery) {
+      fromLang
+      toLang
+      from
+      to
+      id
+    }
+  }
+`;
+
 const DictionaryScreen = () => {
   useAuth("protect");
   const [isSearch, setIsSearch] = useState(false);
   const langCtx = useContext(LanguageCtx);
   const { isAddWord, handleAddWordModal, ctx, ...config } = useAddWord();
   const history = useHistory();
+  const [searchDictionary, { data }] = useLazyQuery(DICTIONARY_SEARCH);
 
   const onSearch = (value: string) => {
     console.log(value);
+    const result = searchDictionary({ variables: { userQuery: value } });
   };
 
   return (

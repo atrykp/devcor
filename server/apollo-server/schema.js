@@ -7,6 +7,7 @@ const typeDefs = gql`
     isUserAuth: User
     loginUser(email: String!, password: String): CreateUserResponse!
     getLanguageObj(userId: ID!): LanguageObject
+    searchDictionary(userQuery: String): [DictionaryWord]
   }
   type Mutation {
     createUser(
