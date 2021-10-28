@@ -67,7 +67,10 @@ const ScanTextScreen = () => {
     };
     setIsScanned(true);
 
-    let wordsFromTxt = formValues.text.replace(/[^a-zA-Z ]/g, "").split(" ");
+    let wordsFromTxt = formValues.text
+      .replace(/[^a-zA-Z ]/g, "")
+      .split(" ")
+      .map((element: string) => element.toLowerCase());
 
     const counts: any = {};
     wordsFromTxt.forEach(function (element) {
@@ -76,7 +79,7 @@ const ScanTextScreen = () => {
     });
 
     wordsFromTxt = _.uniq(wordsFromTxt)
-      .map((element) => element.toLowerCase())
+      .map((element) => element)
       .sort();
 
     wordsFromTxt = wordsFromTxt.filter(

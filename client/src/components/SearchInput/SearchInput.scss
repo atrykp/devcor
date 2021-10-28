@@ -1,0 +1,10 @@
+.search-input {
+  display: flex;
+  align-items: center;
+  &__input {
+  }
+  &__button {
+    font-size: 3rem;
+    padding: 10px;
+  }
+}

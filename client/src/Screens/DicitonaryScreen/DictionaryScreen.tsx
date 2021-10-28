@@ -1,9 +1,10 @@
-import { useContext } from "react";
+import { useContext, useRef, useState } from "react";
 import { useHistory } from "react-router";
 
 import AddWordModal from "../../components/AddWordModal/AddWordModal";
 import { MenuButton } from "../../components/Button/Button";
 import IconButton from "../../components/IconButton/IconButton";
+import SearchInput from "../../components/SearchInput/SearchInput";
 import WordElement, {
   IWordElement,
 } from "../../components/WordElement/WordElement";
@@ -17,9 +18,14 @@ import "./DictionaryScreen.scss";
 
 const DictionaryScreen = () => {
   useAuth("protect");
+  const [isSearch, setIsSearch] = useState(false);
   const langCtx = useContext(LanguageCtx);
   const { isAddWord, handleAddWordModal, ctx, ...config } = useAddWord();
   const history = useHistory();
+
+  const onSearch = (value: string) => {
+    console.log(value);
+  };
 
   return (
     <div className="dictionary-screen">
@@ -28,7 +34,9 @@ const DictionaryScreen = () => {
         <MenuButton callback={() => history.push("/language/scanText")}>
           Scan text
         </MenuButton>
-        <MenuButton>Search</MenuButton>
+        <MenuButton callback={() => setIsSearch((prevValue) => !prevValue)}>
+          {isSearch ? "Close X" : "Search"}
+        </MenuButton>
         <IconButton
           callback={() => {
             handleAddWordModal(true);
@@ -39,6 +47,7 @@ const DictionaryScreen = () => {
         </IconButton>
       </div>
       <div className="dictionary-screen__words">
+        {isSearch && <SearchInput searchCallback={onSearch} />}
         {langCtx.dictionary.length > 0 ? (
           langCtx.dictionary.map((element: IWordElement) => (
             <WordElement {...element} key={element.id} />
