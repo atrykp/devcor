@@ -12,6 +12,7 @@ import Modal from "../../components/Modal/Modal";
 import TextElement from "../../components/TextElement/TextElement";
 import { LanguageCtx } from "../../context/LanguageContext";
 import { useMutation, gql } from "@apollo/client";
+import Title from "../../components/Title/Title";
 
 const IGNORE_LIST = "ignoreList";
 const WORDS_LIST = "wordsList";
@@ -129,7 +130,7 @@ const ScanTextScreen = () => {
   return (
     <div className="scan-text-screen">
       <BackButton />
-      <p className="scan-text-screen__title">Scan text</p>
+      <Title>Scan text</Title>
       <div className="scan-text-screen__top-bar">
         <Button
           styles="button--secondary scan-text-screen__button-ignore"

@@ -17,6 +17,7 @@ import { useAuth } from "../../hooks/useAuth";
 import { useNotificationBar } from "../../hooks/useNotificationBar";
 
 import "./DictionaryScreen.scss";
+import Title from "../../components/Title/Title";
 
 const DICTIONARY_SEARCH = gql`
   query SearchDictionary($userQuery: String!) {
@@ -59,7 +60,7 @@ const DictionaryScreen = () => {
   return (
     <div className="dictionary-screen">
       <BackButton />
-      <p className="dictionary-screen__title">Dictionary</p>
+      <Title>Dictionary</Title>
       <div className="dictionary-screen__buttons">
         <MenuButton callback={() => history.push("/language/scanText")}>
           Scan text

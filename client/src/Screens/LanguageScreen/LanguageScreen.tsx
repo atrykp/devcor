@@ -139,7 +139,11 @@ const LanguageScreen = () => {
         </LanguageContainer>
       </Card>
       <Card>
-        <TopBar title="FlashCards" moreText></TopBar>
+        <TopBar
+          title="Flashcards"
+          moreText
+          onMore={() => history.push("/language/flashcards")}
+        ></TopBar>
       </Card>
     </div>
   );

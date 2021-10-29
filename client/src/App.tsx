@@ -7,7 +7,7 @@ import NotificationBar from "./components/NotificationBar/NotificationBar";
 import { NotificationCtx } from "./context/NotificationContext";
 import AuthorizationScreen from "./Screens/AuthorizationScreen/AuthorizationScreen";
 import DictionaryScreen from "./Screens/DicitonaryScreen/DictionaryScreen";
-import FlashCardScreen from "./Screens/FlashCardScreen/FlashCardScreen";
+import FlashcardsScreen from "./Screens/FlashcardsScreen/FlashcardsScreen";
 import LanguageScreen from "./Screens/LanguageScreen/LanguageScreen";
 import ProfileScreen from "./Screens/ProfileScreen/ProfileScreen";
 import ScanTextScreen from "./Screens/ScanTextScreen/ScanTextScreen";
@@ -39,8 +39,8 @@ function App() {
           <Route path="/language/scanText" exact>
             <ScanTextScreen />
           </Route>
-          <Route path="/language/flashCard" exact>
-            <FlashCardScreen />
+          <Route path="/language/flashcards" exact>
+            <FlashcardsScreen />
           </Route>
           <Redirect to="/start" />
         </Switch>

@@ -8,13 +8,9 @@
   padding-bottom: 30px;
   &__top-bar {
     text-align: end;
+    margin: 20px 0 0;
   }
-  &__title {
-    font-size: $xlarge;
-    font-weight: bold;
-    text-align: center;
-    margin: 20px;
-  }
+
   &__text-area {
     width: 90%;
     height: 35vh;
