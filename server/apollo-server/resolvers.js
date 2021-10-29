@@ -79,7 +79,8 @@ module.exports = {
         return { status: false, message: "sorry something went wrong" };
       const languageObject = await Language.findOne({ userId: ctx.req.userId });
       const result = languageObject.dictionary.filter(
-        (element) => element.from === userQuery || element.to === userQuery
+        (element) =>
+          element.from.includes(userQuery) || element.to.includes(userQuery)
       );
       return result;
     },

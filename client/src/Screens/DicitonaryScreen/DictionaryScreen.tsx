@@ -14,6 +14,7 @@ import { LanguageCtx } from "../../context/LanguageContext";
 
 import { useAddWord } from "../../hooks/useAddWord";
 import { useAuth } from "../../hooks/useAuth";
+import { useNotificationBar } from "../../hooks/useNotificationBar";
 
 import "./DictionaryScreen.scss";
 
@@ -33,10 +34,12 @@ const DictionaryScreen = () => {
   useAuth("protect");
   const [isSearch, setIsSearch] = useState(false);
   const [searchResult, setSearchResult] = useState<any[] | null>(null);
+  const { showNotification } = useNotificationBar();
   const langCtx = useContext(LanguageCtx);
   const { isAddWord, handleAddWordModal, ctx, ...config } = useAddWord();
   const history = useHistory();
-  const [searchDictionary, { data }] = useLazyQuery(DICTIONARY_SEARCH);
+  const [searchDictionary, { data, error, loading }] =
+    useLazyQuery(DICTIONARY_SEARCH);
 
   const onSearch = async (value: string) => {
     searchDictionary({ variables: { userQuery: value } });
@@ -44,9 +47,14 @@ const DictionaryScreen = () => {
 
   useEffect(() => {
     if (data) {
+      showNotification("search results", "done");
       setSearchResult(data.searchDictionary);
+    } else if (loading) {
+      showNotification("searching...", "pending");
+    } else if (error) {
+      showNotification("something went wrong", "error");
     }
-  }, [data]);
+  }, [data, loading, error, showNotification]);
 
   return (
     <div className="dictionary-screen">
@@ -86,8 +94,12 @@ const DictionaryScreen = () => {
           ))}
         {isSearch &&
           searchResult &&
-          searchResult.map((element: any) => (
-            <WordElement {...element} key={element.id} />
+          (!!searchResult.length ? (
+            searchResult.map((element: any) => (
+              <WordElement {...element} key={element.id} />
+            ))
+          ) : (
+            <p>no search result</p>
           ))}
       </div>
       {isAddWord && (

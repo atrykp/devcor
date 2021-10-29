@@ -5,6 +5,7 @@ import Button from "../../components/Button/Button";
 import IgnoreWordModal from "../../components/IgnoreWordModal/IgnoreWordModal";
 
 import { useAuth } from "../../hooks/useAuth";
+import { useNotificationBar } from "../../hooks/useNotificationBar";
 
 import "./ScanTextScreen.scss";
 import Modal from "../../components/Modal/Modal";
@@ -37,6 +38,8 @@ const ScanTextScreen = () => {
     wordsList: false,
   });
 
+  const { showNotification } = useNotificationBar();
+
   const rangeRef = useRef<HTMLInputElement>(null!);
   const popularityRef = useRef<HTMLInputElement>(null!);
   const textAreaRef = useRef<HTMLTextAreaElement>(null!);
@@ -56,6 +59,7 @@ const ScanTextScreen = () => {
   const onSubmit = () => {
     if (!textAreaRef.current.value) return setIsError(true);
     if (isError) setIsError(false);
+    showNotification("scanning...", "pending");
     const formValues = {
       filters: {
         ...checkBoxesValues,
@@ -104,6 +108,7 @@ const ScanTextScreen = () => {
       });
     }
     setScannedList(wordsFromTxt);
+    showNotification("scanned", "done");
   };
 
   const closeModal = () => setIsIgnoreList(false);
