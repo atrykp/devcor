@@ -1,3 +1,4 @@
+import { useHistory } from "react-router";
 import "./Button.scss";
 
 interface IButton {
@@ -23,6 +24,15 @@ export const MenuButton = ({ children, ...props }: IButton) => {
     <Button styles={"button--menu-list"} {...props}>
       {children}
     </Button>
+  );
+};
+export const BackButton = ({ children, ...props }: IButton) => {
+  const history = useHistory();
+  return (
+    <i
+      className="fas fa-angle-left button--back"
+      onClick={() => history.goBack()}
+    ></i>
   );
 };
 

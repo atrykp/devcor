@@ -3,7 +3,7 @@ import { useHistory } from "react-router";
 import _ from "lodash";
 
 import AddWordModal from "../../components/AddWordModal/AddWordModal";
-import { MenuButton } from "../../components/Button/Button";
+import { BackButton, MenuButton } from "../../components/Button/Button";
 
 import Card from "../../components/Card/Card";
 

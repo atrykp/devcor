@@ -3,7 +3,7 @@ import { useHistory } from "react-router";
 import { useLazyQuery, gql } from "@apollo/client";
 
 import AddWordModal from "../../components/AddWordModal/AddWordModal";
-import { MenuButton } from "../../components/Button/Button";
+import { BackButton, MenuButton } from "../../components/Button/Button";
 import IconButton from "../../components/IconButton/IconButton";
 import SearchInput from "../../components/SearchInput/SearchInput";
 import WordElement, {
@@ -58,6 +58,7 @@ const DictionaryScreen = () => {
 
   return (
     <div className="dictionary-screen">
+      <BackButton />
       <p className="dictionary-screen__title">Dictionary</p>
       <div className="dictionary-screen__buttons">
         <MenuButton callback={() => history.push("/language/scanText")}>

@@ -1,7 +1,7 @@
 import { useContext, useRef, useState } from "react";
 import _, { toInteger } from "lodash";
 
-import Button from "../../components/Button/Button";
+import Button, { BackButton } from "../../components/Button/Button";
 import IgnoreWordModal from "../../components/IgnoreWordModal/IgnoreWordModal";
 
 import { useAuth } from "../../hooks/useAuth";
@@ -128,6 +128,7 @@ const ScanTextScreen = () => {
 
   return (
     <div className="scan-text-screen">
+      <BackButton />
       <p className="scan-text-screen__title">Scan text</p>
       <div className="scan-text-screen__top-bar">
         <Button
