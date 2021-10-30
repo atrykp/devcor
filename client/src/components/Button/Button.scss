@@ -36,6 +36,13 @@
     width: 100%;
     font-size: $small;
     padding: 5px 10px;
+    &-active {
+      @include transparent-button;
+      width: 100%;
+      font-size: $small;
+      padding: 5px 10px;
+      text-decoration: underline;
+    }
   }
   &--round {
     width: 60px;

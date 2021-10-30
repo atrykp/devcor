@@ -1,11 +1,18 @@
 @import "../../sass/variables";
-@import "../../sass/variables";
 
 .flashcards-screen {
   flex-grow: 1;
 
   &__top-bar {
+    display: flex;
+    justify-content: space-around;
+    background-color: $gg-light;
+    margin-top: 10px;
   }
   &__flashcards-wrapper {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 200px));
+    justify-content: center;
+    column-gap: 20px;
   }
 }
