@@ -267,5 +267,23 @@ module.exports = {
 
       console.log(words);
     },
+    addFlashcard: async (_, { from, to, fromLang, toLang }, ctx) => {
+      if (!ctx.req.isLogged)
+        return { status: false, message: "sorry something went wrong" };
+
+      const languageObj = await Language.findOne({ userId: ctx.req.userId });
+      languageObj.flashcards.push({ from, to, fromLang, toLang });
+      const changedLangObj = await languageObj.save();
+
+      if (!changedLangObj)
+        return {
+          status: false,
+          message: "cannot add flashcard",
+        };
+      return {
+        status: true,
+        message: "Flashcard added",
+      };
+    },
   },
 };

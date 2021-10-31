@@ -32,6 +32,12 @@ const typeDefs = gql`
       fromLang: String
       toLang: String
     ): MessageResponse
+    addFlashcard(
+      from: String
+      to: String
+      fromLang: String
+      toLang: String
+    ): MessageResponse
     removeWord(wordId: ID!): MessageResponse
     editWord(wordId: ID!, from: String, to: String): MessageResponse
     addIgnoreWord(word: String): MessageResponse
