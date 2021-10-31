@@ -18,11 +18,4 @@
     column-gap: 20px;
     position: sticky;
   }
-  &__button--add {
-    position: fixed;
-    background-color: $accent;
-    bottom: 20px;
-    right: 10px;
-    z-index: 1;
-  }
 }

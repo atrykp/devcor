@@ -79,7 +79,7 @@ const DictionaryScreen = () => {
           callback={() => {
             handleAddWordModal(true);
           }}
-          styles="button--round dictionary-screen__button--add"
+          styles="button--round button--add"
         >
           <i className="fas fa-plus"></i>
         </IconButton>
@@ -109,6 +109,7 @@ const DictionaryScreen = () => {
           ctx={ctx}
           handleAddWordModal={handleAddWordModal}
           {...config}
+          title={"Add word"}
         />
       )}
     </div>

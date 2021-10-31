@@ -54,4 +54,11 @@
     margin-left: 20px;
     margin-top: 10px;
   }
+  &--add {
+    position: fixed;
+    background-color: $accent;
+    bottom: 20px;
+    right: 10px;
+    z-index: 1;
+  }
 }

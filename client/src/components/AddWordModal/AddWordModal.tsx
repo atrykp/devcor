@@ -10,10 +10,11 @@ const AddWordModal = ({ ...props }) => {
     errors,
     register,
     ctx,
+    title,
   } = props;
   return (
     <Modal
-      title={"Add Word"}
+      title={title}
       confirmTxt={"save"}
       cancelTxt={"cancel"}
       cancelCallback={() => {
