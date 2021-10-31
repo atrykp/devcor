@@ -23,7 +23,7 @@ const flashcard = [
     from: "polish",
     to: "english",
     fromWord: "świat",
-    toWord: "word",
+    toWord: "world",
   },
 ];
 
