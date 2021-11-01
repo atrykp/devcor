@@ -11,14 +11,14 @@ interface IFlashcard {
     iCan: boolean;
     from: string;
     to: string;
-    fromWord: string;
-    toWord: string;
+    fromLang: string;
+    toLang: string;
   };
 }
 
 const Flashcard = ({ data }: IFlashcard) => {
   const [currentSite, setCurrentSite] = useState<FlashcardsSite>("front");
-  const { from, to, date, fromWord, toWord, iCan } = data;
+  const { from, to, fromLang, toLang, iCan } = data;
   const changeSite = () => {
     if (currentSite === "front") return setCurrentSite("back");
     setCurrentSite("front");
@@ -29,7 +29,7 @@ const Flashcard = ({ data }: IFlashcard) => {
     >
       <div className="flashcard__text-wrapper">
         <p className="flashcard__text-language">
-          {currentSite === "front" ? from : to}
+          {currentSite === "front" ? fromLang : toLang}
         </p>
         <div
           className={`flashcard__translation ${
@@ -37,7 +37,7 @@ const Flashcard = ({ data }: IFlashcard) => {
           }`}
         >
           <p className="flashcard__text">
-            {currentSite === "front" ? fromWord : toWord}
+            {currentSite === "front" ? from : to}
           </p>
         </div>
       </div>

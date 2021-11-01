@@ -3,5 +3,14 @@
 .title {
   font-size: $xlarge;
   text-align: center;
-  margin-top: 10%;
+  margin: 30px auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  width: 100%;
+  &__back-button {
+    position: absolute;
+    left: 0;
+  }
 }
