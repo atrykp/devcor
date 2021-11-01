@@ -264,8 +264,6 @@ module.exports = {
         return { status: false, message: "sorry something went wrong" };
 
       const languageObj = await Language.findOne({ userId: ctx.req.userId });
-
-      console.log(words);
     },
     addFlashcard: async (_, { from, to, fromLang, toLang }, ctx) => {
       if (!ctx.req.isLogged)
@@ -284,6 +282,22 @@ module.exports = {
         status: true,
         message: "Flashcard added",
       };
+    },
+    removeFlashcard: async (_, { flashcardId }, ctx) => {
+      if (!ctx.req.isLogged)
+        return { status: false, message: "sorry something went wrong" };
+      const languageObj = await Language.findOne({ userId: ctx.req.userId });
+      if (!languageObj)
+        return { status: false, message: "sorry something went wrong" };
+      try {
+        languageObj.flashcards = languageObj.flashcards.filter(
+          (element) => element._id.toString() !== flashcardId
+        );
+        await languageObj.save();
+        return { status: true, message: "flashcard deleted" };
+      } catch (error) {
+        return { status: false, message: error.message };
+      }
     },
   },
 };

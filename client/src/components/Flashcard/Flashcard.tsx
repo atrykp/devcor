@@ -1,7 +1,10 @@
 import { useState } from "react";
+import { useMutation, gql } from "@apollo/client";
+
 import { MenuButton } from "../Button/Button";
 import IconButton from "../IconButton/IconButton";
 import "./Flashcard.scss";
+import { useNotificationBar } from "../../hooks/useNotificationBar";
 
 type FlashcardsSite = "front" | "back";
 
@@ -13,15 +16,43 @@ interface IFlashcard {
     to: string;
     fromLang: string;
     toLang: string;
+    id: string;
   };
 }
 
+const REMOVE_FLASHCARD = gql`
+  mutation RemoveFlashcard($flashcardId: ID!) {
+    removeFlashcard(flashcardId: $flashcardId) {
+      status
+      message
+    }
+  }
+`;
+
 const Flashcard = ({ data }: IFlashcard) => {
   const [currentSite, setCurrentSite] = useState<FlashcardsSite>("front");
-  const { from, to, fromLang, toLang, iCan } = data;
+  const { from, to, fromLang, toLang, iCan, id } = data;
+  const { showNotification } = useNotificationBar();
   const changeSite = () => {
     if (currentSite === "front") return setCurrentSite("back");
     setCurrentSite("front");
+  };
+  const [removeFlashcard] = useMutation(REMOVE_FLASHCARD, {
+    refetchQueries: ["GetLanguageObj"],
+  });
+
+  const removeWordElement = async () => {
+    try {
+      showNotification("removing", "pending");
+      await removeFlashcard({
+        variables: {
+          flashcardId: id,
+        },
+      });
+      showNotification("removed", "done");
+    } catch (error) {
+      showNotification("couldn't remove", "error");
+    }
   };
   return (
     <div
@@ -52,7 +83,9 @@ const Flashcard = ({ data }: IFlashcard) => {
         >
           <i className="fas fa-sync-alt"></i>
         </IconButton>
-        <MenuButton styles="flashcard__button">remove</MenuButton>
+        <MenuButton styles="flashcard__button" callback={removeWordElement}>
+          remove
+        </MenuButton>
       </div>
     </div>
   );

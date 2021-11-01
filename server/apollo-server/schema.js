@@ -43,6 +43,7 @@ const typeDefs = gql`
     addIgnoreWord(word: String): MessageResponse
     removeIgnoreWord(word: String): MessageResponse
     addAndTranslateWords(words: [String]): MessageResponse
+    removeFlashcard(flashcardId: ID!): MessageResponse
   }
   type User {
     id: ID!
