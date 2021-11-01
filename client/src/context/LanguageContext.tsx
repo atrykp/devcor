@@ -34,6 +34,7 @@ const GET_LANGUAGE_OBJ = gql`
         to
         toLang
         iCan
+        id
       }
       ignoreWords
     }

@@ -77,6 +77,7 @@ const typeDefs = gql`
     to: String
     toLang: String
     iCan: Boolean
+    id: String
   }
 
   type DictionaryWord {

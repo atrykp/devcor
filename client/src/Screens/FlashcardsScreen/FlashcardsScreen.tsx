@@ -43,7 +43,9 @@ const FlashcardsScreen = () => {
   const [currentFilter, setCurrentFilter] = useState<FlashcardsFilter>("all");
   const [isAddFlashcard, setIsAddFlashcard] = useState(false);
 
-  const [addFlashcard] = useMutation(ADD_FLASHCARD);
+  const [addFlashcard] = useMutation(ADD_FLASHCARD, {
+    refetchQueries: ["GetLanguageObj"],
+  });
   const { showNotification } = useNotificationBar();
   const langCtx = useContext(LanguageCtx);
   const ctx = useContext(UserCtx);
@@ -90,9 +92,15 @@ const FlashcardsScreen = () => {
         ))}
       </div>
       <div className="flashcards-screen__flashcards-wrapper">
-        {langCtx.flashcards.map((element: any) => (
-          <Flashcard data={element} />
-        ))}
+        {!langCtx.flashcards.length ? (
+          <p>Loading...</p>
+        ) : (
+          [...langCtx.flashcards]
+            .reverse()
+            .map((element: any) => (
+              <Flashcard data={element} key={element.id} />
+            ))
+        )}
       </div>
       <IconButton
         callback={() => {
