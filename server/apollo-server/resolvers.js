@@ -299,5 +299,24 @@ module.exports = {
         return { status: false, message: error.message };
       }
     },
+    editFlashcard: async (_, { from, to, flashcardId }, ctx) => {
+      if (!ctx.req.isLogged)
+        return { status: false, message: "sorry something went wrong" };
+      const languageObj = await Language.findOne({ userId: ctx.req.userId });
+      if (!languageObj)
+        return { status: false, message: "sorry something went wrong" };
+      try {
+        languageObj.flashcards = languageObj.flashcards.map((element) => {
+          if (element._id.toString() !== flashcardId) return element;
+          if (from) element.from = from;
+          if (to) element.to = to;
+          return element;
+        });
+        await languageObj.save();
+        return { status: true, message: "flashcard edited" };
+      } catch (error) {
+        return { status: false, message: error.message };
+      }
+    },
   },
 };

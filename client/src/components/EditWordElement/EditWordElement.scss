@@ -1,0 +1,7 @@
+.edit-word-element {
+  position: relative;
+  &__buttons {
+    display: flex;
+    justify-content: space-around;
+  }
+}

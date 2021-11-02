@@ -20,11 +20,11 @@ const EditWordElement = ({
   const toRef = useRef<HTMLInputElement>(null!);
 
   return (
-    <>
+    <div className="edit-word-element">
       <h1>edit mode</h1>
       <Input defaultValue={from} ref={fromRef} />
       <Input defaultValue={to} ref={toRef} />
-      <div className="word-element__buttons">
+      <div className="edit-word-element__buttons">
         <Button
           callback={() =>
             onEditWord(fromRef.current.value!, toRef.current.value)
@@ -36,7 +36,7 @@ const EditWordElement = ({
           cancel
         </Button>
       </div>
-    </>
+    </div>
   );
 };
 
