@@ -18,7 +18,7 @@ const DefaultLayout = ({ children }: IDefaultLayout) => {
   return (
     <div className="layout">
       <NavBar />
-      {children}
+      <div className="layout__body">{children}</div>
       <footer className="layout__footer">
         <p>{!data ? "Loading..." : data}</p>
       </footer>

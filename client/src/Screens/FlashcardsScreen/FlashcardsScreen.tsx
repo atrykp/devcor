@@ -93,7 +93,9 @@ const FlashcardsScreen = () => {
       </div>
       <div className="flashcards-screen__flashcards-wrapper">
         {!langCtx.flashcards.length ? (
-          <p>Loading...</p>
+          <p className="flashcards-screen__empty-component">
+            Add your first flashcard
+          </p>
         ) : (
           [...langCtx.flashcards]
             .reverse()

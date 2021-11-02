@@ -6,8 +6,17 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+
+  &__body {
+    flex-grow: 1;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    position: relative;
+  }
   &__footer {
-    min-height: 15vh;
+    max-height: 80px;
+    height: 15vh;
     background-color: $main;
     z-index: 3;
   }
