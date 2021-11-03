@@ -4,7 +4,7 @@ import { useHistory } from "react-router";
 import { IUserData, UserCtx } from "../context/UserContext";
 import _ from "lodash";
 
-const ISAUTH = gql`
+const IS_AUTH = gql`
   query IsUserAuth {
     isUserAuth {
       id
@@ -29,7 +29,7 @@ export const useAuth = (protect: string) => {
   });
   const ctx = useContext(UserCtx);
 
-  const { loading, error, data } = useQuery(ISAUTH, {
+  const { loading, data } = useQuery(IS_AUTH, {
     fetchPolicy: "cache-and-network",
     notifyOnNetworkStatusChange: true,
   });
@@ -41,6 +41,7 @@ export const useAuth = (protect: string) => {
     if (!data?.isUserAuth && protect === "unprotected") {
       return;
     } else if (!data?.isUserAuth && protect === "protect") {
+      ctx.setUserData();
       return history.push("/authorization/login");
     } else if (data?.isUserAuth && protect === "unprotected") {
       return history.push(`/profile/${data.isUserAuth.id}`);

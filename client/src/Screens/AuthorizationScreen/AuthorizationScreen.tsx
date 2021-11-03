@@ -80,7 +80,7 @@ const AuthorizationScreen = () => {
     } else {
       try {
         showNotification("Checking data...", "pending");
-        const userInfo: any = await loginUser({
+        await loginUser({
           variables: {
             email: data.email,
             password: data.password,

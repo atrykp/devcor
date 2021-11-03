@@ -10,7 +10,7 @@ interface IMenuList {
   closeMenu(): void;
 }
 
-const LOG_OUT = gql`
+export const LOG_OUT = gql`
   mutation LogOutUser($id: ID!) {
     logoutUser(id: $id) {
       message
