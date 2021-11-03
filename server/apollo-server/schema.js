@@ -45,6 +45,7 @@ const typeDefs = gql`
     addAndTranslateWords(words: [String]): MessageResponse
     removeFlashcard(flashcardId: ID!): MessageResponse
     editFlashcard(flashcardId: ID!, from: String, to: String): MessageResponse
+    updateFlashcardStatus(flashcardId: ID!, iCan: Boolean): MessageResponse
   }
   type User {
     id: ID!

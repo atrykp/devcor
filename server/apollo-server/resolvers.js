@@ -318,5 +318,23 @@ module.exports = {
         return { status: false, message: error.message };
       }
     },
+    updateFlashcardStatus: async (_, { flashcardId, iCan }, ctx) => {
+      if (!ctx.req.isLogged)
+        return { status: false, message: "sorry something went wrong" };
+      const languageObj = await Language.findOne({ userId: ctx.req.userId });
+      if (!languageObj)
+        return { status: false, message: "sorry something went wrong" };
+      try {
+        languageObj.flashcards = languageObj.flashcards.map((element) => {
+          if (element._id.toString() !== flashcardId) return element;
+          element.iCan = iCan;
+          return element;
+        });
+        await languageObj.save();
+        return { status: true, message: "flashcard updated" };
+      } catch (error) {
+        return { status: false, message: error.message };
+      }
+    },
   },
 };

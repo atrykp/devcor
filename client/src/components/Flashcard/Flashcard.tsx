@@ -6,6 +6,7 @@ import IconButton from "../IconButton/IconButton";
 import "./Flashcard.scss";
 import { useNotificationBar } from "../../hooks/useNotificationBar";
 import EditWordElement from "../EditWordElement/EditWordElement";
+import _ from "lodash";
 
 type FlashcardsSite = "front" | "back";
 
@@ -29,6 +30,22 @@ const REMOVE_FLASHCARD = gql`
     }
   }
 `;
+const EDIT_FLASHCARD = gql`
+  mutation Editflashcard($flashcardId: ID!, $from: String, $to: String) {
+    editFlashcard(flashcardId: $flashcardId, from: $from, to: $to) {
+      status
+      message
+    }
+  }
+`;
+const UPDATE_FLASHCARD_STATUS = gql`
+  mutation UpdateFlashcardStatus($flashcardId: ID!, $iCan: Boolean) {
+    updateFlashcardStatus(flashcardId: $flashcardId, iCan: $iCan) {
+      status
+      message
+    }
+  }
+`;
 
 const Flashcard = ({ data }: IFlashcard) => {
   const [currentSite, setCurrentSite] = useState<FlashcardsSite>("front");
@@ -40,6 +57,12 @@ const Flashcard = ({ data }: IFlashcard) => {
     setCurrentSite("front");
   };
   const [removeFlashcard] = useMutation(REMOVE_FLASHCARD, {
+    refetchQueries: ["GetLanguageObj"],
+  });
+  const [editFlashcard] = useMutation(EDIT_FLASHCARD, {
+    refetchQueries: ["GetLanguageObj"],
+  });
+  const [updateFlashcardStatus] = useMutation(UPDATE_FLASHCARD_STATUS, {
     refetchQueries: ["GetLanguageObj"],
   });
 
@@ -57,8 +80,33 @@ const Flashcard = ({ data }: IFlashcard) => {
     }
   };
 
-  const onEdit = (from: string, to: string) => {
-    console.log({ from, to });
+  const onEdit = async (from: string, to: string) => {
+    showNotification("Updating flashcard", "pending");
+
+    const inputsValues = {
+      from,
+      to,
+    };
+    const editObj = _.pickBy(inputsValues, _.identity);
+    try {
+      await editFlashcard({ variables: { ...editObj, flashcardId: id } });
+      showNotification("Flashcard updated", "done");
+      setIsEdit(false);
+    } catch (error) {
+      showNotification("couldn't update", "error");
+    }
+  };
+  const onUpdateStatus = async () => {
+    showNotification("Updating flashcard", "pending");
+
+    try {
+      await updateFlashcardStatus({
+        variables: { iCan: !iCan, flashcardId: id },
+      });
+      showNotification("Flashcard updated", "done");
+    } catch (error) {
+      showNotification("couldn't update", "error");
+    }
   };
   return (
     <div
@@ -96,7 +144,9 @@ const Flashcard = ({ data }: IFlashcard) => {
           </div>
           <div className="flashcard__buttons">
             <div className="flashcard__can-button">
-              <MenuButton styles="flashcard__button">iCan</MenuButton>
+              <MenuButton styles="flashcard__button" callback={onUpdateStatus}>
+                iCan
+              </MenuButton>
               {iCan && <i className="fas fa-check flashcard__can-symbol"></i>}
             </div>
             <IconButton
