@@ -10,7 +10,17 @@ import _ from "lodash";
 
 type FlashcardsSite = "front" | "back";
 
-interface IFlashcard {
+export interface IFlashcard {
+  date: string;
+  iCan: boolean;
+  from: string;
+  to: string;
+  fromLang: string;
+  toLang: string;
+  id: string;
+}
+
+interface IFlashcardComponent {
   data: {
     date: string;
     iCan: boolean;
@@ -31,7 +41,7 @@ const REMOVE_FLASHCARD = gql`
   }
 `;
 const EDIT_FLASHCARD = gql`
-  mutation Editflashcard($flashcardId: ID!, $from: String, $to: String) {
+  mutation EditFlashcard($flashcardId: ID!, $from: String, $to: String) {
     editFlashcard(flashcardId: $flashcardId, from: $from, to: $to) {
       status
       message
@@ -47,7 +57,7 @@ const UPDATE_FLASHCARD_STATUS = gql`
   }
 `;
 
-const Flashcard = ({ data }: IFlashcard) => {
+const Flashcard = ({ data }: IFlashcardComponent) => {
   const [currentSite, setCurrentSite] = useState<FlashcardsSite>("front");
   const [isEdit, setIsEdit] = useState(false);
   const { from, to, fromLang, toLang, iCan, id } = data;

@@ -7,7 +7,7 @@ import { useAuth } from "../../hooks/useAuth";
 
 import AddWordModal from "../../components/AddWordModal/AddWordModal";
 import { MenuButton } from "../../components/Button/Button";
-import Flashcard from "../../components/Flashcard/Flashcard";
+import Flashcard, { IFlashcard } from "../../components/Flashcard/Flashcard";
 import IconButton from "../../components/IconButton/IconButton";
 import Title from "../../components/Title/Title";
 
@@ -77,6 +77,14 @@ const FlashcardsScreen = () => {
   const handleAddFlashcard = () => {
     setIsAddFlashcard(false);
   };
+
+  const filterFlashcards = (filter: FlashcardsFilter) => {
+    return langCtx.flashcards.filter((element: IFlashcard) => {
+      if (filter === "iCan") return element.iCan;
+      if (filter === "iCant") return !element.iCan;
+      return element;
+    });
+  };
   return (
     <div className="flashcards-screen">
       <Title text="Flashcards" isBackButton />
@@ -87,7 +95,7 @@ const FlashcardsScreen = () => {
             styles={currentFilter === element ? "button--menu-list-active" : ""}
             callback={() => setCurrentFilter(element)}
           >
-            {element}
+            {`${element} (${filterFlashcards(element).length})`}
           </MenuButton>
         ))}
       </div>
@@ -97,9 +105,9 @@ const FlashcardsScreen = () => {
             Add your first flashcard
           </p>
         ) : (
-          [...langCtx.flashcards]
+          [...filterFlashcards(currentFilter)]
             .reverse()
-            .map((element: any) => (
+            .map((element: IFlashcard) => (
               <Flashcard data={element} key={element.id} />
             ))
         )}
