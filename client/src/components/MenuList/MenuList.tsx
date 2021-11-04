@@ -20,7 +20,7 @@ export const LOG_OUT = gql`
 `;
 
 const MenuList = ({ closeMenu }: IMenuList) => {
-  const [logout, { loading, error, data }] = useMutation(LOG_OUT);
+  const [logout, { loading, error, data, client }] = useMutation(LOG_OUT);
   const history = useHistory();
   const { showNotification } = useNotificationBar();
   const ctx = useContext(UserCtx);
@@ -33,6 +33,7 @@ const MenuList = ({ closeMenu }: IMenuList) => {
           id: ctx.id,
         },
       });
+      client.clearStore();
       if (data.logoutUser.status) {
         showNotification(data.logoutUser.message, "done");
         history.push("/authorization/login");

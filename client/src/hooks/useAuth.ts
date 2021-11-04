@@ -29,7 +29,7 @@ export const useAuth = (protect: string) => {
   });
   const ctx = useContext(UserCtx);
 
-  const { loading, data } = useQuery(IS_AUTH, {
+  const { loading, data, client } = useQuery(IS_AUTH, {
     fetchPolicy: "cache-and-network",
     notifyOnNetworkStatusChange: true,
   });
@@ -42,6 +42,7 @@ export const useAuth = (protect: string) => {
       return;
     } else if (!data?.isUserAuth && protect === "protect") {
       ctx.setUserData();
+      client.clearStore();
       return history.push("/authorization/login");
     } else if (data?.isUserAuth && protect === "unprotected") {
       return history.push(`/profile/${data.isUserAuth.id}`);
@@ -54,7 +55,6 @@ export const useAuth = (protect: string) => {
       if (common_elements >= commonObjElements && common_elements !== 0)
         return setCommonObjElements(common_elements);
     }
-
     const {
       isUserAuth: { id, email, name, language },
     } = data;
