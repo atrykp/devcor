@@ -1,8 +1,10 @@
-import { useMutation, gql } from "@apollo/client";
 import { useContext } from "react";
 import { useHistory } from "react-router";
+import { useMutation, gql } from "@apollo/client";
+
 import { UserCtx } from "../../context/UserContext";
 import { useNotificationBar } from "../../hooks/useNotificationBar";
+
 import MenuListItem from "../MenuListItem/MenuListItem";
 import "./MenuList.scss";
 
@@ -20,7 +22,7 @@ export const LOG_OUT = gql`
 `;
 
 const MenuList = ({ closeMenu }: IMenuList) => {
-  const [logout, { loading, error, data, client }] = useMutation(LOG_OUT);
+  const [logout, { client }] = useMutation(LOG_OUT);
   const history = useHistory();
   const { showNotification } = useNotificationBar();
   const ctx = useContext(UserCtx);
