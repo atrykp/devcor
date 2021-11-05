@@ -3,7 +3,7 @@ import { useHistory } from "react-router";
 import _ from "lodash";
 
 import AddWordModal from "../../components/AddWordModal/AddWordModal";
-import { BackButton, MenuButton } from "../../components/Button/Button";
+import { MenuButton } from "../../components/Button/Button";
 
 import Card from "../../components/Card/Card";
 
@@ -21,6 +21,7 @@ import { useAddWord } from "../../hooks/useAddWord";
 import { useAuth } from "../../hooks/useAuth";
 
 import "./LanguageScreen.scss";
+import { NotebookCtx } from "../../context/NotebookContext";
 
 // const UPDATE_USER = gql`
 //   mutation updateUser(
@@ -59,6 +60,7 @@ const LanguageScreen = () => {
   const { isAddWord, handleAddWordModal, ctx, ...config } = useAddWord();
 
   const langCtx = useContext(LanguageCtx);
+  const noteCtx = useContext(NotebookCtx);
 
   const history = useHistory();
 

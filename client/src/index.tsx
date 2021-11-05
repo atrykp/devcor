@@ -8,6 +8,7 @@ import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
 import NotificationContext from "./context/NotificationContext";
 import UserContext from "./context/UserContext";
 import LanguageContext from "./context/LanguageContext";
+import NotebookContext from "./context/NotebookContext";
 
 const client = new ApolloClient({
   uri: "http://localhost:3001/graphql",
@@ -21,9 +22,11 @@ ReactDOM.render(
       <NotificationContext>
         <UserContext>
           <LanguageContext>
-            <Router>
-              <App />
-            </Router>
+            <NotebookContext>
+              <Router>
+                <App />
+              </Router>
+            </NotebookContext>
           </LanguageContext>
         </UserContext>
       </NotificationContext>

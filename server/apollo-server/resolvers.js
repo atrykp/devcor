@@ -1,6 +1,6 @@
 const User = require("../models/userModel");
 const Language = require("../models/languageModel");
-const Notebook = require("../models/notebookModel");
+const Notebook = require("../models/notebooksModel");
 const jwt = require("jsonwebtoken");
 
 require("dotenv").config({ path: "../.env" });

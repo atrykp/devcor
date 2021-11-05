@@ -7,6 +7,7 @@ const typeDefs = gql`
     isUserAuth: User
     loginUser(email: String!, password: String): CreateUserResponse!
     getLanguageObj(userId: ID!): LanguageObject
+    getNotebookObj(userId: ID!): NotebookObject
     searchDictionary(userQuery: String): [DictionaryWord]
   }
   type Mutation {
@@ -90,12 +91,25 @@ const typeDefs = gql`
     toLang: String
     id: ID
   }
+  type Notes {
+    title: String
+    text: String
+  }
+  type Notebook {
+    name: String
+    id: ID
+    notes: [Notes]
+  }
 
   type LanguageObject {
     userId: ID
     dictionary: [DictionaryWord]
     flashcards: [FlashCard]
     ignoreWords: [String]
+  }
+  type NotebookObject {
+    userId: ID
+    notebooks: [Notebook]
   }
 `;
 
