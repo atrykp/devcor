@@ -1,0 +1,15 @@
+@import "../../sass/variables";
+
+.notebook-element {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 15vh;
+  background-color: $gg-light;
+  margin: 0 auto 10px auto;
+  padding: 20px;
+  border-radius: 5px;
+  width: 90%;
+  font-size: $xlarge;
+  box-shadow: $light-shadow;
+}
