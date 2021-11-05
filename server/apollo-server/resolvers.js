@@ -1,5 +1,6 @@
 const User = require("../models/userModel");
 const Language = require("../models/languageModel");
+const Notebook = require("../models/notebookModel");
 const jwt = require("jsonwebtoken");
 
 require("dotenv").config({ path: "../.env" });
@@ -73,6 +74,21 @@ module.exports = {
       }
       const { dictionary, flashcards, ignoreWords } = languageObject;
       return { userId, dictionary, flashcards, ignoreWords };
+    },
+    getNotebookObj: async (_, { userId }, ctx) => {
+      if (!ctx.req.isLogged)
+        return { status: false, message: "sorry something went wrong" };
+      const notebooksObject = await Notebook.findOne({ userId }).select("-_id");
+
+      if (!languageObject) {
+        const newLangObj = await Notebook.create({
+          userId,
+          notebooks: [],
+        });
+        return { userId, notebooks: [] };
+      }
+      const { notebooks } = notebooksObject;
+      return { userId, notebooks };
     },
     searchDictionary: async (_, { userQuery }, ctx) => {
       if (!ctx.req.isLogged)
