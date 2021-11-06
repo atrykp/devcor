@@ -54,6 +54,7 @@ const LanguageContext = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     if (userContext.id) getLanguageObj();
   }, [userContext.id, getLanguageObj]);
+
   useEffect(() => {
     if (data) {
       const {

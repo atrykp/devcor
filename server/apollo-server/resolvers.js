@@ -64,7 +64,7 @@ module.exports = {
       const languageObject = await Language.findOne({ userId }).select("-_id");
 
       if (!languageObject) {
-        const newLangObj = await Language.create({
+        await Language.create({
           userId,
           dictionary: [],
           flashcards: [],
@@ -80,8 +80,8 @@ module.exports = {
         return { status: false, message: "sorry something went wrong" };
       const notebooksObject = await Notebook.findOne({ userId }).select("-_id");
 
-      if (!languageObject) {
-        const newLangObj = await Notebook.create({
+      if (!notebooksObject) {
+        await Notebook.create({
           userId,
           notebooks: [],
         });

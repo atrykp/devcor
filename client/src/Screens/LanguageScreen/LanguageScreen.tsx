@@ -21,7 +21,6 @@ import { useAddWord } from "../../hooks/useAddWord";
 import { useAuth } from "../../hooks/useAuth";
 
 import "./LanguageScreen.scss";
-import { NotebookCtx } from "../../context/NotebookContext";
 
 // const UPDATE_USER = gql`
 //   mutation updateUser(
@@ -60,7 +59,6 @@ const LanguageScreen = () => {
   const { isAddWord, handleAddWordModal, ctx, ...config } = useAddWord();
 
   const langCtx = useContext(LanguageCtx);
-  const noteCtx = useContext(NotebookCtx);
 
   const history = useHistory();
 
