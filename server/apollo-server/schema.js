@@ -47,6 +47,7 @@ const typeDefs = gql`
     removeFlashcard(flashcardId: ID!): MessageResponse
     editFlashcard(flashcardId: ID!, from: String, to: String): MessageResponse
     updateFlashcardStatus(flashcardId: ID!, iCan: Boolean): MessageResponse
+    addNotebook(name: String): MessageResponse
   }
   type User {
     id: ID!

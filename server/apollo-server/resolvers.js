@@ -352,5 +352,23 @@ module.exports = {
         return { status: false, message: error.message };
       }
     },
+    addNotebook: async (_, { name }, ctx) => {
+      if (!ctx.req.isLogged)
+        return { status: false, message: "sorry something went wrong" };
+
+      const notebookObj = await Notebook.findOne({ userId: ctx.req.userId });
+      notebookObj.notebooks.push({ name, notes: [] });
+      const changedLangObj = await notebookObj.save();
+
+      if (!changedLangObj)
+        return {
+          status: false,
+          message: "cannot add notebook",
+        };
+      return {
+        status: true,
+        message: "Notebook added",
+      };
+    },
   },
 };
