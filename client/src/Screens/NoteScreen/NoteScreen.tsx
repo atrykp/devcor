@@ -24,6 +24,7 @@ const NoteScreen = () => {
     refetchQueries: ["GetNotebookObj"],
   });
   const [isAddNotebook, setIsAddNotebook] = useState(false);
+
   const noteCtx = useContext(NotebookCtx);
   const notebookNameRef = useRef<HTMLInputElement>(null!);
   const onAddNotebook = async () => {
