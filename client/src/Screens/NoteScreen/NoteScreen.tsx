@@ -20,6 +20,7 @@ const ADD_NOTEBOOK = gql`
 
 const NoteScreen = () => {
   useAuth("protect");
+  const [currentNotebook, setCurrentNotebook] = useState("");
   const [addNotebook] = useMutation(ADD_NOTEBOOK, {
     refetchQueries: ["GetNotebookObj"],
   });
@@ -45,6 +46,7 @@ const NoteScreen = () => {
                 title={element.name}
                 id={element.id}
                 key={element.id}
+                onRemove={(id: string) => setCurrentNotebook(id)}
               />
             ))
           ) : (
@@ -59,6 +61,15 @@ const NoteScreen = () => {
         >
           <i className="fas fa-plus"></i>
         </IconButton>
+        {currentNotebook && (
+          <Modal
+            title="are you sure"
+            confirmTxt="yes"
+            cancelTxt="no"
+            confirmCallback={() => console.log("remove")}
+            cancelCallback={() => setCurrentNotebook("")}
+          />
+        )}
         {isAddNotebook && (
           <Modal
             title="Add notebook"

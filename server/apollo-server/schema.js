@@ -111,6 +111,7 @@ const typeDefs = gql`
   type NotebookObject {
     userId: ID
     notebooks: [Notebook]
+    id: ID
   }
 `;
 

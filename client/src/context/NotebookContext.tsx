@@ -18,6 +18,7 @@ const GET_NOTEBOOK_OBJ = gql`
       userId
       notebooks {
         name
+        id
         notes {
           title
           text
