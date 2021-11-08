@@ -7,11 +7,20 @@ import NotebookElement from "../../components/NotebookElement/NotebookElement";
 import Title from "../../components/Title/Title";
 import { NotebookCtx } from "../../context/NotebookContext";
 import { useAuth } from "../../hooks/useAuth";
+import { useNotificationBar } from "../../hooks/useNotificationBar";
 import "./NoteScreen.scss";
 
 const ADD_NOTEBOOK = gql`
   mutation AddNotebook($name: String) {
     addNotebook(name: $name) {
+      status
+      message
+    }
+  }
+`;
+const REMOVE_NOTEBOOK = gql`
+  mutation RemoveNotebook($notebookId: ID!) {
+    removeNotebook(notebookId: $notebookId) {
       status
       message
     }
@@ -24,7 +33,26 @@ const NoteScreen = () => {
   const [addNotebook] = useMutation(ADD_NOTEBOOK, {
     refetchQueries: ["GetNotebookObj"],
   });
+  const [removeNotebook] = useMutation(REMOVE_NOTEBOOK, {
+    refetchQueries: ["GetNotebookObj"],
+  });
   const [isAddNotebook, setIsAddNotebook] = useState(false);
+  const { showNotification } = useNotificationBar();
+
+  const removeNotebookElement = async () => {
+    try {
+      showNotification("removing", "pending");
+      await removeNotebook({
+        variables: {
+          notebookId: currentNotebook,
+        },
+      });
+      showNotification("removed", "done");
+      setCurrentNotebook("");
+    } catch (error) {
+      showNotification("couldn't remove", "error");
+    }
+  };
 
   const noteCtx = useContext(NotebookCtx);
   const notebookNameRef = useRef<HTMLInputElement>(null!);
@@ -64,9 +92,9 @@ const NoteScreen = () => {
         {currentNotebook && (
           <Modal
             title="are you sure"
-            confirmTxt="yes"
-            cancelTxt="no"
-            confirmCallback={() => console.log("remove")}
+            confirmTxt="Yes"
+            cancelTxt="No"
+            confirmCallback={removeNotebookElement}
             cancelCallback={() => setCurrentNotebook("")}
           />
         )}

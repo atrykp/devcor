@@ -1,5 +1,3 @@
-import { useState } from "react";
-import Modal from "../Modal/Modal";
 import "./NotebookElement.scss";
 
 interface INotebookElement {
@@ -11,9 +9,18 @@ interface INotebookElement {
 const NotebookElement = ({ title, onRemove, id }: INotebookElement) => {
   return (
     <>
-      <div className="notebook-element">
+      <div
+        className="notebook-element"
+        onClick={() => console.log("open notebook")}
+      >
         <p className="notebook-element__title">{title}</p>
-        <i className="fas fa-trash-alt" onClick={() => onRemove(id)}></i>
+        <i
+          className="fas fa-trash-alt"
+          onClick={(e) => {
+            e.stopPropagation();
+            onRemove(id);
+          }}
+        ></i>
       </div>
     </>
   );

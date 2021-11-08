@@ -370,5 +370,21 @@ module.exports = {
         message: "Notebook added",
       };
     },
+    removeNotebook: async (_, { notebookId }, ctx) => {
+      if (!ctx.req.isLogged)
+        return { status: false, message: "sorry something went wrong" };
+      const notebookObj = await Notebook.findOne({ userId: ctx.req.userId });
+      if (!notebookObj)
+        return { status: false, message: "sorry something went wrong" };
+      try {
+        notebookObj.notebooks = notebookObj.notebooks.filter(
+          (element) => element._id.toString() !== notebookId
+        );
+        await notebookObj.save();
+        return { status: true, message: "notebook deleted" };
+      } catch (error) {
+        return { status: false, message: error.message };
+      }
+    },
   },
 };
