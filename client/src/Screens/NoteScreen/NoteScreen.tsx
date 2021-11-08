@@ -56,12 +56,19 @@ const NoteScreen = () => {
 
   const noteCtx = useContext(NotebookCtx);
   const notebookNameRef = useRef<HTMLInputElement>(null!);
+
   const onAddNotebook = async () => {
+    showNotification("Adding notebook", "pending");
     const { data: saveResult } = await addNotebook({
       variables: {
         name: notebookNameRef.current.value,
       },
     });
+    if (!saveResult.addNotebook.status)
+      return showNotification(saveResult.addNotebook.message, "error");
+    showNotification(saveResult.addNotebook.message, "done");
+
+    setIsAddNotebook(false);
   };
   return (
     <div className="note-screen">

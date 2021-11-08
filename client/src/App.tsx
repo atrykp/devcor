@@ -9,6 +9,7 @@ import AuthorizationScreen from "./Screens/AuthorizationScreen/AuthorizationScre
 import DictionaryScreen from "./Screens/DicitonaryScreen/DictionaryScreen";
 import FlashcardsScreen from "./Screens/FlashcardsScreen/FlashcardsScreen";
 import LanguageScreen from "./Screens/LanguageScreen/LanguageScreen";
+import NotebookScreen from "./Screens/NotebookScreen/NotebookScreen";
 import NoteScreen from "./Screens/NoteScreen/NoteScreen";
 import ProfileScreen from "./Screens/ProfileScreen/ProfileScreen";
 import ScanTextScreen from "./Screens/ScanTextScreen/ScanTextScreen";
@@ -45,6 +46,9 @@ function App() {
           </Route>
           <Route path="/language/flashcards" exact>
             <FlashcardsScreen />
+          </Route>
+          <Route path="/notebook/:id" exact>
+            <NotebookScreen />
           </Route>
           <Redirect to="/start" />
         </Switch>

@@ -1,3 +1,4 @@
+import { useHistory } from "react-router";
 import "./NotebookElement.scss";
 
 interface INotebookElement {
@@ -7,11 +8,12 @@ interface INotebookElement {
 }
 
 const NotebookElement = ({ title, onRemove, id }: INotebookElement) => {
+  const history = useHistory();
   return (
     <>
       <div
         className="notebook-element"
-        onClick={() => console.log("open notebook")}
+        onClick={() => history.push(`notebook/${id}`)}
       >
         <p className="notebook-element__title">{title}</p>
         <i
