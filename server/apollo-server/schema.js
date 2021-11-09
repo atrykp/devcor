@@ -97,6 +97,7 @@ const typeDefs = gql`
   type Notes {
     title: String
     text: String
+    date: String
   }
   type Notebook {
     name: String

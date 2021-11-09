@@ -22,6 +22,7 @@ const GET_NOTEBOOK_OBJ = gql`
         notes {
           title
           text
+          date
         }
       }
     }

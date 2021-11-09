@@ -2,6 +2,7 @@ import { useMutation, gql } from "@apollo/client";
 import { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router";
 import IconButton from "../../components/IconButton/IconButton";
+import NoteElement from "../../components/NoteElement/NoteElement";
 import Title from "../../components/Title/Title";
 import { NotebookCtx } from "../../context/NotebookContext";
 import { useAuth } from "../../hooks/useAuth";
@@ -36,7 +37,17 @@ const NotebookScreen = () => {
       <Title text={notebook?.name} isBackButton />
       <p className="notebook-screen__info">Notes:</p>
       <div className="notebook-screen__notes">
-        {!!notebook?.notes?.length ? <p>notebooks</p> : <p>null</p>}
+        {!!notebook?.notes?.length ? (
+          notebook.notes.map((element: any) => (
+            <NoteElement
+              title={element.title}
+              text={element.text}
+              date={element.date}
+            />
+          ))
+        ) : (
+          <p>null</p>
+        )}
       </div>
       <IconButton
         callback={() => console.log("add note")}
