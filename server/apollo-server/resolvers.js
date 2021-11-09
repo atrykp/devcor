@@ -370,6 +370,26 @@ module.exports = {
         message: "Notebook added",
       };
     },
+    addNote: async (_, { title, text, notebookId }, ctx) => {
+      if (!ctx.req.isLogged)
+        return { status: false, message: "sorry something went wrong" };
+
+      const notebookObj = await Notebook.findOne({ userId: ctx.req.userId });
+      notebookObj.notebooks
+        .find((element) => element._id.toString() === notebookId)
+        .notes.push({ title, text });
+      const changedLangObj = await notebookObj.save();
+
+      if (!changedLangObj)
+        return {
+          status: false,
+          message: "Cannot add note",
+        };
+      return {
+        status: true,
+        message: "Note added",
+      };
+    },
     removeNotebook: async (_, { notebookId }, ctx) => {
       if (!ctx.req.isLogged)
         return { status: false, message: "sorry something went wrong" };
