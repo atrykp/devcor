@@ -1,0 +1,10 @@
+.notebook-screen {
+  max-height: 60vh;
+  overflow-y: scroll;
+  &__info {
+    margin-left: 5%;
+    margin-bottom: 20px;
+  }
+  &__notes {
+  }
+}
