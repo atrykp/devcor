@@ -1,3 +1,6 @@
+import { toInteger } from "lodash";
+import moment from "moment";
+import { DATE_FORMAT } from "../../assets/consts";
 import "./NoteElement.scss";
 
 interface INoteElement {
@@ -11,7 +14,9 @@ const NoteElement = ({ title, text, date }: INoteElement) => {
     <div className="note-element">
       <div className="note-element__top">
         <p className="note-element__title">{title}</p>
-        <p className="note-element__date">{date}</p>
+        <p className="note-element__date">
+          {moment(toInteger(date)).format(DATE_FORMAT)}
+        </p>
       </div>
       <div className="note-element__text">{text}</div>
     </div>

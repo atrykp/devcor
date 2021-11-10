@@ -55,7 +55,6 @@ const NoteScreen = () => {
   };
 
   const noteCtx = useContext(NotebookCtx);
-  console.log(noteCtx);
   const notebookNameRef = useRef<HTMLInputElement>(null!);
 
   const onAddNotebook = async () => {
