@@ -51,7 +51,7 @@ const MenuList = ({ closeMenu }: IMenuList) => {
       <ul className="menu-list__list">
         <MenuListItem text={"profile"} path={`/profile/${ctx.id}`} />
         <MenuListItem text={"language"} path={`/language`} />
-        <MenuListItem text={"note"} path={`/note`} />
+        <MenuListItem text={"notebooks"} path={`/notebooks`} />
         <MenuListItem text={"timer"} path={`/timer`} />
         <MenuListItem text={"logout"} callback={logoutUser} />
       </ul>

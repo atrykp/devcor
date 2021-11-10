@@ -8,7 +8,7 @@ import Title from "../../components/Title/Title";
 import { NotebookCtx } from "../../context/NotebookContext";
 import { useAuth } from "../../hooks/useAuth";
 import { useNotificationBar } from "../../hooks/useNotificationBar";
-import "./NoteScreen.scss";
+import "./NotebooksScreen.scss";
 
 const ADD_NOTEBOOK = gql`
   mutation AddNotebook($name: String) {
@@ -27,7 +27,7 @@ const REMOVE_NOTEBOOK = gql`
   }
 `;
 
-const NoteScreen = () => {
+const NotebooksScreen = () => {
   useAuth("protect");
   const [currentNotebook, setCurrentNotebook] = useState("");
   const [addNotebook] = useMutation(ADD_NOTEBOOK, {
@@ -125,4 +125,4 @@ const NoteScreen = () => {
   );
 };
 
-export default NoteScreen;
+export default NotebooksScreen;

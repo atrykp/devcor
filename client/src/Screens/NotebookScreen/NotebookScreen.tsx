@@ -64,7 +64,7 @@ const NotebookScreen = () => {
       (element: any) => element.id === id
     );
     setNotebook(notebook);
-  }, []);
+  }, [id, noteCtx]);
 
   return (
     <div>
@@ -104,6 +104,7 @@ const NotebookScreen = () => {
               title={element.title}
               text={element.text}
               date={element.date}
+              key={element.date}
             />
           ))
         ) : (

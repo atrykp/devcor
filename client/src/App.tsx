@@ -10,7 +10,7 @@ import DictionaryScreen from "./Screens/DicitonaryScreen/DictionaryScreen";
 import FlashcardsScreen from "./Screens/FlashcardsScreen/FlashcardsScreen";
 import LanguageScreen from "./Screens/LanguageScreen/LanguageScreen";
 import NotebookScreen from "./Screens/NotebookScreen/NotebookScreen";
-import NoteScreen from "./Screens/NoteScreen/NoteScreen";
+import NotebooksScreen from "./Screens/NotebooksScreen/NotebooksScreen";
 import ProfileScreen from "./Screens/ProfileScreen/ProfileScreen";
 import ScanTextScreen from "./Screens/ScanTextScreen/ScanTextScreen";
 import StartPage from "./Screens/StartPage/StartPage";
@@ -35,8 +35,8 @@ function App() {
           <Route path="/language" exact>
             <LanguageScreen />
           </Route>
-          <Route path="/note" exact>
-            <NoteScreen />
+          <Route path="/notebooks" exact>
+            <NotebooksScreen />
           </Route>
           <Route path="/language/dictionary" exact>
             <DictionaryScreen />
