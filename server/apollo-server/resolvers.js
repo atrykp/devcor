@@ -1,15 +1,17 @@
+const jwt = require("jsonwebtoken");
+require("dotenv").config({ path: "../.env" });
+
 const User = require("../models/userModel");
 const Language = require("../models/languageModel");
 const Notebook = require("../models/notebooksModel");
-const jwt = require("jsonwebtoken");
-
-require("dotenv").config({ path: "../.env" });
 
 const signToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_PASS, {
     expiresIn: "30m",
   });
 };
+
+const ERROR_MESSAGE = { status: false, message: "sorry something went wrong" };
 
 module.exports = {
   Query: {
@@ -22,6 +24,7 @@ module.exports = {
         language: user.language,
       };
     },
+
     loginUser: async (_, { email, password }, ctx) => {
       const userInfo = await User.findOne({ email }).select("+password");
 
@@ -46,9 +49,8 @@ module.exports = {
         token,
       };
     },
-    isUserAuth: async (_, __, ctx) => {
-      const { userId, isLogged } = ctx.req;
 
+    isUserAuth: async (_, __, { req: { userId, isLogged } }) => {
       if (!isLogged) return null;
       const user = await User.findOne({ _id: userId });
       return {
@@ -58,9 +60,9 @@ module.exports = {
         language: user.language,
       };
     },
-    getLanguageObj: async (_, { userId }, ctx) => {
-      if (!ctx.req.isLogged)
-        return { status: false, message: "sorry something went wrong" };
+
+    getLanguageObj: async (_, { userId }, { req: { isLogged } }) => {
+      if (!isLogged) return ERROR_MESSAGE;
       const languageObject = await Language.findOne({ userId }).select("-_id");
 
       if (!languageObject) {
@@ -75,9 +77,9 @@ module.exports = {
       const { dictionary, flashcards, ignoreWords } = languageObject;
       return { userId, dictionary, flashcards, ignoreWords };
     },
-    getNotebookObj: async (_, { userId }, ctx) => {
-      if (!ctx.req.isLogged)
-        return { status: false, message: "sorry something went wrong" };
+
+    getNotebookObj: async (_, { userId }, { req: { isLogged } }) => {
+      if (!isLogged) return ERROR_MESSAGE;
       const notebooksObject = await Notebook.findOne({ userId }).select("-_id");
 
       if (!notebooksObject) {
@@ -90,10 +92,14 @@ module.exports = {
       const { notebooks } = notebooksObject;
       return { userId, notebooks };
     },
-    searchDictionary: async (_, { userQuery }, ctx) => {
-      if (!ctx.req.isLogged)
-        return { status: false, message: "sorry something went wrong" };
-      const languageObject = await Language.findOne({ userId: ctx.req.userId });
+
+    searchDictionary: async (
+      _,
+      { userQuery },
+      { req: { userId, isLogged } }
+    ) => {
+      if (!isLogged) return ERROR_MESSAGE;
+      const languageObject = await Language.findOne({ userId: userId });
       const result = languageObject.dictionary.filter(
         (element) =>
           element.from.includes(userQuery) || element.to.includes(userQuery)
@@ -101,8 +107,13 @@ module.exports = {
       return result;
     },
   },
+
   Mutation: {
-    createUser: async (_, { name, email, password }, ctx) => {
+    createUser: async (
+      _,
+      { name, email, password },
+      { req: { userId, isLogged } }
+    ) => {
       const userExist = await User.findOne({ email });
       if (userExist)
         return {
@@ -134,8 +145,9 @@ module.exports = {
         };
       }
     },
-    logoutUser: async (_, { id }, ctx) => {
-      const { token } = ctx.req.cookies;
+
+    logoutUser: async (_, { id }, { req: { userId, isLogged } }) => {
+      const { token } = cookies;
       const { id: reqId } = jwt.verify(token, process.env.JWT_PASS);
       if (id === reqId) {
         ctx.res.cookie("token", "", {
@@ -147,10 +159,10 @@ module.exports = {
       return { message: "something went wrong", status: false };
     },
 
-    updateUser: async (_, { id }, ctx) => {},
+    updateUser: async (_, { id }, { req: { userId, isLogged } }) => {},
+
     updateUserLanguage: async (_, { id, native, learn }, ctx) => {
-      if (!ctx.req.isLogged)
-        return { status: false, message: "can't change language" };
+      if (!isLogged) return { status: false, message: "can't change language" };
       const update = { native, learn };
       for (let key in update) {
         if (!update[key]) update[key] = "";
@@ -166,9 +178,13 @@ module.exports = {
       if (!data) return { status: false, message: "can't change language" };
       return { status: true, message: "user language updated" };
     },
-    addWord: async (_, { userId, from, to, fromLang, toLang }, ctx) => {
-      if (!ctx.req.isLogged)
-        return { status: false, message: "sorry something went wrong" };
+
+    addWord: async (
+      _,
+      { userId, from, to, fromLang, toLang },
+      { req: { isLogged } }
+    ) => {
+      if (!isLogged) return ERROR_MESSAGE;
 
       const languageObj = await Language.findOne({ userId });
       languageObj.dictionary.push({ from, to, fromLang, toLang });
@@ -184,12 +200,11 @@ module.exports = {
         message: "Word added",
       };
     },
-    removeWord: async (_, { wordId }, ctx) => {
-      if (!ctx.req.isLogged)
-        return { status: false, message: "sorry something went wrong" };
-      const languageObj = await Language.findOne({ userId: ctx.req.userId });
-      if (!languageObj)
-        return { status: false, message: "sorry something went wrong" };
+
+    removeWord: async (_, { wordId }, { req: { userId, isLogged } }) => {
+      if (!isLogged) return ERROR_MESSAGE;
+      const languageObj = await Language.findOne({ userId: userId });
+      if (!languageObj) return ERROR_MESSAGE;
       try {
         languageObj.dictionary = languageObj.dictionary.filter(
           (element) => element._id.toString() !== wordId
@@ -200,12 +215,15 @@ module.exports = {
         return { status: false, message: error.message };
       }
     },
-    editWord: async (_, { from, to, wordId }, ctx) => {
-      if (!ctx.req.isLogged)
-        return { status: false, message: "sorry something went wrong" };
-      const languageObj = await Language.findOne({ userId: ctx.req.userId });
-      if (!languageObj)
-        return { status: false, message: "sorry something went wrong" };
+
+    editWord: async (
+      _,
+      { from, to, wordId },
+      { req: { userId, isLogged } }
+    ) => {
+      if (!isLogged) return ERROR_MESSAGE;
+      const languageObj = await Language.findOne({ userId: userId });
+      if (!languageObj) return ERROR_MESSAGE;
       try {
         languageObj.dictionary = languageObj.dictionary.map((element) => {
           if (element._id.toString() !== wordId) return element;
@@ -219,11 +237,11 @@ module.exports = {
         return { status: false, message: error.message };
       }
     },
-    addIgnoreWord: async (_, { word }, ctx) => {
-      if (!ctx.req.isLogged)
-        return { status: false, message: "sorry something went wrong" };
 
-      const languageObj = await Language.findOne({ userId: ctx.req.userId });
+    addIgnoreWord: async (_, { word }, { req: { userId, isLogged } }) => {
+      if (!isLogged) return ERROR_MESSAGE;
+
+      const languageObj = await Language.findOne({ userId: userId });
 
       const isExisting = languageObj.ignoreWords.includes(word);
 
@@ -246,11 +264,11 @@ module.exports = {
         message: "Word added",
       };
     },
-    removeIgnoreWord: async (_, { word }, ctx) => {
-      if (!ctx.req.isLogged)
-        return { status: false, message: "sorry something went wrong" };
 
-      const languageObj = await Language.findOne({ userId: ctx.req.userId });
+    removeIgnoreWord: async (_, { word }, { req: { userId, isLogged } }) => {
+      if (!isLogged) return ERROR_MESSAGE;
+
+      const languageObj = await Language.findOne({ userId: userId });
 
       const isExisting = languageObj.ignoreWords.includes(word);
 
@@ -275,17 +293,26 @@ module.exports = {
         message: "Word removed",
       };
     },
-    addAndTranslateWords: async (_, { words }, ctx) => {
-      if (!ctx.req.isLogged)
-        return { status: false, message: "sorry something went wrong" };
 
-      const languageObj = await Language.findOne({ userId: ctx.req.userId });
+    //TODO
+    addAndTranslateWords: async (
+      _,
+      { words },
+      { req: { userId, isLogged } }
+    ) => {
+      if (!isLogged) return ERROR_MESSAGE;
+
+      const languageObj = await Language.findOne({ userId: userId });
     },
-    addFlashcard: async (_, { from, to, fromLang, toLang }, ctx) => {
-      if (!ctx.req.isLogged)
-        return { status: false, message: "sorry something went wrong" };
 
-      const languageObj = await Language.findOne({ userId: ctx.req.userId });
+    addFlashcard: async (
+      _,
+      { from, to, fromLang, toLang },
+      { req: { userId, isLogged } }
+    ) => {
+      if (!isLogged) return ERROR_MESSAGE;
+
+      const languageObj = await Language.findOne({ userId: userId });
       languageObj.flashcards.push({ from, to, fromLang, toLang });
       const changedLangObj = await languageObj.save();
 
@@ -299,12 +326,15 @@ module.exports = {
         message: "Flashcard added",
       };
     },
-    removeFlashcard: async (_, { flashcardId }, ctx) => {
-      if (!ctx.req.isLogged)
-        return { status: false, message: "sorry something went wrong" };
-      const languageObj = await Language.findOne({ userId: ctx.req.userId });
-      if (!languageObj)
-        return { status: false, message: "sorry something went wrong" };
+
+    removeFlashcard: async (
+      _,
+      { flashcardId },
+      { req: { userId, isLogged } }
+    ) => {
+      if (!isLogged) return ERROR_MESSAGE;
+      const languageObj = await Language.findOne({ userId: userId });
+      if (!languageObj) return ERROR_MESSAGE;
       try {
         languageObj.flashcards = languageObj.flashcards.filter(
           (element) => element._id.toString() !== flashcardId
@@ -315,12 +345,15 @@ module.exports = {
         return { status: false, message: error.message };
       }
     },
-    editFlashcard: async (_, { from, to, flashcardId }, ctx) => {
-      if (!ctx.req.isLogged)
-        return { status: false, message: "sorry something went wrong" };
-      const languageObj = await Language.findOne({ userId: ctx.req.userId });
-      if (!languageObj)
-        return { status: false, message: "sorry something went wrong" };
+
+    editFlashcard: async (
+      _,
+      { from, to, flashcardId },
+      { req: { userId, isLogged } }
+    ) => {
+      if (!isLogged) return ERROR_MESSAGE;
+      const languageObj = await Language.findOne({ userId: userId });
+      if (!languageObj) return ERROR_MESSAGE;
       try {
         languageObj.flashcards = languageObj.flashcards.map((element) => {
           if (element._id.toString() !== flashcardId) return element;
@@ -334,12 +367,15 @@ module.exports = {
         return { status: false, message: error.message };
       }
     },
-    updateFlashcardStatus: async (_, { flashcardId, iCan }, ctx) => {
-      if (!ctx.req.isLogged)
-        return { status: false, message: "sorry something went wrong" };
-      const languageObj = await Language.findOne({ userId: ctx.req.userId });
-      if (!languageObj)
-        return { status: false, message: "sorry something went wrong" };
+
+    updateFlashcardStatus: async (
+      _,
+      { flashcardId, iCan },
+      { req: { userId, isLogged } }
+    ) => {
+      if (!isLogged) return ERROR_MESSAGE;
+      const languageObj = await Language.findOne({ userId: userId });
+      if (!languageObj) return ERROR_MESSAGE;
       try {
         languageObj.flashcards = languageObj.flashcards.map((element) => {
           if (element._id.toString() !== flashcardId) return element;
@@ -352,11 +388,11 @@ module.exports = {
         return { status: false, message: error.message };
       }
     },
-    addNotebook: async (_, { name }, ctx) => {
-      if (!ctx.req.isLogged)
-        return { status: false, message: "sorry something went wrong" };
 
-      const notebookObj = await Notebook.findOne({ userId: ctx.req.userId });
+    addNotebook: async (_, { name }, { req: { userId, isLogged } }) => {
+      if (!isLogged) return ERROR_MESSAGE;
+
+      const notebookObj = await Notebook.findOne({ userId: userId });
       notebookObj.notebooks.push({ name, notes: [] });
       const changedLangObj = await notebookObj.save();
 
@@ -370,11 +406,15 @@ module.exports = {
         message: "Notebook added",
       };
     },
-    addNote: async (_, { title, text, notebookId }, ctx) => {
-      if (!ctx.req.isLogged)
-        return { status: false, message: "sorry something went wrong" };
 
-      const notebookObj = await Notebook.findOne({ userId: ctx.req.userId });
+    addNote: async (
+      _,
+      { title, text, notebookId },
+      { req: { userId, isLogged } }
+    ) => {
+      if (!isLogged) return ERROR_MESSAGE;
+
+      const notebookObj = await Notebook.findOne({ userId: userId });
       notebookObj.notebooks
         .find((element) => element._id.toString() === notebookId)
         .notes.push({ title, text });
@@ -390,12 +430,15 @@ module.exports = {
         message: "Note added",
       };
     },
-    removeNotebook: async (_, { notebookId }, ctx) => {
-      if (!ctx.req.isLogged)
-        return { status: false, message: "sorry something went wrong" };
-      const notebookObj = await Notebook.findOne({ userId: ctx.req.userId });
-      if (!notebookObj)
-        return { status: false, message: "sorry something went wrong" };
+
+    removeNotebook: async (
+      _,
+      { notebookId },
+      { req: { userId, isLogged } }
+    ) => {
+      if (!isLogged) return ERROR_MESSAGE;
+      const notebookObj = await Notebook.findOne({ userId: userId });
+      if (!notebookObj) return ERROR_MESSAGE;
       try {
         notebookObj.notebooks = notebookObj.notebooks.filter(
           (element) => element._id.toString() !== notebookId
