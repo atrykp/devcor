@@ -108,6 +108,7 @@ const NotebookScreen = () => {
               date={element.date}
               key={element.id}
               id={element.id}
+              notebookId={id}
             />
           ))
         ) : (

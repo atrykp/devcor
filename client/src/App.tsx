@@ -1,7 +1,6 @@
 import { useContext } from "react";
 import { Switch, Route, Redirect } from "react-router-dom";
 
-import "./App.scss";
 import DefaultLayout from "./components/Layout/DefaultLayout";
 import NotificationBar from "./components/NotificationBar/NotificationBar";
 import { NotificationCtx } from "./context/NotificationContext";
@@ -15,6 +14,7 @@ import NoteElementScreen from "./Screens/NoteElementScreen/NoteElementScreen";
 import ProfileScreen from "./Screens/ProfileScreen/ProfileScreen";
 import ScanTextScreen from "./Screens/ScanTextScreen/ScanTextScreen";
 import StartPage from "./Screens/StartPage/StartPage";
+import "./App.scss";
 
 function App() {
   const ctx = useContext(NotificationCtx);
@@ -51,7 +51,7 @@ function App() {
           <Route path="/notebook/:id" exact>
             <NotebookScreen />
           </Route>
-          <Route path="/notebook/note/:id" exact>
+          <Route path="/notebook/note/:notebookId/:id" exact>
             <NoteElementScreen />
           </Route>
           <Redirect to="/start" />

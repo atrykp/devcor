@@ -9,14 +9,15 @@ export interface INoteElement {
   text: string;
   date: string;
   id: string;
+  notebookId?: string;
 }
 
-const NoteElement = ({ title, text, date, id }: INoteElement) => {
+const NoteElement = ({ title, text, date, id, notebookId }: INoteElement) => {
   const history = useHistory();
   return (
     <div
       className="note-element"
-      onClick={() => history.push(`/notebook/note/${id}`)}
+      onClick={() => history.push(`/notebook/note/${notebookId}/${id}`)}
     >
       <div className="note-element__top">
         <p className="note-element__title">
