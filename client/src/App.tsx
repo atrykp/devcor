@@ -11,6 +11,7 @@ import FlashcardsScreen from "./Screens/FlashcardsScreen/FlashcardsScreen";
 import LanguageScreen from "./Screens/LanguageScreen/LanguageScreen";
 import NotebookScreen from "./Screens/NotebookScreen/NotebookScreen";
 import NotebooksScreen from "./Screens/NotebooksScreen/NotebooksScreen";
+import NoteElementScreen from "./Screens/NoteElementScreen/NoteElementScreen";
 import ProfileScreen from "./Screens/ProfileScreen/ProfileScreen";
 import ScanTextScreen from "./Screens/ScanTextScreen/ScanTextScreen";
 import StartPage from "./Screens/StartPage/StartPage";
@@ -49,6 +50,9 @@ function App() {
           </Route>
           <Route path="/notebook/:id" exact>
             <NotebookScreen />
+          </Route>
+          <Route path="/notebook/note/:id" exact>
+            <NoteElementScreen />
           </Route>
           <Redirect to="/start" />
         </Switch>

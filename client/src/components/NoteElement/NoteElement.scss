@@ -6,19 +6,24 @@
   border-radius: 10px;
   width: clamp(250px, 90%, 500px);
   margin: 0 auto;
-  height: clamp(150px, 15vh, 200px);
+  height: clamp(200px, 15vh, 300px);
+  box-shadow: $light-shadow;
 
   &__top {
     display: flex;
+    flex-direction: column;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 20px;
     border-bottom: 1px solid $ggg-light;
   }
   &__title {
-    font-size: $xlarge;
+    font-size: $large;
+    text-align: center;
   }
   &__date {
+    align-self: flex-end;
+    font-size: $xsmall;
   }
   &__text {
     font-size: $normal;

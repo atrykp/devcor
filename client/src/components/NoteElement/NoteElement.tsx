@@ -1,24 +1,40 @@
-import { toInteger } from "lodash";
+import _, { toInteger } from "lodash";
 import moment from "moment";
+import { useHistory } from "react-router";
 import { DATE_FORMAT } from "../../assets/consts";
 import "./NoteElement.scss";
 
-interface INoteElement {
+export interface INoteElement {
   title: string;
   text: string;
   date: string;
+  id: string;
 }
 
-const NoteElement = ({ title, text, date }: INoteElement) => {
+const NoteElement = ({ title, text, date, id }: INoteElement) => {
+  const history = useHistory();
   return (
-    <div className="note-element">
+    <div
+      className="note-element"
+      onClick={() => history.push(`/notebook/note/${id}`)}
+    >
       <div className="note-element__top">
-        <p className="note-element__title">{title}</p>
+        <p className="note-element__title">
+          {_.truncate(title, {
+            length: 25,
+            separator: /,? +/,
+          })}
+        </p>
         <p className="note-element__date">
           {moment(toInteger(date)).format(DATE_FORMAT)}
         </p>
       </div>
-      <div className="note-element__text">{text}</div>
+      <div className="note-element__text">
+        {_.truncate(text, {
+          length: 45,
+          separator: /,? +/,
+        })}
+      </div>
     </div>
   );
 };

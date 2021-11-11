@@ -5,7 +5,9 @@ import { useParams } from "react-router";
 import IconButton from "../../components/IconButton/IconButton";
 import Input from "../../components/Input/Input";
 import Modal from "../../components/Modal/Modal";
-import NoteElement from "../../components/NoteElement/NoteElement";
+import NoteElement, {
+  INoteElement,
+} from "../../components/NoteElement/NoteElement";
 import Title from "../../components/Title/Title";
 import { NotebookCtx } from "../../context/NotebookContext";
 import { useAuth } from "../../hooks/useAuth";
@@ -99,12 +101,13 @@ const NotebookScreen = () => {
       <p className="notebook-screen__info">Notes:</p>
       <div className="notebook-screen__notes">
         {!!notebook?.notes?.length ? (
-          notebook.notes.map((element: any) => (
+          notebook.notes.map((element: INoteElement) => (
             <NoteElement
               title={element.title}
               text={element.text}
               date={element.date}
-              key={element.date}
+              key={element.id}
+              id={element.id}
             />
           ))
         ) : (

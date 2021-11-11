@@ -23,6 +23,7 @@ const GET_NOTEBOOK_OBJ = gql`
           title
           text
           date
+          id
         }
       }
     }
