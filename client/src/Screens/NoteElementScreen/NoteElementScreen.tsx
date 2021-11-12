@@ -29,11 +29,13 @@ const NoteElementScreen = () => {
       {noteElement ? (
         <>
           <Title text={noteElement.title} isBackButton />
-          <p>{moment(toInteger(noteElement.date)).format(DATE_FORMAT)}</p>
-          <p>{noteElement.text}</p>
+          <p className="note-element-screen__date">
+            {moment(toInteger(noteElement.date)).format(DATE_FORMAT)}
+          </p>
+          <p className="note-element-screen__text">{noteElement.text}</p>
         </>
       ) : (
-        <p>Loading...</p>
+        <p className="note-element-screen__loading">Loading...</p>
       )}
     </div>
   );

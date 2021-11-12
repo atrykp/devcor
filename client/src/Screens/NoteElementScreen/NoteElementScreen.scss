@@ -1,0 +1,18 @@
+@import "../../sass/variables";
+
+.note-element-screen {
+  &__date {
+    text-align: end;
+    margin-bottom: 15px;
+    padding: 0 clamp(10px, 15px, 30px);
+  }
+  &__text {
+    font-size: $normal;
+    padding: 0 clamp(10px, 15px, 30px);
+    margin: 0 auto 30px;
+    width: clamp(200px, 100%, 800px);
+  }
+  &__loading {
+    font-size: $normal;
+  }
+}

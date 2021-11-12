@@ -9,8 +9,12 @@
   justify-content: center;
   position: relative;
   width: 100%;
+  &__text {
+    width: 80%;
+  }
   &__back-button {
     position: absolute;
     left: 0;
+    cursor: pointer;
   }
 }
