@@ -1,7 +1,9 @@
 import { toInteger } from "lodash";
 import moment from "moment";
 import { useContext, useEffect, useState } from "react";
-import { useParams } from "react-router";
+import { useHistory, useParams } from "react-router";
+import { useMutation, gql } from "@apollo/client";
+
 import { DATE_FORMAT } from "../../assets/consts";
 import Modal from "../../components/Modal/Modal";
 import { INoteElement } from "../../components/NoteElement/NoteElement";
@@ -9,13 +11,45 @@ import Title from "../../components/Title/Title";
 import { NotebookCtx } from "../../context/NotebookContext";
 import { useAuth } from "../../hooks/useAuth";
 import "./NoteElementScreen.scss";
+import { useNotificationBar } from "../../hooks/useNotificationBar";
+
+const REMOVE_NOTE = gql`
+  mutation RemoveNote($noteId: ID!, $notebookId: ID!) {
+    removeNote(noteId: $noteId, notebookId: $notebookId) {
+      status
+      message
+    }
+  }
+`;
 
 const NoteElementScreen = () => {
   useAuth("protect");
+  const history = useHistory();
   const [isRemove, setIsRemove] = useState(false);
   const [noteElement, setNoteElement] = useState<INoteElement>();
   const { id, notebookId } = useParams<{ id: string; notebookId: string }>();
   const noteCtx = useContext(NotebookCtx);
+  const { showNotification } = useNotificationBar();
+
+  const [removeNote] = useMutation(REMOVE_NOTE, {
+    refetchQueries: ["GetNotebookObj"],
+  });
+
+  const removeNoteElement = async () => {
+    try {
+      showNotification("removing", "pending");
+      await removeNote({
+        variables: {
+          noteId: id,
+          notebookId,
+        },
+      });
+      history.goBack();
+      showNotification("removed", "done");
+    } catch (error) {
+      showNotification("couldn't remove", "error");
+    }
+  };
 
   useEffect(() => {
     if (noteCtx.userId) {
@@ -31,7 +65,7 @@ const NoteElementScreen = () => {
       {isRemove && (
         <Modal
           title="Are you sure?"
-          confirmCallback={() => console.log("remove")}
+          confirmCallback={removeNoteElement}
           cancelCallback={() => setIsRemove(false)}
         />
       )}

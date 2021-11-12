@@ -458,9 +458,12 @@ module.exports = {
       const notebookObj = await Notebook.findOne({ userId: userId });
       if (!notebookObj) return ERROR_MESSAGE;
       try {
-        notebookObj.notebooks = notebookObj.notebooks
-          .find((element) => element._id.toString() === notebookId)
-          .notes.filter((element) => element._id.toString() !== noteId);
+        const notebookIndex = notebookObj.notebooks.findIndex(
+          (element) => element._id.toString() === notebookId
+        );
+        notebookObj.notebooks[notebookIndex].notes = notebookObj.notebooks[
+          notebookIndex
+        ].notes.filter((element) => element._id.toString() !== noteId);
         await notebookObj.save();
         return { status: true, message: "note deleted" };
       } catch (error) {
