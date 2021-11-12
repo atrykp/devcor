@@ -1,16 +1,30 @@
 @import "../../sass/variables";
 
 .note-element-screen {
+  &__top-bar {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px clamp(10px, 15px, 30px);
+    background-color: $gg-light;
+    margin-bottom: clamp(10px, 5%, 30px);
+  }
+  &__buttons {
+    font-size: $large;
+    width: 30%;
+    display: flex;
+    justify-content: space-around;
+  }
   &__date {
-    text-align: end;
-    margin-bottom: 15px;
-    padding: 0 clamp(10px, 15px, 30px);
+    display: flex;
+    align-items: center;
   }
   &__text {
     font-size: $normal;
     padding: 0 clamp(10px, 15px, 30px);
     margin: 0 auto 30px;
     width: clamp(200px, 100%, 800px);
+    line-height: 1.8;
+    letter-spacing: 0.4px;
   }
   &__loading {
     font-size: $normal;

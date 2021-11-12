@@ -20,8 +20,8 @@ const Modal = ({
   children,
   confirmCallback,
   cancelCallback,
-  confirmTxt,
-  cancelTxt,
+  confirmTxt = "Yes",
+  cancelTxt = "No",
 }: IModal) => {
   useEffect(() => {
     portal?.appendChild(node);

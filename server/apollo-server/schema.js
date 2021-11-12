@@ -50,6 +50,7 @@ const typeDefs = gql`
     addNotebook(name: String): MessageResponse
     addNote(title: String, text: String, notebookId: String): MessageResponse
     removeNotebook(notebookId: ID!): MessageResponse
+    removeNote(notebookId: ID, noteId: ID!): MessageResponse
   }
   type User {
     id: ID!
