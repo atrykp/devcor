@@ -31,8 +31,6 @@
     font-size: $normal;
   }
   &__text-area {
-    @include input;
-    font-family: "Open Sans";
-    width: clamp(300px, 90%, 500px);
+    @include textarea;
   }
 }

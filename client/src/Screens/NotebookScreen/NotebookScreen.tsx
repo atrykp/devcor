@@ -88,10 +88,10 @@ const NotebookScreen = () => {
                 placeholder="title"
                 {...register("title", { required: true })}
               />
-              <Input
-                styles={errors?.text ? "input--error" : ""}
+              <textarea
                 placeholder="text"
                 {...register("text", { required: true })}
+                className="notebook-screen__text-area"
               />
             </form>
           </div>
