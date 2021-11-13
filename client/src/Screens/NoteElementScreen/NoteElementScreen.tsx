@@ -1,6 +1,6 @@
 import { toInteger } from "lodash";
 import moment from "moment";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { useHistory, useParams } from "react-router";
 import { useMutation, gql } from "@apollo/client";
 
@@ -12,6 +12,7 @@ import { NotebookCtx } from "../../context/NotebookContext";
 import { useAuth } from "../../hooks/useAuth";
 import "./NoteElementScreen.scss";
 import { useNotificationBar } from "../../hooks/useNotificationBar";
+import Input from "../../components/Input/Input";
 
 const REMOVE_NOTE = gql`
   mutation RemoveNote($noteId: ID!, $notebookId: ID!) {
@@ -26,7 +27,10 @@ const NoteElementScreen = () => {
   useAuth("protect");
   const history = useHistory();
   const [isRemove, setIsRemove] = useState(false);
+  const [isEdit, setIsEdit] = useState(false);
   const [noteElement, setNoteElement] = useState<INoteElement>();
+  const titleRef = useRef<HTMLInputElement>(null);
+  const textRef = useRef<HTMLTextAreaElement>(null);
   const { id, notebookId } = useParams<{ id: string; notebookId: string }>();
   const noteCtx = useContext(NotebookCtx);
   const { showNotification } = useNotificationBar();
@@ -51,6 +55,11 @@ const NoteElementScreen = () => {
     }
   };
 
+  const onUpdate = () => {
+    console.log(textRef.current?.value);
+    console.log(titleRef.current?.value);
+  };
+
   useEffect(() => {
     if (noteCtx.userId) {
       const noteElement = noteCtx.notebooks
@@ -71,23 +80,43 @@ const NoteElementScreen = () => {
       )}
       {noteElement ? (
         <>
-          <Title text={noteElement.title} isBackButton />
+          {isEdit ? (
+            <Input ref={titleRef} defaultValue={noteElement.title} />
+          ) : (
+            <Title text={noteElement.title} isBackButton />
+          )}
           <div className="note-element-screen__top-bar">
             <p className="note-element-screen__date">
               {moment(toInteger(noteElement.date)).format(DATE_FORMAT)}
             </p>
             <div className="note-element-screen__buttons">
-              <i
-                className="fas fa-edit"
-                onClick={() => console.log("click")}
-              ></i>
-              <i
-                className="fas fa-trash-alt"
-                onClick={() => setIsRemove(true)}
-              ></i>
+              {isEdit ? (
+                <i className="fas fa-save" onClick={onUpdate}></i>
+              ) : (
+                <i className="fas fa-edit" onClick={() => setIsEdit(true)}></i>
+              )}
+              {!isEdit ? (
+                <i
+                  className="fas fa-trash-alt"
+                  onClick={() => setIsRemove(true)}
+                ></i>
+              ) : (
+                <i
+                  className="fas fa-times"
+                  onClick={() => setIsEdit(false)}
+                ></i>
+              )}
             </div>
           </div>
-          <p className="note-element-screen__text">{noteElement.text}</p>
+          {isEdit ? (
+            <textarea
+              defaultValue={noteElement.text}
+              ref={textRef}
+              className="note-element-screen__text-area"
+            />
+          ) : (
+            <p className="note-element-screen__text">{noteElement.text}</p>
+          )}
         </>
       ) : (
         <p className="note-element-screen__loading">Loading...</p>

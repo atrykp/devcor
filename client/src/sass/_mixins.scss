@@ -13,6 +13,7 @@
 }
 
 @mixin input {
+  display: block;
   border-radius: 5px;
   border-style: none;
   min-height: 40px;
