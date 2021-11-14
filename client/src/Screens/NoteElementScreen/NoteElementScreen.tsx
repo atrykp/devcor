@@ -1,18 +1,23 @@
-import { toInteger } from "lodash";
-import moment from "moment";
 import { useContext, useEffect, useRef, useState } from "react";
 import { useHistory, useParams } from "react-router";
+import { toInteger } from "lodash";
 import { useMutation, gql } from "@apollo/client";
+import moment from "moment";
+
+import Modal from "../../components/Modal/Modal";
+import Input from "../../components/Input/Input";
+import Title from "../../components/Title/Title";
+
+import { INoteElement } from "../../components/NoteElement/NoteElement";
+
+import { NotebookCtx } from "../../context/NotebookContext";
+
+import { useAuth } from "../../hooks/useAuth";
+import { useNotificationBar } from "../../hooks/useNotificationBar";
+
+import "./NoteElementScreen.scss";
 
 import { DATE_FORMAT } from "../../assets/consts";
-import Modal from "../../components/Modal/Modal";
-import { INoteElement } from "../../components/NoteElement/NoteElement";
-import Title from "../../components/Title/Title";
-import { NotebookCtx } from "../../context/NotebookContext";
-import { useAuth } from "../../hooks/useAuth";
-import "./NoteElementScreen.scss";
-import { useNotificationBar } from "../../hooks/useNotificationBar";
-import Input from "../../components/Input/Input";
 
 const REMOVE_NOTE = gql`
   mutation RemoveNote($noteId: ID!, $notebookId: ID!) {
@@ -22,6 +27,7 @@ const REMOVE_NOTE = gql`
     }
   }
 `;
+
 const EDIT_NOTE = gql`
   mutation EditNote(
     $noteId: ID!
@@ -43,19 +49,24 @@ const EDIT_NOTE = gql`
 
 const NoteElementScreen = () => {
   useAuth("protect");
-  const history = useHistory();
   const [isRemove, setIsRemove] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
   const [noteElement, setNoteElement] = useState<INoteElement>();
+
+  const noteCtx = useContext(NotebookCtx);
+
+  const history = useHistory();
+  const { id, notebookId } = useParams<{ id: string; notebookId: string }>();
+
   const titleRef = useRef<HTMLInputElement>(null);
   const textRef = useRef<HTMLTextAreaElement>(null);
-  const { id, notebookId } = useParams<{ id: string; notebookId: string }>();
-  const noteCtx = useContext(NotebookCtx);
+
   const { showNotification } = useNotificationBar();
 
   const [removeNote] = useMutation(REMOVE_NOTE, {
     refetchQueries: ["GetNotebookObj"],
   });
+
   const [editNote] = useMutation(EDIT_NOTE, {
     refetchQueries: ["GetNotebookObj"],
   });
