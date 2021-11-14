@@ -22,6 +22,24 @@ const REMOVE_NOTE = gql`
     }
   }
 `;
+const EDIT_NOTE = gql`
+  mutation EditNote(
+    $noteId: ID!
+    $notebookId: ID!
+    $title: String
+    $text: String
+  ) {
+    editNote(
+      noteId: $noteId
+      notebookId: $notebookId
+      title: $title
+      text: $text
+    ) {
+      status
+      message
+    }
+  }
+`;
 
 const NoteElementScreen = () => {
   useAuth("protect");
@@ -36,6 +54,9 @@ const NoteElementScreen = () => {
   const { showNotification } = useNotificationBar();
 
   const [removeNote] = useMutation(REMOVE_NOTE, {
+    refetchQueries: ["GetNotebookObj"],
+  });
+  const [editNote] = useMutation(EDIT_NOTE, {
     refetchQueries: ["GetNotebookObj"],
   });
 
@@ -55,9 +76,22 @@ const NoteElementScreen = () => {
     }
   };
 
-  const onUpdate = () => {
-    console.log(textRef.current?.value);
-    console.log(titleRef.current?.value);
+  const onUpdate = async () => {
+    try {
+      showNotification("updating", "pending");
+      await editNote({
+        variables: {
+          noteId: id,
+          notebookId,
+          title: titleRef.current?.value,
+          text: textRef.current?.value,
+        },
+      });
+      setIsEdit(false);
+      showNotification("edited", "done");
+    } catch (error) {
+      showNotification("couldn't edit", "error");
+    }
   };
 
   useEffect(() => {

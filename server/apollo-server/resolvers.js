@@ -470,5 +470,31 @@ module.exports = {
         return { status: false, message: error.message };
       }
     },
+    editNote: async (
+      _,
+      { title, text, notebookId, noteId },
+      { req: { userId, isLogged } }
+    ) => {
+      if (!isLogged) return ERROR_MESSAGE;
+      const notebookObj = await Notebook.findOne({ userId: userId });
+      if (!notebookObj) return ERROR_MESSAGE;
+      try {
+        const notebookIndex = notebookObj.notebooks.findIndex(
+          (element) => element._id.toString() === notebookId
+        );
+        notebookObj.notebooks[notebookIndex].notes = notebookObj.notebooks[
+          notebookIndex
+        ].notes.map((element) => {
+          if (element._id.toString() !== noteId) return element;
+          element.title = title;
+          element.text = text;
+          return element;
+        });
+        await notebookObj.save();
+        return { status: true, message: "note edited" };
+      } catch (error) {
+        return { status: false, message: error.message };
+      }
+    },
   },
 };
