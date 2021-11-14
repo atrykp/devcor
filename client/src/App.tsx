@@ -15,6 +15,7 @@ import ProfileScreen from "./Screens/ProfileScreen/ProfileScreen";
 import ScanTextScreen from "./Screens/ScanTextScreen/ScanTextScreen";
 import StartPage from "./Screens/StartPage/StartPage";
 import "./App.scss";
+import TimerScreen from "./Screens/TimerScreen/TimerScreen";
 
 function App() {
   const ctx = useContext(NotificationCtx);
@@ -53,6 +54,9 @@ function App() {
           </Route>
           <Route path="/notebook/note/:notebookId/:id" exact>
             <NoteElementScreen />
+          </Route>
+          <Route path="/timer" exact>
+            <TimerScreen />
           </Route>
           <Redirect to="/start" />
         </Switch>

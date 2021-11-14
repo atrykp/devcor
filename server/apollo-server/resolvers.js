@@ -7,7 +7,7 @@ const Notebook = require("../models/notebooksModel");
 
 const signToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_PASS, {
-    expiresIn: "24h",
+    expiresIn: 1000 * 60 * 60 * 24,
   });
 };
 
