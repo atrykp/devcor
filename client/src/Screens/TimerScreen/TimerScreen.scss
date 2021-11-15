@@ -1,0 +1,59 @@
+@import "../../sass/variables";
+
+.timer-screen {
+  &__state-wrapper {
+    display: flex;
+    width: clamp(360px, 15%, 500px);
+    justify-content: space-around;
+    padding: 15px 0px;
+    font-size: $normal;
+    background-color: $gg-light;
+  }
+  &__state {
+    cursor: pointer;
+    &--active {
+      font-weight: bold;
+      color: $accent;
+    }
+  }
+  &__timer {
+    font-size: $huge;
+    margin: 50px auto;
+    display: flex;
+    justify-content: center;
+  }
+  &__range-input {
+    display: block;
+    -webkit-appearance: none;
+    width: 50%;
+    height: 15px;
+    border-radius: 5px;
+    background: #d3d3d3;
+    outline: none;
+    opacity: 0.7;
+    margin: 10px auto;
+    &::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 25px;
+      height: 25px;
+      border-radius: 50%;
+      background: $accent;
+      cursor: pointer;
+    }
+
+    &::-moz-range-thumb {
+      width: 25px;
+      height: 25px;
+      border-radius: 50%;
+      background: $accent;
+      cursor: pointer;
+    }
+  }
+  &__control {
+    display: flex;
+    font-size: $xlarge;
+    justify-content: space-around;
+    margin-top: 30px;
+  }
+}
