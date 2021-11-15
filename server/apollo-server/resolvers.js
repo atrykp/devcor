@@ -7,7 +7,7 @@ const Notebook = require("../models/notebooksModel");
 
 const signToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_PASS, {
-    expiresIn: 1000 * 60 * 60 * 24,
+    expiresIn: "24h",
   });
 };
 
@@ -39,7 +39,7 @@ module.exports = {
 
       ctx.res.cookie("token", token, {
         httpOnly: true,
-        maxAge: 1000 * 60 * 30,
+        maxAge: 1000 * 60 * 60 * 24,
       });
 
       return {

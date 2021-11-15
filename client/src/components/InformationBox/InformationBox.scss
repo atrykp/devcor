@@ -7,8 +7,11 @@
   margin: 10% auto;
   box-shadow: $shadow;
   border-radius: 5px;
-  padding: 8% 5% 10%;
+  padding: 15px 30px;
   max-width: 350px;
+  @include mq(medium) {
+    max-width: 280px;
+  }
   &__title {
     color: $main-second;
     font-size: $xlarge;

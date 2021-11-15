@@ -3,7 +3,8 @@
 
 .start-page {
   &__header-wrapper {
-    padding: 5% 4%;
+    padding: clamp(20px, 5%, 30px) clamp(15px, 4%, 30px);
+
     @include mq(small) {
       display: flex;
       justify-content: space-between;
@@ -14,22 +15,23 @@
     font-weight: bold;
     line-height: 1.2;
     align-self: center;
-    margin-bottom: 10%;
+    margin-bottom: clamp(50px, 10%, 60px);
+
+    width: clamp(300px, 100%, 600px);
+    @include mq(small) {
+      margin-left: 20px;
+    }
   }
   &__header-img {
     background-image: url("../../assets/illustrations/work.png");
-    height: 50vh;
+    height: clamp(250px, 60vh, 400px);
+    width: clamp(300px, 100%, 550px);
     @include image-contain;
-    @include mq(small) {
-      height: auto;
-      min-height: 50vh;
-      width: 1000px;
-    }
   }
 
   &__quote-wrapper {
     background-color: $main;
-    min-height: 30vh;
+    height: clamp(150px, 20vh, 180px);
     padding: 5% 2%;
     display: flex;
     justify-content: center;
@@ -46,12 +48,17 @@
     margin-top: 2%;
   }
   &__information {
-    min-height: 60vh;
+    @include mq(medium) {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
   }
   &__information-header {
     font-size: $xlarge;
     text-align: center;
     font-weight: bold;
     margin-top: 5%;
+    width: 100%;
   }
 }
