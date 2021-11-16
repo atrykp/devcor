@@ -1,13 +1,37 @@
 import { toInteger } from "lodash";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Title from "../../components/Title/Title";
 import { useAuth } from "../../hooks/useAuth";
 import "./TimerScreen.scss";
 
+type TimerControl = "playing" | "pause";
+
 const TimerScreen = () => {
   useAuth("protect");
+  const [currentState, setCurrentState] = useState<TimerControl>("pause");
   const [rangeValue, setRangeValue] = useState(25);
   const [second, setSecond] = useState(0);
+
+  const stopTimer = () => {
+    setRangeValue(25);
+    setSecond(0);
+    setCurrentState("pause");
+  };
+  const startTimer = () => {
+    if (second === 0) {
+      setSecond(59);
+      setRangeValue((currentState) => currentState - 1);
+    }
+    setCurrentState("playing");
+  };
+
+  useEffect(() => {
+    if (currentState === "playing") {
+      setInterval(() => {
+        setSecond((prevVal) => prevVal - 1);
+      }, 1000);
+    }
+  }, [currentState]);
 
   const rangeRef = useRef<HTMLInputElement>(null!);
   return (
@@ -29,11 +53,20 @@ const TimerScreen = () => {
         onChange={() => setRangeValue(toInteger(rangeRef.current.value))}
         ref={rangeRef}
         className="timer-screen__range-input"
+        disabled={currentState === "playing"}
       />
       <div className="timer-screen__control">
-        <i className="fas fa-play"></i>
-        <i className="fas fa-pause"></i>
-        <i className="fas fa-stop"></i>
+        <i className="fas fa-redo"></i>
+        {currentState === "pause" ? (
+          <i className="fas fa-play" onClick={startTimer}></i>
+        ) : (
+          <i
+            className="fas fa-pause"
+            onClick={() => setCurrentState("pause")}
+          ></i>
+        )}
+
+        <i className="fas fa-stop" onClick={stopTimer}></i>
       </div>
     </div>
   );
