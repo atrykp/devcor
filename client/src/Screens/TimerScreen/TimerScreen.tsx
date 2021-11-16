@@ -1,21 +1,25 @@
 import { toInteger } from "lodash";
 import { useEffect, useRef, useState } from "react";
 import Title from "../../components/Title/Title";
+import { removeTimeout } from "../../helpers/removeTimeout";
 import { useAuth } from "../../hooks/useAuth";
 import "./TimerScreen.scss";
 
-type TimerControl = "playing" | "pause";
+type TimerControl = "playing" | "pause" | "done";
 
 const TimerScreen = () => {
   useAuth("protect");
   const [currentState, setCurrentState] = useState<TimerControl>("pause");
-  const [rangeValue, setRangeValue] = useState(25);
+  const [rangeValue, setRangeValue] = useState(1);
   const [second, setSecond] = useState(0);
+
+  const secRef = useRef<NodeJS.Timeout | null>(null);
 
   const stopTimer = () => {
     setRangeValue(25);
     setSecond(0);
     setCurrentState("pause");
+    removeTimeout(secRef.current);
   };
   const startTimer = () => {
     if (second === 0) {
@@ -27,11 +31,27 @@ const TimerScreen = () => {
 
   useEffect(() => {
     if (currentState === "playing") {
-      setInterval(() => {
+      secRef.current = setInterval(() => {
         setSecond((prevVal) => prevVal - 1);
       }, 1000);
     }
+    return () => {
+      removeTimeout(secRef.current);
+    };
   }, [currentState]);
+
+  useEffect(() => {
+    if (second <= 0 && rangeValue <= 0 && currentState === "playing") {
+      removeTimeout(secRef.current);
+      setCurrentState("done");
+      return;
+    }
+
+    if (currentState === "playing" && second <= 0) {
+      setSecond(59);
+      if (rangeValue > 0) setRangeValue((prevVal) => prevVal - 1);
+    }
+  }, [second, currentState, rangeValue]);
 
   const rangeRef = useRef<HTMLInputElement>(null!);
   return (
@@ -43,7 +63,7 @@ const TimerScreen = () => {
       </div>
       <div className="timer-screen__top-bar"></div>
       <p className="timer-screen__timer">
-        {rangeValue}:{second}
+        {rangeValue}:{`${second <= 9 ? 0 : ""}${second}`}
       </p>
       <input
         type="range"
