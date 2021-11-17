@@ -4,6 +4,7 @@ require("dotenv").config({ path: "../.env" });
 const User = require("../models/userModel");
 const Language = require("../models/languageModel");
 const Notebook = require("../models/notebooksModel");
+const Timer = require("../models/timerModel");
 
 const signToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_PASS, {
@@ -91,6 +92,21 @@ module.exports = {
       }
       const { notebooks } = notebooksObject;
       return { userId, notebooks };
+    },
+
+    getTimerObj: async (_, { userId }, { req: { isLogged } }) => {
+      if (!isLogged) return ERROR_MESSAGE;
+      const timersObject = await Timer.findOne({ userId }).select("-_id");
+
+      if (!timersObject) {
+        await Timer.create({
+          userId,
+          timers: [],
+        });
+        return { userId, timers: [] };
+      }
+      const { timers } = timersObject;
+      return { userId, timers };
     },
 
     searchDictionary: async (

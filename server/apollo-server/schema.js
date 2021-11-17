@@ -8,6 +8,7 @@ const typeDefs = gql`
     loginUser(email: String!, password: String): CreateUserResponse!
     getLanguageObj(userId: ID!): LanguageObject
     getNotebookObj(userId: ID!): NotebookObject
+    getTimerObj(userId: ID!): TimerObject
     searchDictionary(userQuery: String): [DictionaryWord]
   }
   type Mutation {
@@ -113,6 +114,18 @@ const typeDefs = gql`
     notes: [Notes]
   }
 
+  type TimerElement {
+    startAt: String
+    endAt: String
+    id: ID
+  }
+  type Timer {
+    date: String
+    id: ID
+    focus: TimerElement
+    break: TimerElement
+  }
+
   type LanguageObject {
     userId: ID
     dictionary: [DictionaryWord]
@@ -122,6 +135,12 @@ const typeDefs = gql`
   type NotebookObject {
     userId: ID
     notebooks: [Notebook]
+    id: ID
+  }
+  type TimerObject {
+    userId: ID
+    currentState: String
+    timers: [Timer]
     id: ID
   }
 `;
