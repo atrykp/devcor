@@ -5,6 +5,7 @@ interface IInput {
   styles?: string;
   placeholder?: string;
   defaultValue?: string;
+  type?: string;
 }
 
 const Input = React.forwardRef<HTMLInputElement, IInput>(

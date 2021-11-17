@@ -1,5 +1,7 @@
 import { toInteger } from "lodash";
 import { useEffect, useRef, useState } from "react";
+import Input from "../../components/Input/Input";
+import Modal from "../../components/Modal/Modal";
 import Title from "../../components/Title/Title";
 import { removeTimeout } from "../../helpers/removeTimeout";
 import { useAuth } from "../../hooks/useAuth";
@@ -12,8 +14,11 @@ const TimerScreen = () => {
   const [currentState, setCurrentState] = useState<TimerControl>("pause");
   const [rangeValue, setRangeValue] = useState(1);
   const [second, setSecond] = useState(0);
+  const [isManual, setIsManual] = useState(false);
 
+  const manualTimerRef = useRef<HTMLInputElement>(null!);
   const secRef = useRef<NodeJS.Timeout | null>(null);
+  const rangeRef = useRef<HTMLInputElement>(null!);
 
   const stopTimer = () => {
     setRangeValue(25);
@@ -21,12 +26,25 @@ const TimerScreen = () => {
     setCurrentState("pause");
     removeTimeout(secRef.current);
   };
+
   const startTimer = () => {
     if (second === 0) {
       setSecond(59);
       setRangeValue((currentState) => currentState - 1);
     }
     setCurrentState("playing");
+  };
+
+  const setTimerManually = () => {
+    const userValue = toInteger(manualTimerRef.current.value);
+    if (userValue > 120) {
+      setRangeValue(120);
+    } else if (userValue < 0) {
+      setRangeValue(0);
+    } else {
+      setRangeValue(userValue);
+    }
+    setIsManual(false);
   };
 
   useEffect(() => {
@@ -53,16 +71,26 @@ const TimerScreen = () => {
     }
   }, [second, currentState, rangeValue]);
 
-  const rangeRef = useRef<HTMLInputElement>(null!);
   return (
     <div>
+      {isManual && (
+        <Modal
+          title="Max duration"
+          cancelCallback={() => setIsManual(false)}
+          cancelTxt="Cancel"
+          confirmTxt="Set"
+          confirmCallback={setTimerManually}
+        >
+          <Input ref={manualTimerRef} type="number" />
+        </Modal>
+      )}
       <Title text="Timer" isBackButton />
       <div className="timer-screen__state-wrapper">
         <p className="timer-screen__state">break</p>
         <p className="timer-screen__state timer-screen__state--active">focus</p>
       </div>
       <div className="timer-screen__top-bar"></div>
-      <p className="timer-screen__timer">
+      <p className="timer-screen__timer" onClick={() => setIsManual(true)}>
         {rangeValue}:{`${second <= 9 ? 0 : ""}${second}`}
       </p>
       <input
