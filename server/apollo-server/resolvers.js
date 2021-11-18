@@ -105,8 +105,8 @@ module.exports = {
         });
         return { userId, timers: [] };
       }
-      const { timers } = timersObject;
-      return { userId, timers };
+      const { timers, currentState } = timersObject;
+      return { userId, timers, currentState };
     },
 
     searchDictionary: async (

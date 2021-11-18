@@ -15,7 +15,7 @@ type TimerControl = "playing" | "pause" | "done";
 type CurrentMode = "focus" | "break";
 
 const UPDATE_TIMER_STATUS = gql`
-  mutation UpdateTimerStatus($status: Boolean) {
+  mutation UpdateTimerStatus($status: String) {
     updateTimerStatus(status: $status) {
       status
       message
@@ -31,6 +31,9 @@ const TimerScreen = () => {
   const [rangeValue, setRangeValue] = useState(1);
   const [second, setSecond] = useState(0);
   const [isManual, setIsManual] = useState(false);
+  const [updateTimerStatus] = useMutation(UPDATE_TIMER_STATUS, {
+    refetchQueries: ["GetTimerObj"],
+  });
 
   const manualTimerRef = useRef<HTMLInputElement>(null!);
   const secRef = useRef<NodeJS.Timeout | null>(null);
@@ -61,6 +64,12 @@ const TimerScreen = () => {
       setRangeValue(userValue);
     }
     setIsManual(false);
+  };
+
+  const changeTimerMode = async (mode: string) => {
+    updateTimerStatus({
+      variables: { status: mode },
+    });
   };
 
   useEffect(() => {
@@ -108,8 +117,23 @@ const TimerScreen = () => {
       )}
       <Title text="Timer" isBackButton />
       <div className="timer-screen__state-wrapper">
-        <p className="timer-screen__state">break</p>
-        <p className="timer-screen__state timer-screen__state--active">focus</p>
+        <p
+          className={`timer-screen__state ${
+            currentMode === "break" ? "timer-screen__state--active" : ""
+          }`}
+          onClick={() => changeTimerMode("break")}
+        >
+          break
+        </p>
+
+        <p
+          className={`timer-screen__state ${
+            currentMode === "focus" ? "timer-screen__state--active" : ""
+          }`}
+          onClick={() => changeTimerMode("focus")}
+        >
+          focus
+        </p>
       </div>
       <div className="timer-screen__top-bar"></div>
       <p
