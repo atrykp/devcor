@@ -7,7 +7,7 @@ const timerSchema = new Schema({
     required: true,
     unique: true,
   },
-  currentState: String,
+  currentState: { type: String, default: "focus" },
   timers: [
     {
       date: { type: String, default: Date.now() },

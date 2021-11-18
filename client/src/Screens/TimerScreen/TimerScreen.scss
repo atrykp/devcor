@@ -55,5 +55,9 @@
     font-size: $xlarge;
     justify-content: space-around;
     margin-top: 30px;
+    &--disable {
+      color: $gg-light;
+      pointer-events: none;
+    }
   }
 }

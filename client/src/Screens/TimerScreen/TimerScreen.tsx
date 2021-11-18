@@ -1,17 +1,21 @@
 import { toInteger } from "lodash";
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import Input from "../../components/Input/Input";
 import Modal from "../../components/Modal/Modal";
 import Title from "../../components/Title/Title";
+import { TimerCtx } from "../../context/TImerContext";
 import { removeTimeout } from "../../helpers/removeTimeout";
 import { useAuth } from "../../hooks/useAuth";
 import "./TimerScreen.scss";
 
 type TimerControl = "playing" | "pause" | "done";
+type CurrentMode = "focus" | "break";
 
 const TimerScreen = () => {
   useAuth("protect");
+  const ctx = useContext(TimerCtx);
   const [currentState, setCurrentState] = useState<TimerControl>("pause");
+  const [currentMode, setCurrentMode] = useState<CurrentMode>();
   const [rangeValue, setRangeValue] = useState(1);
   const [second, setSecond] = useState(0);
   const [isManual, setIsManual] = useState(false);
@@ -71,6 +75,12 @@ const TimerScreen = () => {
     }
   }, [second, currentState, rangeValue]);
 
+  useEffect(() => {
+    if (ctx.userId) {
+      setCurrentMode(ctx.currentState as CurrentMode);
+    }
+  }, [ctx]);
+
   return (
     <div>
       {isManual && (
@@ -90,7 +100,12 @@ const TimerScreen = () => {
         <p className="timer-screen__state timer-screen__state--active">focus</p>
       </div>
       <div className="timer-screen__top-bar"></div>
-      <p className="timer-screen__timer" onClick={() => setIsManual(true)}>
+      <p
+        className="timer-screen__timer"
+        onClick={() => {
+          if (currentState !== "playing") setIsManual(true);
+        }}
+      >
         {rangeValue}:{`${second <= 9 ? 0 : ""}${second}`}
       </p>
       <input
@@ -105,11 +120,16 @@ const TimerScreen = () => {
       />
       <div className="timer-screen__control">
         <i className="fas fa-redo"></i>
-        {currentState === "pause" ? (
-          <i className="fas fa-play" onClick={startTimer}></i>
+        {currentState === "pause" || currentState === "done" ? (
+          <i
+            className={`fas fa-play ${
+              rangeValue === 0 ? "timer-screen__control--disable" : ""
+            }`}
+            onClick={startTimer}
+          ></i>
         ) : (
           <i
-            className="fas fa-pause"
+            className={`fas fa-pause`}
             onClick={() => setCurrentState("pause")}
           ></i>
         )}
