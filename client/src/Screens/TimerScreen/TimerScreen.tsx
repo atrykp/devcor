@@ -1,15 +1,27 @@
-import { toInteger } from "lodash";
 import { useContext, useEffect, useRef, useState } from "react";
+import { toInteger } from "lodash";
+import { useMutation, gql } from "@apollo/client";
+
 import Input from "../../components/Input/Input";
 import Modal from "../../components/Modal/Modal";
 import Title from "../../components/Title/Title";
 import { TimerCtx } from "../../context/TImerContext";
 import { removeTimeout } from "../../helpers/removeTimeout";
 import { useAuth } from "../../hooks/useAuth";
+
 import "./TimerScreen.scss";
 
 type TimerControl = "playing" | "pause" | "done";
 type CurrentMode = "focus" | "break";
+
+const UPDATE_TIMER_STATUS = gql`
+  mutation UpdateTimerStatus($status: Boolean) {
+    updateTimerStatus(status: $status) {
+      status
+      message
+    }
+  }
+`;
 
 const TimerScreen = () => {
   useAuth("protect");

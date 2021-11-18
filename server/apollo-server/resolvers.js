@@ -404,6 +404,18 @@ module.exports = {
         return { status: false, message: error.message };
       }
     },
+    updateTimerStatus: async (_, { status }, { req: { userId, isLogged } }) => {
+      if (!isLogged) return ERROR_MESSAGE;
+      const timerObj = await Timer.findOne({ userId: userId });
+      if (!timerObj) return ERROR_MESSAGE;
+      try {
+        timerObj.currentState = status;
+        await timerObj.save();
+        return { status: true, message: "timer updated" };
+      } catch (error) {
+        return { status: false, message: error.message };
+      }
+    },
 
     addNotebook: async (_, { name }, { req: { userId, isLogged } }) => {
       if (!isLogged) return ERROR_MESSAGE;
