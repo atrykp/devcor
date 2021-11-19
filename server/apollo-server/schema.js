@@ -51,6 +51,12 @@ const typeDefs = gql`
     updateTimerStatus(status: String): MessageResponse
     addNotebook(name: String): MessageResponse
     addNote(title: String, text: String, notebookId: String): MessageResponse
+    addTimer(
+      date: String
+      mode: String
+      startAt: String
+      endAt: String
+    ): MessageResponse
     removeNotebook(notebookId: ID!): MessageResponse
     removeNote(notebookId: ID, noteId: ID!): MessageResponse
     editNote(

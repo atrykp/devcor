@@ -135,6 +135,7 @@ const TimerScreen = () => {
           focus
         </p>
       </div>
+      <i className="far fa-calendar-alt timer-screen__calendar-icon"></i>
       <div className="timer-screen__top-bar"></div>
       <p
         className="timer-screen__timer"

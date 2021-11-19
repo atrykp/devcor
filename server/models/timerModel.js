@@ -10,7 +10,7 @@ const timerSchema = new Schema({
   currentState: { type: String, default: "focus" },
   timers: [
     {
-      date: { type: String, default: Date.now() },
+      date: String,
       focus: [
         {
           startAt: String,

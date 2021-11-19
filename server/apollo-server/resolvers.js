@@ -524,5 +524,32 @@ module.exports = {
         return { status: false, message: error.message };
       }
     },
+    addTimer: async (
+      _,
+      { date, mode, startAt, endAt },
+      { req: { userId, isLogged } }
+    ) => {
+      if (!isLogged) return ERROR_MESSAGE;
+
+      const timersObj = await Timer.findOne({ userId: userId });
+      const timer = timersObj.timers.find((element) => element.date === date);
+
+      if (timer) {
+        timer[mode].push({ startAt, endAt });
+      } else {
+        timersObj.timers.push({ date, mode: [{ startAt, endAt }] });
+      }
+      const changedLangObj = await timersObj.save();
+
+      if (!changedLangObj)
+        return {
+          status: false,
+          message: "Cannot add timer",
+        };
+      return {
+        status: true,
+        message: "Timer added",
+      };
+    },
   },
 };
