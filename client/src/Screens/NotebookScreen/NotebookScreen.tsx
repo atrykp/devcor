@@ -1,7 +1,8 @@
-import { useMutation, gql } from "@apollo/client";
 import { useContext, useEffect, useState } from "react";
-import { SubmitHandler, useForm } from "react-hook-form";
 import { useParams } from "react-router";
+import { useMutation, gql } from "@apollo/client";
+import { SubmitHandler, useForm } from "react-hook-form";
+
 import IconButton from "../../components/IconButton/IconButton";
 import Input from "../../components/Input/Input";
 import Modal from "../../components/Modal/Modal";
@@ -9,9 +10,12 @@ import NoteElement, {
   INoteElement,
 } from "../../components/NoteElement/NoteElement";
 import Title from "../../components/Title/Title";
+
 import { NotebookCtx } from "../../context/NotebookContext";
+
 import { useAuth } from "../../hooks/useAuth";
 import { useNotificationBar } from "../../hooks/useNotificationBar";
+
 import "./NotebookScreen.scss";
 
 const ADD_NOTE = gql`

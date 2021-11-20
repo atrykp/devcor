@@ -9,6 +9,7 @@ import SearchInput from "../../components/SearchInput/SearchInput";
 import WordElement, {
   IWordElement,
 } from "../../components/WordElement/WordElement";
+import Title from "../../components/Title/Title";
 
 import { LanguageCtx } from "../../context/LanguageContext";
 
@@ -17,7 +18,6 @@ import { useAuth } from "../../hooks/useAuth";
 import { useNotificationBar } from "../../hooks/useNotificationBar";
 
 import "./DictionaryScreen.scss";
-import Title from "../../components/Title/Title";
 
 const DICTIONARY_SEARCH = gql`
   query SearchDictionary($userQuery: String!) {
@@ -35,6 +35,7 @@ const DictionaryScreen = () => {
   useAuth("protect");
   const [isSearch, setIsSearch] = useState(false);
   const [searchResult, setSearchResult] = useState<any[] | null>(null);
+
   const { showNotification } = useNotificationBar();
   const langCtx = useContext(LanguageCtx);
   const { isAddWord, handleAddWordModal, ctx, ...config } = useAddWord();

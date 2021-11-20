@@ -3,8 +3,8 @@
 
 .info-box {
   width: 90%;
-  min-height: 350px;
-  margin: 10% auto;
+  min-height: 300px;
+  margin: clamp(25px, 10%, 40px) auto;
   box-shadow: $shadow;
   border-radius: 5px;
   padding: 15px 30px;
@@ -25,8 +25,8 @@
     padding-left: 9%;
   }
   &__point {
-    font-size: $large;
+    font-size: $normal;
     line-height: 1.2;
-    margin: 6% auto;
+    margin: 6% auto 3%;
   }
 }

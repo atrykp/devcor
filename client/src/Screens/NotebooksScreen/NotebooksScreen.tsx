@@ -1,13 +1,16 @@
-import { useMutation, gql } from "@apollo/client";
 import { useContext, useRef, useState } from "react";
+import { useMutation, gql } from "@apollo/client";
+
 import IconButton from "../../components/IconButton/IconButton";
 import Input from "../../components/Input/Input";
 import Modal from "../../components/Modal/Modal";
 import NotebookElement from "../../components/NotebookElement/NotebookElement";
 import Title from "../../components/Title/Title";
 import { NotebookCtx } from "../../context/NotebookContext";
+
 import { useAuth } from "../../hooks/useAuth";
 import { useNotificationBar } from "../../hooks/useNotificationBar";
+
 import "./NotebooksScreen.scss";
 
 const ADD_NOTEBOOK = gql`
@@ -29,15 +32,22 @@ const REMOVE_NOTEBOOK = gql`
 
 const NotebooksScreen = () => {
   useAuth("protect");
+
   const [currentNotebook, setCurrentNotebook] = useState("");
+  const [isAddNotebook, setIsAddNotebook] = useState(false);
+
+  const notebookNameRef = useRef<HTMLInputElement>(null!);
+
   const [addNotebook] = useMutation(ADD_NOTEBOOK, {
     refetchQueries: ["GetNotebookObj"],
   });
   const [removeNotebook] = useMutation(REMOVE_NOTEBOOK, {
     refetchQueries: ["GetNotebookObj"],
   });
-  const [isAddNotebook, setIsAddNotebook] = useState(false);
+
   const { showNotification } = useNotificationBar();
+
+  const noteCtx = useContext(NotebookCtx);
 
   const removeNotebookElement = async () => {
     try {
@@ -53,9 +63,6 @@ const NotebooksScreen = () => {
       showNotification("couldn't remove", "error");
     }
   };
-
-  const noteCtx = useContext(NotebookCtx);
-  const notebookNameRef = useRef<HTMLInputElement>(null!);
 
   const onAddNotebook = async () => {
     showNotification("Adding notebook", "pending");

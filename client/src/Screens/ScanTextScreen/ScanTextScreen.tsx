@@ -51,7 +51,7 @@ const ScanTextScreen = () => {
     }));
   };
 
-  const [addAndTranslate, { data }] = useMutation(ADD_AND_TRANSLATE_WORDS, {
+  const [addAndTranslate] = useMutation(ADD_AND_TRANSLATE_WORDS, {
     refetchQueries: ["GetLanguageObj"],
   });
 
@@ -120,7 +120,7 @@ const ScanTextScreen = () => {
     );
   };
   const saveAndTranslate = async () => {
-    const { data } = await addAndTranslate({
+    await addAndTranslate({
       variables: {
         words: scannedList,
       },

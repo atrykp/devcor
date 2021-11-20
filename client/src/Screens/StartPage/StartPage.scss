@@ -58,7 +58,7 @@
     font-size: $xlarge;
     text-align: center;
     font-weight: bold;
-    margin-top: 5%;
+    margin-top: clamp(20px, 5%, 40px);
     width: 100%;
   }
 }

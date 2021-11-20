@@ -1,13 +1,17 @@
-import { useHistory, useParams } from "react-router";
-import Button from "../../components/Button/Button";
-import { useForm, SubmitHandler } from "react-hook-form";
-import "./AuthorizationScreen.scss";
-import { EMAIL_VALIDATION, PASSWORD_VALIDATION } from "../../assets/consts";
-import { gql, useLazyQuery, useMutation } from "@apollo/client";
-import { useNotificationBar } from "../../hooks/useNotificationBar";
-import { useAuth } from "../../hooks/useAuth";
 import { useEffect } from "react";
+import { useHistory, useParams } from "react-router";
+import { useForm, SubmitHandler } from "react-hook-form";
+import { gql, useLazyQuery, useMutation } from "@apollo/client";
+
+import { useAuth } from "../../hooks/useAuth";
+import { useNotificationBar } from "../../hooks/useNotificationBar";
+
+import Button from "../../components/Button/Button";
 import CardTitle from "../../components/CardTitle/CardTitle";
+
+import { EMAIL_VALIDATION, PASSWORD_VALIDATION } from "../../assets/consts";
+
+import "./AuthorizationScreen.scss";
 
 const SIGN_UP = "SignUp";
 const LOGIN = "Login";
@@ -28,6 +32,7 @@ const CREATE_USER = gql`
     }
   }
 `;
+
 const LOGIN_USER = gql`
   query LoginUser($email: String!, $password: String) {
     loginUser(email: $email, password: $password) {
@@ -41,6 +46,7 @@ const LOGIN_USER = gql`
 
 const AuthorizationScreen = () => {
   useAuth("unprotected");
+
   const { type } = useParams<{ type: "signup" | "login" }>();
   const {
     register,
@@ -49,13 +55,13 @@ const AuthorizationScreen = () => {
     reset,
   } = useForm<IFormInput>();
   const history = useHistory();
-  const isSignUp = type === "signup";
 
   const { showNotification } = useNotificationBar();
 
   const [createUser] = useMutation(CREATE_USER);
-  const [loginUser, { loading, error, data: userData }] =
-    useLazyQuery(LOGIN_USER);
+  const [loginUser, { data: userData }] = useLazyQuery(LOGIN_USER);
+
+  const isSignUp = type === "signup";
 
   const onSubmit: SubmitHandler<IFormInput> = async (data) => {
     if (isSignUp) {
