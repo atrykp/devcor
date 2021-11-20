@@ -526,7 +526,7 @@ module.exports = {
     },
     addTimer: async (
       _,
-      { date, mode, startAt, endAt },
+      { date, mode, startAt, endAt, duration },
       { req: { userId, isLogged } }
     ) => {
       if (!isLogged) return ERROR_MESSAGE;
@@ -535,9 +535,9 @@ module.exports = {
       const timer = timersObj.timers.find((element) => element.date === date);
 
       if (timer) {
-        timer[mode].push({ startAt, endAt });
+        timer[mode].push({ startAt, endAt, duration });
       } else {
-        timersObj.timers.push({ date, mode: [{ startAt, endAt }] });
+        timersObj.timers.push({ date, mode: [{ startAt, endAt, duration }] });
       }
       const changedLangObj = await timersObj.save();
 

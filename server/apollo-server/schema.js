@@ -56,6 +56,7 @@ const typeDefs = gql`
       mode: String
       startAt: String
       endAt: String
+      duration: Number
     ): MessageResponse
     removeNotebook(notebookId: ID!): MessageResponse
     removeNote(notebookId: ID, noteId: ID!): MessageResponse

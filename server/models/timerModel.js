@@ -15,12 +15,14 @@ const timerSchema = new Schema({
         {
           startAt: String,
           endAt: String,
+          duration: Number,
         },
       ],
       break: [
         {
           startAt: String,
           endAt: String,
+          duration: Number,
         },
       ],
     },

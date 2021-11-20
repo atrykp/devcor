@@ -14,9 +14,35 @@ import "./TimerScreen.scss";
 type TimerControl = "playing" | "pause" | "done";
 type CurrentMode = "focus" | "break";
 
+interface TimerInfo {
+  startAt: string;
+  duration: number;
+}
+
 const UPDATE_TIMER_STATUS = gql`
   mutation UpdateTimerStatus($status: String) {
     updateTimerStatus(status: $status) {
+      status
+      message
+    }
+  }
+`;
+
+const ADD_TIMER = gql`
+  mutation AddNote(
+    $date: String
+    $startAt: String
+    $endAt: String
+    $mode: String
+    $duration: Number
+  ) {
+    addNote(
+      date: $date
+      startAt: $startAt
+      mode: $mode
+      endAt: $endAt
+      duration: $duration
+    ) {
       status
       message
     }
@@ -31,6 +57,10 @@ const TimerScreen = () => {
   const [rangeValue, setRangeValue] = useState(1);
   const [second, setSecond] = useState(0);
   const [isManual, setIsManual] = useState(false);
+  const [timerInfo, setTimerInfo] = useState<TimerInfo>({
+    startAt: "",
+    duration: 0,
+  });
   const [updateTimerStatus] = useMutation(UPDATE_TIMER_STATUS, {
     refetchQueries: ["GetTimerObj"],
   });
@@ -52,6 +82,11 @@ const TimerScreen = () => {
       setRangeValue((currentState) => currentState - 1);
     }
     setCurrentState("playing");
+    setTimerInfo({
+      ...timerInfo,
+      startAt: Date.now().toString(),
+      duration: rangeValue,
+    });
   };
 
   const setTimerManually = () => {
@@ -66,6 +101,10 @@ const TimerScreen = () => {
     setIsManual(false);
   };
 
+  const saveTimer = () => {
+    const howLong = timerInfo.duration - rangeValue;
+  };
+
   const changeTimerMode = async (mode: string) => {
     updateTimerStatus({
       variables: { status: mode },
@@ -77,6 +116,8 @@ const TimerScreen = () => {
       secRef.current = setInterval(() => {
         setSecond((prevVal) => prevVal - 1);
       }, 1000);
+    }
+    if (currentState === "done") {
     }
     return () => {
       removeTimeout(secRef.current);
